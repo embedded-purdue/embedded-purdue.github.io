@@ -44,33 +44,6 @@ import { LinkButton } from '@astrojs/starlight/components';
 
 If you save old code in the notes app, with file names like `FinalVersion_FINAL2_REALthisTime.c`, or just raw dog it, this workshop is for you.
 
-## Task 1: Create and clone the repostiory!
-
-**Create a New Repository on GitHub:**
-
-- Go to GitHub.
-- Click the New button or navigate to https://github.com/new.
-![new repository](../../../assets/new_repo.png) 
-
-- Fill in the repository name, description (optional), and choose visibility (public or private).
-![repository visibility](../../../assets/repo_visibility.png) 
-
-- Click Create repository.
-
-**Clone the Repository Locally:**
-
-- Copy the repository link (HTTPS or SSH) from the GitHub page.
-![repository clone](../../../assets/repo_clone.png) 
-
-- Open a terminal and run: git clone repository_link
-
-- Replace repository_link with the copied URL.
-![repository clone2](../../../assets/repo_clone2.png) 
-
-Navigate to the Cloned Repository:
-- cd repository_name
-
----
 
 ## ✏️ Hands-On Exercises
 
@@ -90,6 +63,301 @@ Navigate to the Cloned Repository:
 - Don’t be afraid of merge conflicts — they’re normal!
 
 ---
+
+## Task 1: Create and Clone the Repository!
+
+### 1. Create a New Repository on GitHub
+- Go to [GitHub](https://github.com).
+- Click the **New** button or navigate directly to [https://github.com/new](https://github.com/new).
+
+![New Repository](../../../assets/new_repo.png)
+
+- Fill in the repository name and an optional description.
+- Choose the repository visibility (**Public** or **Private**).
+
+![Repository Visibility](../../../assets/repo_visibility.png)
+
+- Click **Create repository** to finish setting it up.
+
+### 2. Clone the Repository Locally
+- Copy the repository URL (choose **HTTPS** or **SSH**) from the GitHub page.
+
+![Repository Clone](../../../assets/repo_clone.png)
+
+- Open a terminal and run the following command to clone the repository:
+```bash
+git clone <repository_link>
+```
+- Replace `<repository_link>` with the URL you copied.
+
+![Repository Clone 2](../../../assets/repo_clone2.png)
+
+### 3. Navigate to the Cloned Repository
+After cloning, move into the repository directory:
+```bash
+cd <repository_name>
+```
+Replace `<repository_name>` with the name of your repository.
+
+
+
+## Task 2: Make and Push Changes!
+
+### 1. Create New Files
+Create a simple text file and a README file inside your cloned repository:
+```bash
+echo "Hello, world!" > hello.txt
+echo "# My First Repository" > README.md
+```
+This creates two files: `hello.txt` and `README.md`.
+
+### 2. Check the Repository Status
+See which files have been added or changed:
+```bash
+git status
+```
+
+### 3. Add Files to the Staging Area
+
+You have two options:
+
+- Add a specific file:
+```bash
+git add README.md
+```
+This only stages `README.md`.
+
+- Or add **all changed files** at once:
+```bash
+git add .
+```
+This stages **both** `hello.txt` and `README.md`, and any other new or changed files.
+
+### 4. Commit the Changes
+Create a commit with a clear message:
+```bash
+git commit -m "Add hello.txt and README.md"
+```
+
+### 5. Push the Commit to GitHub
+Send your changes to the remote repository:
+```bash
+git push
+```
+
+### 6. Verify
+Go to your GitHub repository page and check that both `hello.txt` and `README.md` are there.
+
+
+## Task 3: Create a New Branch, Switch to It, and Merge
+
+### 1. Create a New Branch
+Create a new branch with a descriptive name:
+```bash
+git branch new-branch-name
+```
+Replace `new-branch-name` with your chosen branch name.
+
+### 2. Switch to the New Branch
+Move onto the new branch:
+```bash
+git checkout new-branch-name
+```
+
+### 3. Create a `.gitignore` File
+A `.gitignore` file tells Git to ignore specific files or folders you do not want to track.  
+Create a simple `.gitignore`:
+```bash
+echo "*.log" > .gitignore
+```
+This will ignore any files ending with `.log`.
+
+Check the status:
+```bash
+git status
+```
+You should see `.gitignore` listed as a new file.
+
+### 4. Add and Commit the Change
+Stage and commit the `.gitignore` file:
+```bash
+git add .gitignore
+git commit -m "Add .gitignore to ignore .log files"
+```
+
+### 5. (Optional) Make Other Changes
+You can also edit an existing file or create a new file. For example:
+```bash
+echo "This is a change on the new branch." >> hello.txt
+```
+Then add and commit:
+```bash
+git add hello.txt
+git commit -m "Update hello.txt on new branch"
+```
+
+### 6. Switch Back to the Main Branch
+Return to the main branch:
+```bash
+git checkout main
+```
+
+### 7. Merge the New Branch into Main
+Merge your changes into the main branch:
+```bash
+git merge new-branch-name
+```
+
+### 8. Push the Updated Main Branch
+Push your updated main branch to GitHub:
+```bash
+git push
+```
+
+### 9. (Optional) Delete the Old Branch
+After merging, you can delete the branch:
+```bash
+git branch -d new-branch-name
+```
+
+---
+
+> **Tip:**  
+> Common things to put in a `.gitignore` include:
+> - Compiled files like `.class` or `.exe`
+> - Log files like `.log`
+> - Environment files like `.env`
+> - OS-specific files like `.DS_Store` (macOS)
+
+## Task 4: Collaborate, Handle Merge Conflicts, and Merge with a Partner
+
+### 1. Find a Partner
+Pair up with someone else in the workshop. You will both continue working in the same repository you created earlier.
+
+> **Important:** Only one person (the repository owner) needs to invite the other as a collaborator.
+
+- Repository owner:
+  - Go to your repository on GitHub.
+  - Click **Settings > Collaborators > Add people**.
+  - Invite your partner using their GitHub username.
+- The invited partner must accept the invitation before continuing.
+
+---
+
+### 2. If You Are the Partner Being Added
+If you are the invited partner:
+- Clone the repository:
+```bash
+git clone <repository_link>
+```
+- Navigate into the repository:
+```bash
+cd <repository_name>
+```
+
+If you are the original repository owner, **stay** in your local copy.
+
+---
+
+### 3. Both Partners Create Their Own Feature Branches
+Each person should create a **new branch** for their work:
+```bash
+git checkout -b feature-branch-yourname
+```
+Example branch names:
+- `feature-partner1`
+- `feature-partner2`
+
+---
+
+### 4. Each Person Makes Changes
+
+Each partner should do **both**:
+
+1. **Create a New File**
+    - Create a new `.txt` file that includes your name.
+    ```bash
+    echo "This is Partner 1's feature file." > partner1_feature.txt
+    ```
+
+2. **Edit the README.md**
+    - Open `README.md` and add a line at the bottom like:
+      - `Edited by Partner 1`
+      - `Edited by Partner 2`
+
+**Important:**  
+Both of you will edit `README.md` separately, which will later cause a **merge conflict**.
+
+---
+
+### 5. Add, Commit, and Push Your Branch
+Each person should:
+
+```bash
+git add .
+git commit -m "Add feature file and update README.md"
+git push origin feature-branch-yourname
+```
+
+---
+
+### 6. Open a Pull Request
+Each partner should:
+
+- Go to the GitHub repository page.
+- Click **Compare & pull request** next to your branch.
+- Add a short title and description.
+- Click **Create pull request**.
+
+---
+
+### 7. Review and Approve Each Other’s Pull Requests
+Before merging:
+
+- Click on your partner’s pull request.
+- Click **Review changes > Approve**.
+- Then click **Merge pull request**.
+
+---
+
+### 8. Handle Merge Conflicts (if any)
+When trying to merge the second pull request, GitHub will detect a **merge conflict** in `README.md`.
+
+Follow these steps:
+- GitHub will show a button **Resolve conflicts** — click it.
+- Edit the file directly on GitHub:
+  - Keep **both** your name and your partner's name.
+- After fixing, click **Mark as resolved** and then **Commit merge**.
+
+---
+
+### 9. Pull Changes Locally
+Once all pull requests are merged, **everyone must update their local repository**:
+
+```bash
+git checkout main
+git pull
+```
+
+If you worked in a feature branch and want to clean up:
+
+```bash
+git branch -d feature-branch-yourname
+```
+
+---
+
+> **Challenge Complete:**  
+> - You created and pushed new branches.
+> - You opened and reviewed pull requests.
+> - You resolved a real merge conflict.
+> - You successfully merged code with a teammate!
+
+
+
+
+
+
 
 ## 📦 Extra Resources
 
