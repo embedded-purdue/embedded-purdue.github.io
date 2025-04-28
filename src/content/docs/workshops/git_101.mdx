@@ -2,7 +2,6 @@
 title: Git 101
 description: A reference page in my new Starlight docs site.
 ---
-
 ![git meme](../../../assets/git-meme.jpeg) 
 
 import { Badge } from '@astrojs/starlight/components';
@@ -42,50 +41,70 @@ import { LinkButton } from '@astrojs/starlight/components';
   Git cheat sheet
 </LinkButton>
 
-If you save old code in the notes app, with file names like `FinalVersion_FINAL2_REALthisTime.c`, or just raw dog it, this workshop is for you.
+This workshop is designed for both beginner and intemediate Git users. Even if you are familiar with Git, mastering the collaborative aspects of version control is essential for effective for working on softtware projects in a team.
 
-
+To complete this workshop, follow along in the slides and complete the tasks on your computer as they appear. Good luck!
 
 ---
 
-## Task 1: Create and Clone the Repository!
+## Tasks
+
+### Task 0: Environment Setup
+- **Create a GitHub Account**
+  - Go to [GitHub](https://github.com) and sign up for a free account
+  - If you already have an account, make sure you can log in
+- **Install Git**
+  - Check if you have git installed
+    ```bash
+    git --version
+    ```
+  - If not, [download Git](https://git-scm.com/downloads) for your OS
+- **Have an IDE or text editor**
+  - We use [VS Code](https://code.visualstudio.com/), but Vim, Emacs, or even Notepad will work
+
+
+### Task 1: Create and Clone the Repository
 
 **1. Create a New Repository on GitHub**
-- Go to [GitHub](https://github.com).
-- Click the **New** button or navigate directly to [https://github.com/new](https://github.com/new).
+- Go to [GitHub](https://github.com)
+- Click the **New** button or navigate directly to [https://github.com/new](https://github.com/new)
 
-![New Repository](../../../assets/new_repo.png)
+  ![New Repository](../../../assets/new_repo.png)
 
-- Fill in the repository name and an optional description.
-- Choose the repository visibility (**Public** or **Private**).
+- Fill in the repository name and an optional description
+- Choose the repository visibility (**Public** or **Private**). We will use **Public** for this workshop (to avoid having to setup an [SSH Key](https://www.atlassian.com/git/tutorials/git-ssh))
 
-![Repository Visibility](../../../assets/repo_visibility.png)
+  ![Repository Visibility](../../../assets/repo_visibility.png)
 
-- Click **Create repository** to finish setting it up.
+- Click **Create repository** to finish setting it up
 
 **2. Clone the Repository Locally**
 - Copy the repository URL (choose **HTTPS** or **SSH**) from the GitHub page.
 
-![Repository Clone](../../../assets/repo_clone.png)
+  ![Repository Clone](../../../assets/repo_clone.png)
 
 - Open a terminal and run the following command to clone the repository:
-```bash
-git clone <repository_link>
-```
-- Replace `<repository_link>` with the URL you copied.
 
-![Repository Clone 2](../../../assets/repo_clone2.png)
+  ```bash
+  git clone <repository_link>
+  ```
+
+  - Replace `<repository_link>` with the URL you copied
+
+  ![Repository Clone 2](../../../assets/repo_clone2.png)
 
 **3. Navigate to the Cloned Repository**
-After cloning, move into the repository directory:
-```bash
-cd <repository_name>
-```
-Replace `<repository_name>` with the name of your repository.
+
+- After cloning, move into the repository directory:
+
+    ```bash
+    cd <repository_name>
+    ```
+    - Replace `<repository_name>` with the name of your repository.
 
 
 
-## Task 2: Make and Push Changes!
+### Task 2: Make and Push Changes
 
 **1. Create New Files**
 Create a simple text file and a README file inside your cloned repository:
@@ -133,7 +152,7 @@ git push
 Go to your GitHub repository page and check that both `hello.txt` and `README.md` are there.
 
 
-## Task 3: Create a New Branch, Work Independently, and Tag a Release
+### Task 3: Create a New Branch, Work Independently, and Tag a Release
 
 This task will help you practice managing your own work safely in a repository before collaborating with others.
 
@@ -217,7 +236,7 @@ git push
 
 ---
 
-## Task 4: Collaborate, Merge Feature Branches Together, and Submit a Pull Request
+### Task 4: Collaborate, Merge Feature Branches Together, and Submit a Pull Request
 
 This task simulates real teamwork where multiple developers' branches must be merged **before** submitting to `main`.
 
