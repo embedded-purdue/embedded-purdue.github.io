@@ -5,6 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://embedded-purdue.github.io',
+  base: '/embedded-purdue/',
   integrations: [
       starlight({
           title: ' ',
