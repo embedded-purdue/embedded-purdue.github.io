@@ -19,26 +19,35 @@ export default defineConfig({
         ],
           sidebar: [
               {
-                  label: 'Start Here',
-                  autogenerate: { directory: 'start-here' },
+                label: '🏡 Home',
+                link: '/'
               },
               {
-                  label: 'Projects',
+                label: 'ℹ️  About',
+                autogenerate: { directory: 'about' },
+              },
+              {
+                  label: '🛠️ Projects',
                   autogenerate: { directory: 'projects' },
+                  collapsed: true,
               },
               {
-                label: 'Workshops',
+                label: '🧑‍🏫 Workshops',
                 autogenerate: { directory: 'workshops' },
+                collapsed: true,
               },
               {
-                label: 'Professional Development',
-                autogenerate: { directory: 'pro-dev' },
+                label: '📚 Resources',
+                autogenerate: { directory: 'resources' },
+                collapsed: true,
               },
           ],
           logo: {
               src: './src/assets/logo.svg',
               alt: 'Embedded Systems @ Purdue',
           },
+          lastUpdated: true,
+          pagination: false,
       }),
 	],
 
