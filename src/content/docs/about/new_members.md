@@ -5,6 +5,9 @@ sidebar:
     order: 4
 ---
 
+## [Page in Progress]
+
+
 We’re **Embedded Systems @ Purdue (ES@P)** — a student-led organization building a strong community of innovators passionate about embedded systems, hardware, and software.  
 We believe in hands-on learning, real-world projects, and connecting students with industry.
 
