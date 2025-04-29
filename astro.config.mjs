@@ -19,28 +19,27 @@ export default defineConfig({
         ],
           sidebar: [
               {
-                label: 'Home',
+                label: '🏡 Home',
                 link: '/'
               },
               {
-                  label: 'Projects',
+                label: 'ℹ️  About',
+                autogenerate: { directory: 'about' },
+              },
+              {
+                  label: '🛠️ Projects',
                   autogenerate: { directory: 'projects' },
                   collapsed: true,
               },
               {
-                label: 'Workshops',
+                label: '🧑‍🏫 Workshops',
                 autogenerate: { directory: 'workshops' },
                 collapsed: true,
               },
               {
-                label: 'Sponsor',
-                link: '/general/sponsors',
-
-              },
-              {
-                label: 'Team',
-                link: '/general/team',
-
+                label: '📚 Resources',
+                autogenerate: { directory: 'resources' },
+                collapsed: true,
               },
           ],
           logo: {
