@@ -1,8 +1,6 @@
 ---
 title: Sponsors
 description: A guide in my new Starlight docs site.
-sidebar:
-    order: 4
 ---
 
 We’re **Embedded Systems @ Purdue (ES@P)** — a student-led organization building a strong community of innovators passionate about embedded systems, hardware, and software.  
