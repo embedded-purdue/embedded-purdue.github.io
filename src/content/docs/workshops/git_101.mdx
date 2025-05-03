@@ -8,10 +8,385 @@ import { Badge } from '@astrojs/starlight/components';
 
 <br />
 
-<Badge text="Level: Beginner" variant="success" />  <Badge text="Offerred: Fall 2025" variant="note" /> <Badge text="Time: 1-1.5 hours" variant="tip" />  
+<Badge text="Level: Beginner" variant="success" />  <Badge text="Offerred: Fall 2025" variant="note" /> <Badge text="Time: 1-1.5 hours" variant="tip" />
 
 <br />
-<br />
-<br />
 
-This workshop is currently under development. Please check back later for more information.
+import { LinkButton } from '@astrojs/starlight/components';
+
+<LinkButton
+  href="https://docs.google.com/presentation/d/1Dk7lakdtn65Ym86UzuRHYTsuG3ByWMMBZX1VucDLHyQ/edit?usp=sharing"
+  variant="minimal"
+  icon="external"
+  iconPlacement="start"
+>
+  Slide deck
+</LinkButton>
+
+<LinkButton
+  href="https://docs.astro.build"
+  variant="minimal"
+  icon="external"
+  iconPlacement="start"
+>
+  Workshop recording
+</LinkButton>   
+
+<LinkButton
+  href="https://docs.google.com/document/d/1m0P8irrmm1R9AWo045FTleryCc791AoaBxEux4LQXEs/edit?usp=sharing"
+  variant="minimal"
+  icon="external"
+  iconPlacement="start"
+>
+  Git cheat sheet
+</LinkButton>
+
+This workshop is designed for both beginner and intemediate Git users. Even if you are familiar with Git, mastering the collaborative aspects of version control is essential for effective for working on softtware projects in a team.
+
+To complete this workshop, follow along in the slides and complete the tasks on your computer as they appear. Good luck!
+
+---
+
+## Tasks
+
+### Task 0: Environment Setup
+- **Create a GitHub Account**
+  - Go to [GitHub](https://github.com) and sign up for a free account
+  - If you already have an account, make sure you can log in
+- **Install Git**
+  - Check if you have git installed
+    ```bash
+    git --version
+    ```
+  - If not, [download Git](https://git-scm.com/downloads) for your OS
+- **Have an IDE or text editor**
+  - We use [VS Code](https://code.visualstudio.com/), but Vim, Emacs, or even Notepad will work
+
+
+### Task 1: Create and Clone the Repository
+
+**1. Create a New Repository on GitHub**
+- Go to [GitHub](https://github.com)
+- Click the **New** button or navigate directly to [https://github.com/new](https://github.com/new)
+
+  ![New Repository](../../../assets/new_repo.png)
+
+- Fill in the repository name and an optional description
+- Choose the repository visibility (**Public** or **Private**). We will use **Public** for this workshop (to avoid having to setup an [SSH Key](https://www.atlassian.com/git/tutorials/git-ssh))
+
+  ![Repository Visibility](../../../assets/repo_visibility.png)
+
+- Click **Create repository** to finish setting it up
+
+**2. Clone the Repository Locally**
+- Copy the repository URL (choose **HTTPS** or **SSH**) from the GitHub page.
+
+  ![Repository Clone](../../../assets/repo_clone.png)
+
+- Open a terminal and run the following command to clone the repository:
+
+  ```bash
+  git clone <repository_link>
+  ```
+
+  - Replace `<repository_link>` with the URL you copied
+
+  ![Repository Clone 2](../../../assets/repo_clone2.png)
+
+**3. Navigate to the Cloned Repository**
+
+- After cloning, move into the repository directory:
+
+    ```bash
+    cd <repository_name>
+    ```
+    - Replace `<repository_name>` with the name of your repository.
+
+
+
+### Task 2: Make and Push Changes
+
+**1. Create New Files**
+Create a simple text file and a README file inside your cloned repository:
+```bash
+echo "Hello, world!" > hello.txt
+echo "# My First Repository" > README.md
+```
+This creates two files: `hello.txt` and `README.md`.
+
+**2. Check the Repository Status**
+See which files have been added or changed:
+```bash
+git status
+```
+
+**3. Add Files to the Staging Area**
+
+You have two options:
+
+- Add a specific file:
+```bash
+git add README.md
+```
+This only stages `README.md`.
+
+- Or add **all changed files** at once:
+```bash
+git add .
+```
+This stages **both** `hello.txt` and `README.md`, and any other new or changed files.
+
+**4. Commit the Changes**
+Create a commit with a clear message:
+```bash
+git commit -m "Add hello.txt and README.md"
+```
+
+**5. Push the Commit to GitHub**
+Send your changes to the remote repository:
+```bash
+git push
+```
+
+**6. Verify**
+Go to your GitHub repository page and check that both `hello.txt` and `README.md` are there.
+
+
+### Task 3: Create a New Branch, Work Independently, and Tag a Release
+
+This task will help you practice managing your own work safely in a repository before collaborating with others.
+
+**1. Create a New Branch**
+Create a new branch to safely test changes without affecting the main branch:
+```bash
+git checkout -b solo-changes
+```
+
+---
+
+**2. Create a `.gitignore` File**
+A `.gitignore` file tells Git to ignore specific files or folders you do not want to track.  
+Create a simple `.gitignore`:
+```bash
+echo "*.log" > .gitignore
+```
+This will ignore any files ending with `.log`.
+
+---
+
+**3. Make and Track Changes**
+
+- Add `.gitignore` to the staging area:
+```bash
+git add .gitignore
+```
+- Commit it:
+```bash
+git commit -m "Add .gitignore to ignore .log files"
+```
+
+Now, **create a dummy `.log` file** to test `.gitignore`:
+```bash
+echo "Temporary log data" > temp.log
+```
+Check that `temp.log` **does not appear** in `git status`.  
+This shows `.gitignore` is working!
+
+---
+
+**4. Edit Another File**
+Make a simple change to `hello.txt`:
+```bash
+echo "More text added during solo branch work." >> hello.txt
+```
+Stage and commit it:
+```bash
+git add hello.txt
+git commit -m "Update hello.txt with more text"
+```
+
+---
+
+**5. Merge Your Solo Work Back into Main**
+Switch back to the main branch:
+```bash
+git checkout main
+```
+Pull latest changes (just in case):
+```bash
+git pull
+```
+Merge your solo branch:
+```bash
+git merge solo-changes
+```
+
+---
+
+**6. Push Your Updated Main Branch**
+Push your changes to GitHub:
+```bash
+git push
+```
+
+
+
+> **Task 3 Complete:**  
+> You created a safe solo workflow, set up a `.gitignore`, and merged without conflicts.
+
+---
+
+### Task 4: Collaborate, Merge Feature Branches Together, and Submit a Pull Request
+
+This task simulates real teamwork where multiple developers' branches must be merged **before** submitting to `main`.
+
+---
+
+**1. Find a Partner**
+Pair up with someone else in the workshop. You will continue working inside your original repository.
+
+> **Important:** Only the repository owner needs to invite the other as a collaborator.
+
+- Go to your GitHub repository page.
+- Click **Settings > Collaborators > Add people**.
+- Invite your partner using their GitHub username.
+- The invited partner must accept the invitation.
+---
+
+**2. Set Up Locally**
+- Repository owner: continue working in your existing repository.
+- Invited partner: clone the repository and navigate into it:
+```bash
+git clone <repository_link>
+cd <repository_name>
+```
+
+---
+
+**3. Each Partner Creates Their Own Feature Branch**
+Each person creates a feature branch:
+```bash
+git checkout -b feature-[yourname]
+```
+
+---
+
+**4. Each Partner Makes Different Changes**
+
+On your own feature branch:
+
+- Create a new `.txt` file with your name:
+```bash
+echo "Notes from [Your Name]" > yourname_notes.txt
+```
+- Edit the `README.md` file — **edit the same section** (e.g., first paragraph) so that a **merge conflict** happens later.
+
+---
+
+**5. Add, Commit, and Push Your Feature Branch**
+
+```bash
+git add .
+git commit -m "Feature work by [your name]"
+git push origin feature-[yourname]
+```
+
+---
+
+**6. One Partner Merges Both Feature Branches Together Locally**
+
+Pick one partner to be the **integrator**.
+
+The integrator must:
+
+- Pull the other partner’s branch into their local repository:
+```bash
+git fetch origin feature-partner2
+git checkout feature-partner1   # stay on their own feature branch
+git merge origin/feature-partner2
+```
+
+---
+
+**7. Resolve Merge Conflicts Locally (If Any)**
+
+If a conflict happens (likely in `README.md`):
+
+- Git will show you the conflict.
+- Use a **merge editor** (VS Code or CLI) to resolve it:
+  - Keep important parts from **both** versions.
+  - Make the file clean and correct.
+- After fixing conflicts:
+```bash
+git add .
+git commit -m "Merge feature-partner2 into feature-partner1"
+```
+
+---
+
+**8. Push the Combined Feature Branch**
+
+After merging and resolving conflicts:
+
+```bash
+git push origin feature-partner1
+```
+This now holds **both** people's work.
+
+---
+
+**9. Create a Single Pull Request Into Main**
+
+- Go to GitHub.
+- Open a pull request:
+  - From `feature-partner1`
+  - Into `main`
+- Title: "Combined Feature Work from Partner 1 and Partner 2"
+- Description: explain what changes were made by each partner.
+
+---
+
+**10. Review and Merge the Pull Request**
+
+- Review the pull request carefully.
+- Approve and merge it.
+- Delete the merged feature branch if desired.
+
+---
+
+**11. Everyone Pulls the Updated Main**
+
+After merging the PR:
+
+```bash
+git checkout main
+git pull
+```
+Clean up local branches:
+```bash
+git branch -d feature-partner1
+git branch -d feature-partner2
+```
+
+---
+
+---
+> **Why this matters:**  
+> In real projects, teams often merge and test each other's branches together before opening one clean pull request into `main`, reducing merge noise and improving code quality.
+
+
+
+
+
+## Extra Resources
+
+- [GitHub Learning Lab](https://lab.github.com/)
+- [Git Handbook (GitHub Docs)](https://docs.github.com/en/get-started/using-git/about-git)
+- [Oh Shit, Git!?! (Troubleshooting guide)](https://ohshitgit.com/)
+
+---
+
+
+## Contributions
+
+The slide deck and writeup were created by [Alex Aylward](https://www.linkedin.com/in/alexayl). Exercises were created and documented by [Trevor Antle](https://www.linkedin.com/in/trevor-antle/).
