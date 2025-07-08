@@ -2,24 +2,69 @@
 title: Team
 ---
 
-import { Badge } from '@astrojs/starlight/components';
+import { Image } from 'astro:assets';
+import './team.css';
 
-
+import alex from '../../../assets/team/alex.jpeg';
+import trevor from '../../../assets/team/trevor.jpg';
+import aakash from '../../../assets/team/aakash.jpg';
+import connor from '../../../assets/team/connor.jpg';
+import neal from '../../../assets/team/neal.jpeg';
+import jain from '../../../assets/team/jain.jpeg';
+import tom from '../../../assets/team/tom.jpg';
+import TBD from '../../../assets/team/TBD.jpg';
 
 ## Executive Board
 
-- **Alex Aylward** - President
-- **Trevor Antle** - Vice President
-- **Aakash Bathini** - Treasurer
-- **Connor Powell** - Projects Manager
-- **Neal Singh** - Professional Development
+<div class="team-grid">
+  <div class="team-member">
+    <Image src={alex} alt="Alex Aylward" />
+    <p><strong>Alex Aylward</strong><br />President</p>
+  </div>
+  <div class="team-member">
+    <Image src={trevor} alt="Trevor Antle" />
+    <p><strong>Trevor Antle</strong><br />Vice President</p>
+  </div>
+  <div class="team-member">
+    <Image src={aakash} alt="Aakash Bathini" />
+    <p><strong>Aakash Bathini</strong><br />Treasurer</p>
+  </div>
+  <div class="team-member">
+    <Image src={connor} alt="Connor Powell" />
+    <p><strong>Connor Powell</strong><br />Projects Manager</p>
+  </div>
+  <div class="team-member">
+    <Image src={neal} alt="Neal Singh" />
+    <p><strong>Neal Singh</strong><br />Professional Development</p>
+  </div>
+</div>
 
 ## Chairs
-- **Jain Iftesam** - Public Relations Chair
-- **Tom Concannon** - Events Chair
-- **TBD** - Fundraising Chair
-- **TBD** - Social Media Chair
+
+<div class="team-grid">
+  <div class="team-member">
+    <Image src={jain} alt="Jain Iftesam" />
+    <p><strong>Jain Iftesam</strong><br />Public Relations Chair</p>
+  </div>
+  <div class="team-member">
+    <Image src={tom} alt="Tom Concannon" />
+    <p><strong>Tom Concannon</strong><br />Events Chair</p>
+  </div>
+  <div class="team-member">
+    <Image src={TBD} alt="TBD" />
+    <p><strong>TBD</strong><br />Fundraising Chair</p>
+  </div>
+  <div class="team-member">
+    <Image src={TBD} alt="TBD" />
+    <p><strong>TBD</strong><br />Social Media Chair</p>
+  </div>
+</div>
 
 ## Project Managers
 
-- TBD
+<div class="team-grid">
+  <div class="team-member">
+    <Image src={TBD} alt="TBD" />
+    <p><strong>TBD</strong><br />Project Manager</p>
+  </div>
+</div>
