@@ -3,6 +3,7 @@ title: Sponsors
 description: A guide in my new Starlight docs site.
 ---
 
+## [Page in Progress]
 
 We’re **Embedded Systems @ Purdue (ES@P)** — a student-led organization building a strong community of innovators passionate about embedded systems, hardware, and software.  
 We believe in hands-on learning, real-world projects, and connecting students with industry.
@@ -21,6 +22,7 @@ We believe in hands-on learning, real-world projects, and connecting students wi
 ## Our Reach (and Growing!)
 
 - 🎯 50+ active members
+- 🔥 $6,000+ in funding secured in 2025 alone
 - ⚙️ 10+ ongoing hardware/software projects
 - 🎤 Frequent workshops and speaker series
 - 📬 Mailing list, LinkedIn, and internal campus promotions
