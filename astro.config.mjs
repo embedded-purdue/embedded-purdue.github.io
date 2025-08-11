@@ -14,7 +14,7 @@ export default defineConfig({
           ],
           social: [
             { icon: 'github', label: 'GitHub', href: 'https://github.com/embedded-purdue' },
-            { icon: 'discord', label: 'Discord', href: 'https://discord.gg/EAZpzCr53V' },
+            { icon: 'discord', label: 'Discord', href: 'https://discord.gg/9mRXKDxaru' },
             { icon: 'linkedin', label: 'Linkedin', href: 'https://www.linkedin.com/company/embedded-purdue' }
         ],
           sidebar: [
