@@ -2,38 +2,49 @@
 title: Embedded Systems @ Purdue
 description: Embedded Systems @ Purdue
 tableOfContents: false
+hero:
+  title: The home for all things electronics at Purdue.
+  tagline: Embedded Systems @ Purdue is a student organization dedicated to the intersection of hardware and software.
+  image:
+    file: ../../assets/logo.svg
+  actions:
+    - text: For sponsors
+      link: about/sponsors
+      icon: external
+      variant: minimal
 ---
 
-# The home for all things electronics at Purdue
+import { Card, CardGrid } from '@astrojs/starlight/components';
+import { LinkButton } from '@astrojs/starlight/components';
 
-Embedded Systems @ Purdue is a student organization dedicated to the intersection of hardware and software.
+<CardGrid stagger>
+  <Card title="Founded in 2025" icon="rocket">
+    Started by a group of Electrical and Computer Engineering juniors, we saw a need for a community of builders interested in integrated hardware and software projects. Read more [about us](about/about).
 
-We’re passionate about building cool things—from microcontroller projects to full-stack systems.
+    ![Founders](../../assets/index/founders.jpeg)
 
-## Founded in 2025
+  </Card>
 
-Started by a group of Electrical and Computer Engineering juniors, we saw a need for a community of builders interested in integrated hardware and software projects. Read more [about us](about/about).
+  <Card title="10+ Projects to choose from" icon="laptop">
+    With three projects completed in Spring 2025, we are expanding our reach to cover exciting technical projects that will expand your skills. See [past and future projects](projects/projects).  
 
-![Founders](../../assets/index/founders.jpeg)
+    ![Projects](../../assets/index/project.jpg)
+  </Card>
+  <Card title="100+ members" icon="star">
+    Our vibrant community is growing! Join our [Discord](https://discord.gg/MkPv9s9cj3) to get involved.
 
-## 10+ Projects to Choose From
+    ![Members](../../assets/index/members.jpg)
+  </Card>
+  <Card title="8 Workshops planned for 2025-26" icon="information">
+    We teach you what you need to excel in projects, interviews, and land internships. Our workshops cover everything from microcontroller programming to PCB design. Check out our [workshop schedule](workshops/workshops).
+    
+    ![Workshops](../../assets/index/workshops.jpeg)
+  </Card>
+</CardGrid>
 
-With three projects completed in Spring 2025, we are expanding our reach to cover exciting technical projects that will expand your skills. See [past and future projects](projects/projects).  
 
-![Projects](../../assets/index/project.jpg)
-
-## 100+ Members
-
-Our vibrant community is growing! Join our [Discord](https://discord.gg/EAZpzCr53V) to get involved.
-
-![Members](../../assets/index/members.jpg)
-
-## 8 Workshops Planned for 2025–26
-
-We teach you what you need to excel in projects, interviews, and land internships. Our workshops cover everything from microcontroller programming to PCB design. Check out our [workshop schedule](workshops/workshops).
-
-![Workshops](../../assets/index/workshops.jpeg)
-
----
-
-© 2025 Embedded Systems @ Purdue. All rights reserved.
+<br />
+<br />
+<br />
+<br />
+Copyright © 2025 Embedded Systems @ Purdue. All rights reserved.
