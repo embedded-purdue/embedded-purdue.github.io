@@ -51,19 +51,20 @@ async def createevent(ctx, name, description, location, start_time_str, end_time
         # Example: Create an event in a voice channel (replace with your desired channel)
         # You can also use discord.EntityType.external for external events and provide a location
         # For a voice channel event, you need to specify the channel ID
-        voice_channel = discord.utils.get(guild.voice_channels, name="General") # Replace "General" with your channel name
-        await ctx.send(f"voice channel?: {voice_channel}\n")
+        #voice_channel = discord.utils.get(guild.voice_channels, name="General") # Replace "General" with your channel name
+        #await ctx.send(f"voice channel?: {voice_channel}\n")
         
         if location:
-            await guild.create_guild_scheduled_event(
+            await guild.create_scheduled_event(
                 name=name,
+                privacy_level=discord.PrivacyLevel.guild_only,
                 description=description,
                 start_time=start_time,
                 end_time=end_time,
                 entity_type=discord.EntityType.external,
                 location=location
             )
-            await ctx.send(f"Event '{name}' created successfully in {voice_channel.name}!")
+            await ctx.send(f"Event '{name}' created successfully in {location}!")
         else:
             await ctx.send("Voice channel 'General' not found. Please ensure it exists or specify a different channel.")
 
