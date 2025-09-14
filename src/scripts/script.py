@@ -70,5 +70,5 @@ async def createevent(ctx, name, description, start_time_str, end_time_str=None)
     except Exception as e:
         await ctx.send(f"An error occurred: {e}")
 
-# Replace 'YOUR_BOT_TOKEN' with your actual bot token
+# uses bot token to turn on bot
 bot.run(bot_token)
