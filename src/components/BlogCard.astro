@@ -1,0 +1,40 @@
+---
+const { post } = Astro.props;
+---
+
+<article class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+  <div class="p-6">
+    <header class="mb-4">
+      <h2 class="text-xl font-bold text-gray-900 mb-2">
+        <a href={`/blog/${post.slug}/`} class="hover:text-yellow-600 transition-colors">
+          {post.data.title}
+        </a>
+      </h2>
+      <div class="flex items-center gap-4 text-sm text-gray-600">
+        <time datetime={post.data.publishDate.toISOString()}>
+          {post.data.publishDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+          })}
+        </time>
+        {post.data.author && (
+          <span>by {post.data.author}</span>
+        )}
+      </div>
+    </header>
+
+    {post.data.description && (
+      <p class="text-gray-600 mb-4 line-clamp-3">{post.data.description}</p>
+    )}
+
+    <footer>
+      <a 
+        href={`/blog/${post.slug}/`}
+        class="inline-flex items-center text-yellow-600 hover:text-yellow-700 font-medium text-sm"
+      >
+        Read more →
+      </a>
+    </footer>
+  </div>
+</article>
