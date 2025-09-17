@@ -20,16 +20,19 @@ This intermediate workshop covers the basics of FPGA development, from understan
 ## Topics Covered
 
 ### 1. FPGA Architecture (45 minutes)
+
 - What are FPGAs and how do they work?
 - Comparison with microcontrollers and processors
 - FPGA development workflow
 
 ### 2. Verilog Basics (60 minutes)
+
 - HDL vs traditional programming
 - Modules, ports, and signals
 - Combinational and sequential logic
 
 ### 3. Hands-on Development (75 minutes)
+
 - Setting up Vivado project
 - Writing and simulating Verilog code
 - Synthesis and implementation

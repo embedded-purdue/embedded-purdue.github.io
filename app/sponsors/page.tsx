@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Navigation } from "@/components/navigation"
 import { Building2, Heart, Handshake, Mail, ExternalLink } from "lucide-react"
+import { Footer } from "@/components/footer"
 
 const sponsors = [
 
@@ -179,8 +180,8 @@ export default function SponsorsPage() {
           <div className="space-y-4">
             <p className="text-lg text-muted-foreground">
               Interested in sponsoring? Contact us at{" "}
-              <a href="mailto:sponsors@embedded-purdue.org" className="text-primary hover:underline font-medium">
-                sponsors@embedded-purdue.org
+              <a href="embedded@purdue.edu" className="text-primary hover:underline font-medium">
+                embedded@purdue.edu
               </a>
             </p>
             <p className="text-muted-foreground">We'd love to discuss partnership opportunities with you!</p>
@@ -198,6 +199,8 @@ export default function SponsorsPage() {
           </div>
         </div>
       </section>
+      <Footer />
+
     </div>
   )
 }

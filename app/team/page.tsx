@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Mail, Linkedin, Github, Users, Shield } from "lucide-react"
 import type { ComponentType, SVGProps } from "react"
+import { Footer } from "@/components/footer"
+import Image from "next/image"
 
 type Member = {
   name: string
@@ -14,13 +16,15 @@ type Member = {
   image?: string
   tags?: string[]
 }
-
+const FALLBACK_IMG = "/team/logo.png";
 type Section = {
   title: string
   icon: ComponentType<SVGProps<SVGSVGElement>>
   members: Member[]
 }
-
+// Put this near the top of the file (outside the component):
+const BLUR_DATA_URL =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjMwIiByeD0iNiIgZmlsbD0iI2IyYjJiMiIvPjwvc3ZnPg==";
 /* ---------- PEOPLE (define these BEFORE sections) ---------- */
 const executives: Member[] = [
   {
@@ -35,7 +39,7 @@ const executives: Member[] = [
     role: "Vice President",
     image: "/team/trevor.jpg",
     email: "mailto:trevor@purdue.edu",
-    linkedin: "https://www.linkedin.com/in/trevorantle",
+    linkedin: "https://www.linkedin.com/in/trevor-antle",
   },
   {
     name: "Aakash Bathini",
@@ -54,7 +58,7 @@ const executives: Member[] = [
   {
     name: "Neal Singh",
     role: "Professional Development",
-    image: "/team/neal.jpeg",
+    image: "/team/neal.jpg",
     email: "mailto:neal@purdue.edu",
     linkedin: "https://www.linkedin.com/in/nealsingh",
   },
@@ -62,18 +66,44 @@ const executives: Member[] = [
 
 const chairs: Member[] = [
   {
+    name: "Astha Patel",
+    role: "Social Media Chair",
+    image: "/team/logo.png",
+  },
+  {
+    name: "Carson Weiler",
+    role: "Graphics Designer",
+    image: "/team/logo.png",
+  },
+  {
+    name: "Geuntae",
+    role: "Photographer",
+    image: "/team/logo.png",
+  },
+  {
     name: "Jain Iftesam",
-    role: "Public Relations Chair",
+    role: "Marketing Chair",
     image: "/team/jain.jpeg",
-    email: "mailto:jain@purdue.edu",
-    linkedin: "https://www.linkedin.com/in/jainiftesam",
+  },
+  {
+    name: "Patrick Jordan",
+    role: "Fundraisin Chair",
+    image: "/team/logo.png",
+  },
+  {
+    name: "Peter Konst",
+    role: "Outreach Chair",
+    image: "/team/logo.png",
+  },
+  {
+    name: "Srihari CS",
+    role: "Fundraising CHair",
+    image: "/team/logo.png",
   },
   {
     name: "Tom Concannon",
     role: "Events Chair",
     image: "/team/tom.jpg",
-    email: "mailto:tom@purdue.edu",
-    linkedin: "https://www.linkedin.com/in/tomconcannon",
   },
 ]
 
@@ -83,7 +113,7 @@ const projectManagers: Member[] = [
     role: "PM • Agrovolo",
     github: "https://github.com/",
     linkedin: "https://www.linkedin.com/",
-    image: "/team/tim.jpg",
+    image: "/team/logo.png",
     tags: ["Control", "RF"],
   },
   {
@@ -97,14 +127,14 @@ const projectManagers: Member[] = [
     name: "Varun",
     role: "PM • HarmoniCore (FPGA DSP)",
     github: "https://github.com/",
-    image: "/team/varun.jpg",
+    image: "/team/logo.png",
     tags: ["FPGA", "DSP"],
   },
   {
     name: "Katherine M",
     role: "PM • EyeCue",
     linkedin: "https://www.linkedin.com/",
-    image: "/team/katherine.jpg",
+    image: "/team/logo.png",
     tags: ["CV", "Accessibility"],
   },
 ]
@@ -118,11 +148,24 @@ const sections: Section[] = [
 
 /* ---------- UI ---------- */
 function MemberCard({ m }: { m: Member }) {
+  const src = m.image || "/team/logo.png";
+
   return (
     <Card className="overflow-hidden transition-all hover:shadow-lg">
-      <div className="aspect-[5/3] bg-muted">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={m.image || "/placeholder.svg"} alt={m.name} className="h-full w-full object-cover" loading="lazy" />
+      {/* Portrait media box */}
+      <div className="relative aspect-[4/5] bg-muted/50 border-b">
+        <Image
+          src={src}
+          alt={m.name}
+          fill
+          // Portraits: keep heads in frame
+          className="object-cover object-top"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          // Nice perceived loading
+          placeholder="blur"
+          blurDataURL={BLUR_DATA_URL}
+          priority={false}
+        />
       </div>
 
       <CardHeader>
@@ -141,11 +184,14 @@ function MemberCard({ m }: { m: Member }) {
           </div>
         ) : null}
 
-        {/* icon row */}
         <div className="flex gap-3">
           {m.email && (
-            <a href={m.email} className="text-muted-foreground hover:text-foreground" aria-label={`Email ${m.name}`}>
-              <Mail className="w-5 h-5" />
+            <a
+              href={m.email}
+              className="text-muted-foreground hover:text-foreground"
+              aria-label={`Email ${m.name}`}
+            >
+              <Mail className="h-5 w-5" />
             </a>
           )}
           {m.linkedin && (
@@ -156,7 +202,7 @@ function MemberCard({ m }: { m: Member }) {
               className="text-muted-foreground hover:text-foreground"
               aria-label={`${m.name} on LinkedIn`}
             >
-              <Linkedin className="w-5 h-5" />
+              <Linkedin className="h-5 w-5" />
             </a>
           )}
           {m.github && (
@@ -167,13 +213,13 @@ function MemberCard({ m }: { m: Member }) {
               className="text-muted-foreground hover:text-foreground"
               aria-label={`${m.name} on GitHub`}
             >
-              <Github className="w-5 h-5" />
+              <Github className="h-5 w-5" />
             </a>
           )}
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 export default function TeamPage() {
@@ -189,7 +235,7 @@ export default function TeamPage() {
             Our Team
           </Badge>
           <h1 className="text-4xl lg:text-6xl font-bold text-balance leading-tight mb-6">
-            Meet the <span className="text-primary">Leads & Mentors</span>
+            Meet the <span className="text-primary">Executive Team</span>
           </h1>
           <p className="text-xl text-muted-foreground text-pretty leading-relaxed max-w-3xl mx-auto">
             Execs, admins, and project managers who keep Embedded Systems @ Purdue running.
@@ -218,6 +264,8 @@ export default function TeamPage() {
           })}
         </div>
       </section>
+      <Footer />
+
     </div>
   )
 }

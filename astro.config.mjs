@@ -13,6 +13,7 @@ export default defineConfig({
       },
       customCss: [
         './src/styles/custom.css',
+        './src/styles/markdown.css', // Additional CSS for markdown styling
       ],
       social: {
         github: 'https://github.com/embedded-purdue',
@@ -36,6 +37,8 @@ export default defineConfig({
           label: 'Workshops',
           items: [
             { label: 'All Workshops', link: '/workshops/' },
+            { label: 'Beginner Workshops', link: '/workshops/beginner/' },
+            { label: 'Advanced Workshops', link: '/workshops/advanced/' },
           ],
         },
         {
@@ -48,10 +51,16 @@ export default defineConfig({
       components: {
         Header: './src/components/Header.astro',
         Hero: './src/components/Hero.astro',
+        Footer: './src/components/Footer.astro', // Added footer component
       },
     }),
     tailwind({
       applyBaseStyles: false,
     }),
   ],
+  markdown: {
+    syntaxHighlight: 'prism', // Enable syntax highlighting for code blocks
+    remarkPlugins: [], // Add remark plugins if needed
+    rehypePlugins: [], // Add rehype plugins for HTML processing
+  },
 });
