@@ -31,15 +31,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build & Export
+      - name: Build (static export via output: export)
+        run: npm run build
+
+      - name: Locate export dir
+        id: locate
+        shell: bash
         run: |
-          npm run build
-          npm run export  # outputs to ./out
+          if [ -d "./out" ]; then
+            echo "dir=./out" >> "$GITHUB_OUTPUT"
+          elif [ -d ".next/export" ]; then
+            echo "dir=.next/export" >> "$GITHUB_OUTPUT"
+          else
+            echo "No export directory found" >&2
+            exit 1
+          fi
+          echo "Using $(cat $GITHUB_OUTPUT)"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
+          path: ${{ steps.locate.outputs.dir }}
 
   deploy:
     runs-on: ubuntu-latest
