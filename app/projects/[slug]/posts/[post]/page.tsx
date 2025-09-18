@@ -3,11 +3,8 @@ import { Footer } from "@/components/footer";
 import Markdown from "@/components/Markdown";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { loadPost, loadMeta } from "@/lib/projects"; // FIXED: Removed duplicate 'import'
-
-// Add missing import for ArrowLeft
-import { ArrowLeft } from "lucide-react"; // BEGIN: Add ArrowLeft import
-import { loadPost, loadMeta } from "@/lib/projects";
+import { loadPost, loadMeta } from "@/lib/projects"; // FIXED: Removed duplicate import
+import { ArrowLeft } from "lucide-react"; // Import for ArrowLeft
 
 type ParamsPromise = Promise<{ slug: string; post: string }>;
 
@@ -42,7 +39,9 @@ export default async function ProjectPostPage({
 
         <header className="mb-6">
           <p className="text-sm text-muted-foreground">{projectMeta.title}</p>
-          <h1 className="text-3xl font-bold">{meta.title ?? post}</h1>
+          <h1 className="text-3xl font-bold">
+            {typeof meta.title === "string" ? meta.title : String(post)}
+          </h1>
           {meta.date ? (
             <p className="text-muted-foreground">
               {new Date(meta.date as string).toLocaleDateString()}
