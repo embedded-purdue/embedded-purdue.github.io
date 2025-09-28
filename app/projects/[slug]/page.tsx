@@ -1,18 +1,32 @@
 // app/projects/[slug]/page.tsx
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import Markdown from "@/components/Markdown";
-import { notFound } from "next/navigation";
-import { loadMeta, loadMarkdown } from "@/lib/projects";
-import { projects } from "../_data";
-import Link from "next/link";
+import { loadMeta, loadMarkdown, getAllProjectSlugs } from "@/lib/projects";
 
-type ParamsPromise = Promise<{ slug: string }>;
+export const dynamic = "force-static";
+export const dynamicParams = false;
+export const revalidate = false;
 
-export default async function ProjectDetailPage({ params }: { params: ParamsPromise }) {
+type Params = { slug: string };
+
+export async function generateStaticParams(): Promise<Params[]> {
+  try {
+    const slugs = await getAllProjectSlugs();
+    return slugs.map((slug) => ({ slug }));
+  } catch {
+    return [];
+  }
+}
+
+export default async function ProjectDetailPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
   const { slug } = await params;
-
-  if (!projects.some((p) => p.slug === slug)) return notFound();
 
   const meta = await loadMeta(slug);
   if (!meta) return notFound();
@@ -24,27 +38,35 @@ export default async function ProjectDetailPage({ params }: { params: ParamsProm
       <Navigation />
       <main className="mx-auto max-w-3xl px-4 py-16">
         <div className="mb-6">
-          <Link href="/projects" className="text-sm underline text-muted-foreground hover:text-foreground">
+          <Link
+            href="/projects"
+            className="text-sm underline text-muted-foreground hover:text-foreground"
+          >
             ← Back to all projects
           </Link>
         </div>
 
         <header className="mb-8">
           <h1 className="text-3xl font-bold">{meta.title}</h1>
-          {meta.semester && <p className="text-muted-foreground">{meta.semester}</p>}
-          {meta.summary && <p className="mt-2 text-muted-foreground">{meta.summary}</p>}
+          {"semester" in meta && meta.semester ? (
+            <p className="text-muted-foreground">{String(meta.semester)}</p>
+          ) : null}
+          {"summary" in meta && meta.summary ? (
+            <p className="mt-2 text-muted-foreground">{String(meta.summary)}</p>
+          ) : null}
         </header>
 
         {md ? (
           <article>
-            {/* 👇 Prefix all relative image paths with `/projects/<slug>` */}
             <Markdown imageBase={`/projects/${slug}`}>{md}</Markdown>
           </article>
         ) : (
           <article className="rounded-lg border bg-card p-6">
             <p className="text-muted-foreground">
               README coming soon. Create{" "}
-              <code className="rounded border bg-muted/50 px-1">content/projects/{slug}/index.md</code>{" "}
+              <code className="rounded border bg-muted/50 px-1">
+                content/projects/{slug}/index.md
+              </code>{" "}
               to populate this page.
             </p>
           </article>
@@ -53,8 +75,4 @@ export default async function ProjectDetailPage({ params }: { params: ParamsProm
       <Footer />
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
 }

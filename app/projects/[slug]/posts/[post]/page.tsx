@@ -1,56 +1,78 @@
+// app/projects/[slug]/posts/[post]/page.tsx
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import Markdown from "@/components/Markdown";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import Markdown from "@/components/Markdown";
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import { loadPost, loadMeta } from "@/lib/projects"; // FIXED: Removed duplicate import
-import { ArrowLeft } from "lucide-react"; // Import for ArrowLeft
+import {
+  getAllProjectSlugs,
+  getProjectPosts,
+  loadMeta,
+  loadPost,
+} from "@/lib/projects";
 
-type ParamsPromise = Promise<{ slug: string; post: string }>;
+// --- Tell Next this page is fully static and params are prebuilt
+export const dynamic = "force-static";
+export const dynamicParams = false;
+export const revalidate = false;
+export const runtime = "nodejs"; // (explicit, avoids edge runtime surprises)
+
+type Params = { slug: string; post: string };
+
+// Build ALL paths at export time. Never throw here.
+export async function generateStaticParams(): Promise<Params[]> {
+  try {
+    const slugs = await getAllProjectSlugs();
+    const out: Params[] = [];
+    for (const slug of slugs) {
+      const posts = await getProjectPosts(slug);
+      for (const p of posts) {
+        if (p?.slug) out.push({ slug, post: p.slug });
+      }
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}
 
 export default async function ProjectPostPage({
   params,
 }: {
-  params: ParamsPromise;
+  params: Promise<Params>;
 }) {
   const { slug, post } = await params;
 
-  const projectMeta = await loadMeta(slug);
-  if (!projectMeta) return notFound();
+  const meta = await loadMeta(slug);
+  if (!meta) return notFound();
 
   const data = await loadPost(slug, post);
   if (!data) return notFound();
 
-  const { meta, content } = data;
+  // Coerce unknown → string for JSX
+  const title =
+    typeof data.meta.title === "string" && data.meta.title.trim()
+      ? data.meta.title
+      : post.replace(/[-_]/g, " ");
+
+  const dateStr =
+    typeof data.meta.date === "string" && data.meta.date.trim()
+      ? new Date(data.meta.date).toLocaleDateString()
+      : null;
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <main className="mx-auto max-w-3xl px-4 py-10">
-        <div className="mb-6 flex items-center gap-2">
-          <Link
-            href={`/projects/${slug}`}
-            className="inline-flex items-center gap-2 text-sm rounded-lg border px-3 py-1.5 hover:bg-muted/40"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to {projectMeta.title}
-          </Link>
-        </div>
+      <main className="mx-auto max-w-3xl px-4 py-12">
+        <Link href={`/projects/${slug}`} className="underline text-sm">
+          ← Back to project
+        </Link>
 
-        <header className="mb-6">
-          <p className="text-sm text-muted-foreground">{projectMeta.title}</p>
-          <h1 className="text-3xl font-bold">
-            {typeof meta.title === "string" ? meta.title : String(post)}
-          </h1>
-          {meta.date ? (
-            <p className="text-muted-foreground">
-              {new Date(meta.date as string).toLocaleDateString()}
-            </p>
-          ) : null}
-        </header>
+        <h1 className="mt-4 text-3xl font-bold">{title}</h1>
+        {dateStr ? <p className="text-muted-foreground">{dateStr}</p> : null}
 
-        <article className="prose-md">
-          <Markdown>{content}</Markdown>
+        <article className="mt-6">
+          <Markdown imageBase={`/projects/${slug}`}>{data.content}</Markdown>
         </article>
       </main>
       <Footer />
