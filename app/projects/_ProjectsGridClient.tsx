@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Project = {
@@ -17,19 +16,56 @@ type Project = {
   technologies: string[];
   pm?: string;
   semester?: string;
-  readmeUrl?: string;
+  readmeUrl?: string;     // may be external, internal route, or bad (/content/..)
 };
 
+/** Normalize project image to a public URL under `/projects/<slug>/...` */
 function resolveProjectImage(p: Project) {
   const raw = p.image || "";
   if (!raw) return "/projects/logo.png";
-  if (raw.startsWith("http")) return raw;
+  if (/^https?:\/\//i.test(raw)) return raw;
 
   // normalize to /projects/<slug>/<file>
   let path = raw.replace(/^\/+/, "");
   if (path.startsWith("projects/")) path = path.slice("projects/".length);
   if (path.startsWith(`${p.slug}/`)) return `/projects/${path}`;
   return `/projects/${p.slug}/${path}`;
+}
+
+/** Decide where the card should link */
+function resolveProjectHref(p: Project): { href: string; external: boolean } {
+  const url = p.readmeUrl?.trim();
+
+  // External link
+  if (url && /^https?:\/\//i.test(url)) {
+    return { href: url, external: true };
+  }
+
+  // Bad internal file path (not served by Next)
+  if (url && url.startsWith("/content/")) {
+    return { href: `/projects/${p.slug}`, external: false };
+  }
+
+  // Valid internal route under /projects/*
+  if (url && url.startsWith("/projects/")) {
+    return { href: url, external: false };
+  }
+
+  // Fallback: route to the rendered project page
+  return { href: `/projects/${p.slug}`, external: false };
+}
+
+function FilterChip({ label, href, active }: { label: string; href: string; active: boolean }) {
+  return (
+    <Link
+      href={href}
+      className={`rounded-full border px-3 py-1 text-sm transition-colors ${
+        active ? "border-primary text-primary" : "text-muted-foreground hover:text-foreground"
+      }`}
+    >
+      {label}
+    </Link>
+  );
 }
 
 export default function ProjectsGridClient({ projects }: { projects: Project[] }) {
@@ -111,53 +147,52 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p) => {
             const img = resolveProjectImage(p);
-            return (
-              <Link key={p.slug} href={p.readmeUrl || `/projects/${p.slug}`} className="no-underline">
-                <Card className="h-full overflow-hidden transition-all hover:shadow-md">
-                  {img ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={img} alt={`${p.title} cover`} className="h-40 w-full object-cover" loading="lazy" />
-                  ) : null}
-                  <CardHeader>
-                    <div className="mb-2 flex items-center justify-between">
-                      <Badge variant={p.status === "Active" ? "default" : p.status === "Completed" ? "secondary" : "outline"}>
-                        {p.status}
-                      </Badge>
-                      {p.semester && <span className="rounded-full border px-2 py-0.5 text-xs">{p.semester}</span>}
-                    </div>
-                    <CardTitle className="leading-tight">{p.title}</CardTitle>
-                    {p.description ? (
-                      <CardDescription className="text-base">{p.description}</CardDescription>
-                    ) : null}
-                  </CardHeader>
-                  {!!p.technologies.length && (
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2">
-                        {p.technologies.map((t) => (
-                          <Badge key={`${p.slug}-${t}`} variant="outline" className="text-xs">{t}</Badge>
-                        ))}
-                      </div>
-                    </CardContent>
+            const { href, external } = resolveProjectHref(p);
+
+            const CardInner = (
+              <Card className="h-full overflow-hidden transition-all hover:shadow-md">
+                {img && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={img} alt={`${p.title} cover`} className="h-40 w-full object-cover" loading="lazy" />
+                )}
+                <CardHeader>
+                  <div className="mb-2 flex items-center justify-between">
+                    <Badge variant={p.status === "Active" ? "default" : p.status === "Completed" ? "secondary" : "outline"}>
+                      {p.status}
+                    </Badge>
+                    {p.semester && <span className="rounded-full border px-2 py-0.5 text-xs">{p.semester}</span>}
+                  </div>
+                  <CardTitle className="leading-tight">{p.title}</CardTitle>
+                  {p.description && (
+                    <CardDescription className="text-base">{p.description}</CardDescription>
                   )}
-                </Card>
+                </CardHeader>
+                {!!p.technologies.length && (
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {p.technologies.map((t) => (
+                        <Badge key={`${p.slug}-${t}`} variant="outline" className="text-xs">
+                          {t}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                )}
+              </Card>
+            );
+
+            return external ? (
+              <a key={p.slug} href={href} className="no-underline" target="_blank" rel="noopener noreferrer">
+                {CardInner}
+              </a>
+            ) : (
+              <Link key={p.slug} href={href} className="no-underline">
+                {CardInner}
               </Link>
             );
           })}
         </div>
       </section>
     </>
-  );
-}
-
-function FilterChip({ label, href, active }: { label: string; href: string; active: boolean }) {
-  return (
-    <Link
-      href={href}
-      className={`rounded-full border px-3 py-1 text-sm transition-colors ${
-        active ? "border-primary text-primary" : "text-muted-foreground hover:text-foreground"
-      }`}
-    >
-      {label}
-    </Link>
   );
 }
