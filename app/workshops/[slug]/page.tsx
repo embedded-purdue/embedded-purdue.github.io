@@ -1,3 +1,4 @@
+// app/workshops/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAllWorkshops, getWorkshopBySlug } from "@/lib/workshops";
@@ -25,9 +26,7 @@ function normalizeMeta(loose: unknown): Meta | null {
   if (!slug) return null;
 
   const title =
-    typeof m.title === "string" && m.title.trim().length > 0
-      ? m.title
-      : slug;
+    typeof m.title === "string" && m.title.trim().length > 0 ? m.title : slug;
 
   return {
     slug,
@@ -41,8 +40,20 @@ function normalizeMeta(loose: unknown): Meta | null {
   };
 }
 
-export async function generateMetadata({ params }: { params: Promise<RouteParams> }) {
-  const { slug } = await params;
+export const dynamic = "error";
+export const dynamicParams = false;
+
+export function generateStaticParams(): RouteParams[] {
+  return getAllWorkshops().map((w) => ({ slug: w.slug }));
+}
+
+// ✅ FIX: params must be Promise<RouteParams>
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<RouteParams> 
+}) {
+  const { slug } = await params; // ← await it!
   const entry = getWorkshopBySlug(slug);
   if (!entry) return {};
 
@@ -68,12 +79,14 @@ export async function generateMetadata({ params }: { params: Promise<RouteParams
   };
 }
 
-export function generateStaticParams(): RouteParams[] {
-  return getAllWorkshops().map((w) => ({ slug: w.slug }));
-}
-
-export default async function WorkshopDetailPage({ params }: { params: Promise<RouteParams> }) {
-  const { slug } = await params;
+// ✅ FIX: params must be Promise<RouteParams>
+export default async function WorkshopDetailPage({
+  params,
+}: {
+  params: Promise<RouteParams>; // ← Changed from RouteParams to Promise<RouteParams>
+}) {
+  const { slug } = await params; // ← await it!
+  
   const entry = getWorkshopBySlug(slug);
   if (!entry) return notFound();
 
@@ -85,7 +98,6 @@ export default async function WorkshopDetailPage({ params }: { params: Promise<R
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-
       <header className="mx-auto max-w-4xl px-4 pt-10">
         <Link href="/workshops" className="text-sm text-muted-foreground hover:underline">
           ← All workshops
@@ -122,7 +134,6 @@ export default async function WorkshopDetailPage({ params }: { params: Promise<R
           <Markdown>{entry.content}</Markdown>
         </article>
       </main>
-
       <Footer />
     </div>
   );
