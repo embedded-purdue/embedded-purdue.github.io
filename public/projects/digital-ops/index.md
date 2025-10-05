@@ -1,6 +1,6 @@
 ---
 title: "Digital Operations"
-slug: "digital-operations"
+slug: "digital-ops"
 semester: "Fall 2025"
 status: "Active"
 pm: "Trevor Antle"
