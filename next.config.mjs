@@ -21,9 +21,7 @@ const withMDX = createMDX({
 });
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withMDX({
-  output: "export",             // ← replaces `next export`
-  images: { unoptimized: true },// no Image Optimization on GH Pages
+const baseConfig = {
   trailingSlash: true,
 
   // Uncomment if deploying under a subpath (project pages). Also set NEXT_PUBLIC_REPO_NAME.
@@ -32,6 +30,15 @@ const nextConfig = withMDX({
 
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   experimental: { mdxRs: true },
-});
+};
+
+if (isProd) {
+  baseConfig.output = "export";             // ← replaces `next export`
+  baseConfig.images = { unoptimized: true }; // no Image Optimization on GH Pages
+} else {
+  baseConfig.images = { unoptimized: false };
+}
+
+const nextConfig = withMDX(baseConfig);
 
 export default nextConfig;
