@@ -80,11 +80,11 @@ export default function Markdown({
           // ---------- SAFE IFRAME PASSTHROUGH ----------
           // With rehype-raw + sanitize, raw <iframe> is allowed. We can still
           // wrap it with default styles if desired by mapping here too.
-          iframe({ ...props }) {
+          iframe(props: React.IframeHTMLAttributes<HTMLIFrameElement>) {
             return (
               <div className="my-6 overflow-hidden rounded-lg border bg-muted/10">
                 {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
-                <iframe {...(props as any)} className={`w-full ${props.className || ""}`} />
+                <iframe {...props} className={`w-full ${props.className || ""}`} />
               </div>
             );
           },
