@@ -16,15 +16,58 @@ type CreateEventPayload = {
 };
 
 export default function AdminPage() {
-  // --- Admin token (for Authorization header) ---
+  // --- Auth & routing state ---
   const [token, setToken] = useState("");
+  const [username, setUsername] = useState("stm32fan");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginError, setLoginError] = useState<string>("");
+  const [view, setView] = useState<"login" | "hub" | "events" | "media">("login");
+
   useEffect(() => {
     const saved = sessionStorage.getItem("ADMIN_TOKEN") || "";
-    if (saved) setToken(saved);
+    const savedUser = sessionStorage.getItem("ADMIN_USER") || "";
+    if (saved) {
+      setToken(saved);
+    }
+    if (savedUser) {
+      setUsername(savedUser);
+    }
+    if (saved && savedUser === "stm32fan") {
+      setView("hub");
+    }
   }, []);
+
+  function handleLogout() {
+    sessionStorage.removeItem("ADMIN_TOKEN");
+    sessionStorage.removeItem("ADMIN_USER");
+    setToken("");
+    setLoginPassword("");
+    setUsername("stm32fan");
+    setView("login");
+  }
+
   function persistToken(v: string) {
     setToken(v);
     sessionStorage.setItem("ADMIN_TOKEN", v);
+  }
+
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setLoginError("");
+    // Very light-weight check: require the specific username and a non-empty password (token)
+    if (username.trim() !== "stm32fan") {
+      setLoginError("Invalid username.");
+      return;
+    }
+    if (!loginPassword.trim()) {
+      setLoginError("Please enter your admin token as the password.");
+      return;
+    }
+    // Persist and continue to hub. Real auth enforced on API calls.
+    sessionStorage.setItem("ADMIN_TOKEN", loginPassword.trim());
+    sessionStorage.setItem("ADMIN_USER", username.trim());
+    setToken(loginPassword.trim());
+    setView("hub");
   }
 
   // --- Event form state ---
@@ -37,6 +80,21 @@ export default function AdminPage() {
     location: "",
   });
   const [evtStatus, setEvtStatus] = useState<string>("");
+  const [isAllDay, setIsAllDay] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [timeZone, setTimeZone] = useState("");
+  const [attendeesTxt, setAttendeesTxt] = useState("");
+  const [useDefaultReminders, setUseDefaultReminders] = useState(true);
+  const [emailReminderMinutes, setEmailReminderMinutes] = useState<string>("");
+  const [recMode, setRecMode] = useState<"none" | "builder" | "raw">("none");
+  const [rrule, setRrule] = useState("");
+  const [freq, setFreq] = useState<"DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY" | "">("");
+  const [interval, setInterval] = useState<string>("");
+  const [byDay, setByDay] = useState<string[]>([]);
+  const [byMonthDayTxt, setByMonthDayTxt] = useState<string>("");
+  const [count, setCount] = useState<string>("");
+  const [until, setUntil] = useState<string>("");
 
   // --- Media form state ---
   const [kind, setKind] = useState<"project" | "workshop" | "other">("project");
@@ -52,18 +110,85 @@ export default function AdminPage() {
     e.preventDefault();
     setEvtStatus("Saving...");
     try {
+      const payload: any = {
+        title: evt.title,
+        description: evt.description,
+        location: evt.location,
+        url: evt.url,
+      };
+
+      if (isAllDay) {
+        payload.startDate = startDate;
+        payload.endDate = endDate || startDate;
+      } else {
+        payload.startISO = evt.startISO;
+        payload.endISO = evt.endISO;
+        if (timeZone.trim()) payload.timeZone = timeZone.trim();
+      }
+
+      if (attendeesTxt.trim()) {
+        const emails = attendeesTxt
+          .split(/[\n,\s]+/)
+          .map((s) => s.trim())
+          .filter(Boolean);
+        if (emails.length) payload.attendees = emails.map((email) => ({ email }));
+      }
+
+      if (useDefaultReminders) {
+        payload.reminders = { useDefault: true };
+      } else if (emailReminderMinutes.trim()) {
+        const mins = Math.max(0, Number(emailReminderMinutes));
+        payload.reminders = { useDefault: false, overrides: [{ method: "email", minutes: mins }] };
+      }
+
+      if (recMode === "raw" && rrule.trim()) {
+        payload.rrule = rrule.trim();
+      } else if (recMode === "builder") {
+        const rep: any = {};
+        if (freq) rep.freq = freq;
+        if (interval) rep.interval = Number(interval);
+        if (byDay.length) rep.byDay = byDay;
+        if (byMonthDayTxt.trim()) {
+          const nums = byMonthDayTxt
+            .split(/[\s,]+/)
+            .map((x) => x.trim())
+            .filter(Boolean)
+            .map((x) => Number(x))
+            .filter((n) => Number.isFinite(n));
+          if (nums.length) rep.byMonthDay = nums;
+        }
+        if (count) rep.count = Number(count);
+        if (until.trim()) rep.until = until.trim();
+        if (Object.keys(rep).length) payload.repeat = rep;
+      }
+
       const res = await fetch(`${API_BASE}/api/events`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
           ...(token ? { authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify(evt),
+        body: JSON.stringify(payload),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json?.error || res.statusText);
       setEvtStatus("Event created ✅");
-      setEvt({ title: "", startISO: "", endISO: "", url: "", description: "", location: "" });
+  setEvt({ title: "", startISO: "", endISO: "", url: "", description: "", location: "" });
+  setIsAllDay(false);
+  setStartDate("");
+  setEndDate("");
+  setTimeZone("");
+  setAttendeesTxt("");
+  setUseDefaultReminders(true);
+  setEmailReminderMinutes("");
+  setRecMode("none");
+  setRrule("");
+  setFreq("");
+  setInterval("");
+  setByDay([]);
+  setByMonthDayTxt("");
+  setCount("");
+  setUntil("");
     } catch (err: any) {
       setEvtStatus(`Error: ${err.message || String(err)}`);
     }
@@ -127,40 +252,98 @@ export default function AdminPage() {
     }
   }
 
+  // --- Views ---
+  if (view === "login") {
+    return (
+      <main className="mx-auto flex min-h-[80vh] w-full max-w-md flex-col justify-center gap-6 px-4 py-12">
+        <div className="space-y-2 text-center">
+          <p className="text-sm uppercase tracking-wide text-muted-foreground">Member Portal</p>
+          <h1 className="text-3xl font-bold">Sign in</h1>
+          <p className="text-sm text-muted-foreground">Use username and your admin token as the password.</p>
+        </div>
+        <form onSubmit={handleLogin} className="grid gap-3 rounded-xl border border-border bg-card p-6 shadow-sm">
+          <label className="grid gap-1">
+            <span className="text-sm text-muted-foreground">Username</span>
+            <input
+              className="rounded-md border border-border bg-background p-2"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="stm32fan"
+              required
+            />
+          </label>
+          <label className="grid gap-1">
+            <span className="text-sm text-muted-foreground">Password (Admin Token)</span>
+            <input
+              type="password"
+              className="rounded-md border border-border bg-background p-2"
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
+              placeholder="Paste ADMIN_TOKEN"
+              required
+            />
+          </label>
+          <button className="rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground">Sign in</button>
+          {loginError && <p className="text-sm text-red-500">{loginError}</p>}
+          {API_BASE && (
+            <p className="text-xs text-muted-foreground">Using API: <code>{API_BASE}</code></p>
+          )}
+        </form>
+      </main>
+    );
+  }
+
+  if (view === "hub") {
+    return (
+      <main className="mx-auto flex min-h-[80vh] w-full max-w-4xl flex-col gap-8 px-4 py-12">
+        <header className="flex items-start justify-between">
+          <div className="space-y-1">
+            <p className="text-sm uppercase tracking-wide text-muted-foreground">Member Portal</p>
+            <h1 className="text-3xl font-bold">Admin Hub</h1>
+            <p className="text-sm text-muted-foreground">Welcome, {username}.</p>
+            {API_BASE && (
+              <p className="text-xs text-muted-foreground">Using API: <code>{API_BASE}</code></p>
+            )}
+          </div>
+          <button onClick={handleLogout} className="rounded-md border border-border px-3 py-2 text-sm hover:bg-accent">Log out</button>
+        </header>
+
+        <section className="grid gap-6 md:grid-cols-2">
+          <article className="rounded-xl border border-border bg-card p-6 shadow-sm">
+            <h2 className="mb-2 text-xl font-semibold">Manage Events</h2>
+            <p className="mb-4 text-sm text-muted-foreground">Create and update upcoming events.</p>
+            <button onClick={() => setView("events")} className="rounded-md bg-primary px-4 py-2 text-primary-foreground">Open Events</button>
+          </article>
+          <article className="rounded-xl border border-border bg-card p-6 shadow-sm">
+            <h2 className="mb-2 text-xl font-semibold">Manage Media</h2>
+            <p className="mb-4 text-sm text-muted-foreground">Upload files to storage or open a GitHub PR.</p>
+            <button onClick={() => setView("media")} className="rounded-md bg-primary px-4 py-2 text-primary-foreground">Open Media</button>
+          </article>
+        </section>
+      </main>
+    );
+  }
+
   return (
-    <main className="mx-auto flex min-h-[70vh] w-full max-w-4xl flex-col gap-8 px-4 py-12">
-      <header className="space-y-2">
-        <p className="text-sm uppercase tracking-wide text-muted-foreground">Member Portal</p>
-        <h1 className="text-4xl font-bold">Admin</h1>
-        <p className="text-base text-muted-foreground">
-          Create events and upload media to your Vercel API.
-        </p>
+    <main className="mx-auto flex min-h-[80vh] w-full max-w-4xl flex-col gap-8 px-4 py-12">
+      <header className="flex items-start justify-between">
+        <div className="space-y-1">
+          <p className="text-sm uppercase tracking-wide text-muted-foreground">Member Portal</p>
+          <h1 className="text-3xl font-bold">{view === "events" ? "Events" : "Media"} Admin</h1>
+          {API_BASE && (
+            <p className="text-xs text-muted-foreground">Using API: <code>{API_BASE}</code></p>
+          )}
+        </div>
+        <div className="flex gap-2">
+          <button onClick={() => setView("hub")} className="rounded-md border border-border px-3 py-2 text-sm hover:bg-accent">Back to Hub</button>
+          <button onClick={handleLogout} className="rounded-md border border-border px-3 py-2 text-sm hover:bg-accent">Log out</button>
+        </div>
       </header>
 
-      {/* Admin token */}
-      <section className="grid gap-3 rounded-xl border border-border bg-card p-6 shadow-sm">
-        <h2 className="text-xl font-semibold">Admin Access</h2>
-        <label className="grid gap-1">
-          <span className="text-sm text-muted-foreground">Authorization token</span>
-          <input
-            type="password"
-            className="rounded-md border border-border bg-background p-2"
-            value={token}
-            onChange={(e) => persistToken(e.target.value)}
-            placeholder="Paste ADMIN_TOKEN"
-          />
-        </label>
-        {API_BASE && (
-          <p className="text-xs text-muted-foreground">
-            Using external API base: <code>{API_BASE}</code>
-          </p>
-        )}
-      </section>
-
-      {/* Create Event */}
-      <section className="grid gap-4 rounded-xl border border-border bg-card p-6 shadow-sm">
+      {view === "events" && (
+      <section className="grid gap-6 rounded-xl border border-border bg-card p-6 shadow-sm">
         <h2 className="text-2xl font-semibold">Create Event</h2>
-        <form className="grid gap-3" onSubmit={handleCreateEvent}>
+        <form className="grid gap-5" onSubmit={handleCreateEvent}>
           <label className="grid gap-1">
             <span className="text-sm text-muted-foreground">Title</span>
             <input
@@ -171,28 +354,67 @@ export default function AdminPage() {
             />
           </label>
 
-          <div className="grid gap-3 md:grid-cols-2">
-            <label className="grid gap-1">
-              <span className="text-sm text-muted-foreground">Start</span>
-              <input
-                type="datetime-local"
-                className="rounded-md border border-border bg-background p-2"
-                value={evt.startISO}
-                onChange={(e) => setEvt((s) => ({ ...s, startISO: e.target.value }))}
-                required
-              />
-            </label>
-            <label className="grid gap-1">
-              <span className="text-sm text-muted-foreground">End</span>
-              <input
-                type="datetime-local"
-                className="rounded-md border border-border bg-background p-2"
-                value={evt.endISO}
-                onChange={(e) => setEvt((s) => ({ ...s, endISO: e.target.value }))}
-                required
-              />
-            </label>
+          <div className="flex items-center gap-2">
+            <input id="all-day" type="checkbox" className="h-4 w-4" checked={isAllDay} onChange={(e) => setIsAllDay(e.target.checked)} />
+            <label htmlFor="all-day" className="text-sm text-muted-foreground">All-day event</label>
           </div>
+
+          {!isAllDay ? (
+            <div className="grid gap-3 md:grid-cols-2">
+              <label className="grid gap-1">
+                <span className="text-sm text-muted-foreground">Start (date & time)</span>
+                <input
+                  type="datetime-local"
+                  className="rounded-md border border-border bg-background p-2"
+                  value={evt.startISO}
+                  onChange={(e) => setEvt((s) => ({ ...s, startISO: e.target.value }))}
+                  required
+                />
+              </label>
+              <label className="grid gap-1">
+                <span className="text-sm text-muted-foreground">End (date & time)</span>
+                <input
+                  type="datetime-local"
+                  className="rounded-md border border-border bg-background p-2"
+                  value={evt.endISO}
+                  onChange={(e) => setEvt((s) => ({ ...s, endISO: e.target.value }))}
+                  required
+                />
+              </label>
+              <label className="grid gap-1 md:col-span-2">
+                <span className="text-sm text-muted-foreground">Time Zone (optional)</span>
+                <input
+                  className="rounded-md border border-border bg-background p-2"
+                  placeholder="e.g., America/Indiana/Indianapolis"
+                  value={timeZone}
+                  onChange={(e) => setTimeZone(e.target.value)}
+                />
+              </label>
+            </div>
+          ) : (
+            <div className="grid gap-3 md:grid-cols-2">
+              <label className="grid gap-1">
+                <span className="text-sm text-muted-foreground">Start date</span>
+                <input
+                  type="date"
+                  className="rounded-md border border-border bg-background p-2"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  required
+                />
+              </label>
+              <label className="grid gap-1">
+                <span className="text-sm text-muted-foreground">End date</span>
+                <input
+                  type="date"
+                  className="rounded-md border border-border bg-background p-2"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+              </label>
+            </div>
+          )}
+
           <label className="grid gap-1">
             <span className="text-sm text-muted-foreground">Location (optional)</span>
             <input
@@ -212,14 +434,100 @@ export default function AdminPage() {
             />
           </label>
 
+          <label className="grid gap-1">
+            <span className="text-sm text-muted-foreground">More info URL (optional)</span>
+            <input
+              className="rounded-md border border-border bg-background p-2"
+              value={evt.url || ""}
+              onChange={(e) => setEvt((s) => ({ ...s, url: e.target.value }))}
+              placeholder="https://..."
+            />
+          </label>
+
+          <div className="grid gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-sm text-muted-foreground">Recurrence:</span>
+              <label className="flex items-center gap-1 text-sm"><input type="radio" name="rec" checked={recMode === "none"} onChange={() => setRecMode("none")} /> None</label>
+              <label className="flex items-center gap-1 text-sm"><input type="radio" name="rec" checked={recMode === "builder"} onChange={() => setRecMode("builder")} /> Builder</label>
+              <label className="flex items-center gap-1 text-sm"><input type="radio" name="rec" checked={recMode === "raw"} onChange={() => setRecMode("raw")} /> Raw RRULE</label>
+            </div>
+
+            {recMode === "raw" && (
+              <label className="grid gap-1">
+                <span className="text-sm text-muted-foreground">RRULE</span>
+                <input
+                  className="rounded-md border border-border bg-background p-2"
+                  value={rrule}
+                  onChange={(e) => setRrule(e.target.value)}
+                  placeholder="RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE"
+                />
+              </label>
+            )}
+
+            {recMode === "builder" && (
+              <div className="grid gap-3">
+                <div className="grid gap-3 md:grid-cols-3">
+                  <label className="grid gap-1">
+                    <span className="text-sm text-muted-foreground">Frequency</span>
+                    <select className="rounded-md border border-border bg-background p-2" value={freq} onChange={(e) => setFreq(e.target.value as any)}>
+                      <option value="">None</option>
+                      <option value="DAILY">DAILY</option>
+                      <option value="WEEKLY">WEEKLY</option>
+                      <option value="MONTHLY">MONTHLY</option>
+                      <option value="YEARLY">YEARLY</option>
+                    </select>
+                  </label>
+                  <label className="grid gap-1">
+                    <span className="text-sm text-muted-foreground">Interval</span>
+                    <input className="rounded-md border border-border bg-background p-2" type="number" min={1} value={interval} onChange={(e) => setInterval(e.target.value)} placeholder="1" />
+                  </label>
+                  <label className="grid gap-1">
+                    <span className="text-sm text-muted-foreground">Count (occurrences)</span>
+                    <input className="rounded-md border border-border bg-background p-2" type="number" min={1} value={count} onChange={(e) => setCount(e.target.value)} placeholder="e.g., 6" />
+                  </label>
+                </div>
+
+                <div className="grid gap-3 md:grid-cols-3">
+                  <div className="grid gap-2">
+                    <span className="text-sm text-muted-foreground">By day</span>
+                    <div className="grid grid-cols-7 gap-2 text-sm">
+                      {(["MO","TU","WE","TH","FR","SA","SU"] as const).map((d) => (
+                        <label key={d} className="flex items-center gap-1">
+                          <input
+                            type="checkbox"
+                            checked={byDay.includes(d)}
+                            onChange={(e) => {
+                              if (e.target.checked) setByDay((s) => [...new Set([...s, d])]);
+                              else setByDay((s) => s.filter((x) => x !== d));
+                            }}
+                          />
+                          {d}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <label className="grid gap-1">
+                    <span className="text-sm text-muted-foreground">By month day</span>
+                    <input className="rounded-md border border-border bg-background p-2" value={byMonthDayTxt} onChange={(e) => setByMonthDayTxt(e.target.value)} placeholder="e.g., 1,15" />
+                  </label>
+                  <label className="grid gap-1">
+                    <span className="text-sm text-muted-foreground">Until (date)</span>
+                    <input type="date" className="rounded-md border border-border bg-background p-2" value={until} onChange={(e) => setUntil(e.target.value)} />
+                  </label>
+                </div>
+              </div>
+            )}
+          </div>
+
           <button className="rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground">
             Create Event
           </button>
           {evtStatus && <p className="text-sm text-muted-foreground">{evtStatus}</p>}
         </form>
       </section>
+      )}
 
-      {/* Upload Media */}
+      {view === "media" && (
       <section className="grid gap-4 rounded-xl border border-border bg-card p-6 shadow-sm">
         <h2 className="text-2xl font-semibold">Upload Media</h2>
         <form className="grid gap-3" onSubmit={handleUploadMedia}>
@@ -337,6 +645,7 @@ export default function AdminPage() {
           )}
         </form>
       </section>
+      )}
     </main>
   );
 }
