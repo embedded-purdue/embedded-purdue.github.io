@@ -45,17 +45,61 @@ async function safeReadFile(p: string) {
 }
 
 async function readIndexFile(slug: string): Promise<{ filePath: string; src: string } | null> {
-  // try index.md, then index.mdx
-  const md = path.join(CONTENT_ROOT, slug, "index.md");
-  const mdx = path.join(CONTENT_ROOT, slug, "index.mdx");
-
-  const mdSrc = await safeReadFile(md);
-  if (mdSrc !== null) return { filePath: md, src: mdSrc };
-
-  const mdxSrc = await safeReadFile(mdx);
-  if (mdxSrc !== null) return { filePath: mdx, src: mdxSrc };
-
+  // try index.md/x, then README.md/x (common in repos)
+  const candidates = [
+    path.join(CONTENT_ROOT, slug, "index.md"),
+    path.join(CONTENT_ROOT, slug, "index.mdx"),
+    path.join(CONTENT_ROOT, slug, "README.md"),
+    path.join(CONTENT_ROOT, slug, "README.mdx"),
+  ];
+  for (const fp of candidates) {
+    const src = await safeReadFile(fp);
+    if (src !== null) return { filePath: fp, src };
+  }
   return null;
+}
+
+// Read all additional markdown files under the project root and optional "pages" subfolder,
+// excluding the primary README/index and the posts directory.
+export async function getAdditionalMarkdown(
+  slug: string
+): Promise<Array<{ file: string; title: string; order?: number; content: string }>> {
+  const base = path.join(CONTENT_ROOT, slug);
+  const st = await safeStat(base);
+  if (!st?.isDirectory()) return [];
+
+  const isMd = (f: string) => /\.(md|mdx)$/i.test(f);
+  const excludeNames = new Set(["index.md", "index.mdx", "README.md", "README.mdx"]);
+
+  async function collectFrom(dir: string) {
+    const items: Array<{ file: string; title: string; order?: number; content: string }> = [];
+    const list = await fs.readdir(dir, { withFileTypes: true });
+    for (const ent of list) {
+      if (!ent.isFile()) continue;
+      const name = ent.name;
+      if (!isMd(name)) continue;
+      if (dir === base && excludeNames.has(name)) continue; // primary file
+      const abs = path.join(dir, name);
+      const src = await safeReadFile(abs);
+      if (!src) continue;
+      const parsed = matter(src);
+      const data = parsed.data ?? {};
+      const title = String(data.title ?? name.replace(/\.(md|mdx)$/i, "").replace(/[-_]/g, " "));
+      const order = typeof data.order === "number" ? data.order : undefined;
+      items.push({ file: abs, title, order, content: (parsed.content ?? "").trim() });
+    }
+    return items;
+  }
+
+  const pagesDir = path.join(base, "pages");
+  const pagesSt = await safeStat(pagesDir);
+  const fromRoot = await collectFrom(base);
+  const fromPages = pagesSt?.isDirectory() ? await collectFrom(pagesDir) : [];
+
+  const all = [...fromRoot, ...fromPages];
+  // sort by explicit order then by filename
+  all.sort((a, b) => (a.order ?? 1e9) - (b.order ?? 1e9) || a.file.localeCompare(b.file));
+  return all;
 }
 
 function publicUrlFromAbsolute(absPath: string) {
@@ -121,45 +165,184 @@ export async function getAllProjectSlugs(): Promise<string[]> {
       continue;
     }
 
-    // Otherwise, include if there are any posts
+  // Otherwise, include if there are any posts
     const postsDir = path.join(CONTENT_ROOT, slug, "posts");
     const postsStat = await safeStat(postsDir);
     if (!postsStat?.isDirectory()) continue;
 
     const postFiles = await fs.readdir(postsDir);
-    const hasAnyPost = postFiles.some((f) => /\.mdx?$/.test(f));
-    if (hasAnyPost) slugs.push(slug);
+    const hasAnyPost = postFiles.some((f) => /\.mdx?$/i.test(f));
+    if (hasAnyPost) {
+      slugs.push(slug);
+      continue;
+    }
+
+    // As a fallback, include if there are any additional markdown files besides index/README
+    const rootFiles = await fs.readdir(path.join(CONTENT_ROOT, slug));
+    const hasAnyExtraMd = rootFiles.some((f) => /\.(md|mdx)$/i.test(f) && !["index.md", "index.mdx", "README.md", "README.mdx"].includes(f));
+    if (hasAnyExtraMd) slugs.push(slug);
   }
 
   return slugs.sort((a, b) => a.localeCompare(b));
 }
 
 // ---------- NEW: project media ----------
-export async function getProjectMedia(slug: string): Promise<{ images: string[]; videos: string[] }> {
+export async function getProjectMedia(
+  slug: string
+): Promise<{
+  images: string[];
+  videos: string[];
+  docs: string[];
+  files: Array<{
+    url: string;
+    name: string;
+    ext: string;
+    kind: "code" | "data" | "html" | "other";
+    language?: string;
+    content?: string; // Small preview for text files
+  }>;
+}> {
   // Store media in public/projects/<slug>/...
   const base = path.join(PUBLIC_MEDIA_ROOT, slug);
   const st = await safeStat(base);
-  if (!st || !st.isDirectory()) return { images: [], videos: [] };
-
-  const files = await fs.readdir(base);
+  if (!st || !st.isDirectory()) return { images: [], videos: [], docs: [], files: [] };
+  // Recursively walk files, skipping markdown-focused folders
+  const skipDirs = new Set(["posts", "pages"]);
+  async function walk(dir: string, acc: string[] = []): Promise<string[]> {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const e of entries) {
+      const abs = path.join(dir, e.name);
+      if (e.isDirectory()) {
+        if (skipDirs.has(e.name)) continue;
+        await walk(abs, acc);
+      } else if (e.isFile()) {
+        acc.push(abs);
+      }
+    }
+    return acc;
+  }
+  const files = await walk(base);
   const images: string[] = [];
   const videos: string[] = [];
+  const docs: string[] = [];
+  const filesOut: Array<{
+    url: string;
+    name: string;
+    ext: string;
+    kind: "code" | "data" | "html" | "other";
+    language?: string;
+    content?: string;
+  }> = [];
 
   const IMAGE_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
   const VIDEO_EXT = new Set([".mp4", ".webm"]);
+  const DOC_EXT = new Set([".pdf"]);
+  const HTML_EXT = new Set([".html", ".htm"]);
+  const DATA_EXT = new Set([".csv", ".txt", ".log"]);
+  const CODE_EXT = new Set([
+    ".ts",
+    ".tsx",
+    ".js",
+    ".jsx",
+    ".json",
+    ".yml",
+    ".yaml",
+    ".toml",
+    ".md",
+    ".mdx",
+    ".py",
+    ".c",
+    ".h",
+    ".cpp",
+    ".hpp",
+    ".ino",
+    ".rs",
+    ".go",
+    ".java",
+    ".kt",
+    ".swift",
+    ".sh",
+    ".bash",
+    ".zsh",
+    ".css",
+    ".scss",
+    ".html",
+  ]);
+  const MAX_PREVIEW_BYTES = 200 * 1024; // 200KB
+
+  const langFromExt: Record<string, string> = {
+    ".ts": "ts",
+    ".tsx": "tsx",
+    ".js": "js",
+    ".jsx": "jsx",
+    ".json": "json",
+    ".yml": "yaml",
+    ".yaml": "yaml",
+    ".toml": "toml",
+    ".md": "markdown",
+    ".mdx": "markdown",
+    ".py": "python",
+    ".c": "c",
+    ".h": "c",
+    ".cpp": "cpp",
+    ".hpp": "cpp",
+    ".ino": "cpp",
+    ".rs": "rust",
+    ".go": "go",
+    ".java": "java",
+    ".kt": "kotlin",
+    ".swift": "swift",
+    ".sh": "bash",
+    ".bash": "bash",
+    ".zsh": "bash",
+    ".css": "css",
+    ".scss": "scss",
+    ".html": "html",
+    ".csv": "csv",
+    ".txt": "text",
+    ".log": "text",
+  };
   // Also allow a file "videos.txt" with one iframe URL per line (e.g., YouTube embeds)
   const URL_LIST_FILE = "videos.txt";
+  // And a file listing external document links (one per line)
+  const DOC_URL_LIST_FILE = "docs.txt";
 
-  for (const f of files) {
-    const abs = path.join(base, f);
-    const stat = await safeStat(abs);
-    if (!stat?.isFile()) continue;
-
+  for (const abs of files) {
+    const f = path.basename(abs);
     const ext = path.extname(f).toLowerCase();
     if (IMAGE_EXT.has(ext)) {
       images.push(publicUrlFromAbsolute(abs));
     } else if (VIDEO_EXT.has(ext)) {
       videos.push(publicUrlFromAbsolute(abs));
+    } else if (DOC_EXT.has(ext)) {
+      docs.push(publicUrlFromAbsolute(abs));
+    } else if (HTML_EXT.has(ext)) {
+      filesOut.push({
+        url: publicUrlFromAbsolute(abs),
+        name: f,
+        ext,
+        kind: "html",
+        language: "html",
+      });
+    } else if (CODE_EXT.has(ext) || DATA_EXT.has(ext)) {
+      // Try to include a small preview for text-like files
+      let content: string | undefined;
+      try {
+        const buf = await fs.readFile(abs);
+        if (buf.byteLength <= MAX_PREVIEW_BYTES) {
+          content = buf.toString("utf8");
+        }
+      } catch {
+        // ignore
+      }
+      filesOut.push({
+        url: publicUrlFromAbsolute(abs),
+        name: f,
+        ext,
+        kind: DATA_EXT.has(ext) ? "data" : CODE_EXT.has(ext) ? "code" : "other",
+        language: langFromExt[ext],
+        content,
+      });
     } else if (f === URL_LIST_FILE) {
       const txt = await safeReadFile(abs);
       if (txt) {
@@ -167,6 +350,15 @@ export async function getProjectMedia(slug: string): Promise<{ images: string[];
           const url = line.trim();
           if (!url) continue;
           videos.push(url);
+        }
+      }
+    } else if (f === DOC_URL_LIST_FILE) {
+      const txt = await safeReadFile(abs);
+      if (txt) {
+        for (const line of txt.split(/\r?\n/)) {
+          const url = line.trim();
+          if (!url) continue;
+          docs.push(url);
         }
       }
     }
@@ -177,6 +369,8 @@ export async function getProjectMedia(slug: string): Promise<{ images: string[];
   return {
     images: uniq(images).sort(),
     videos: uniq(videos).sort(),
+    docs: uniq(docs).sort(),
+    files: filesOut,
   };
 }
 
