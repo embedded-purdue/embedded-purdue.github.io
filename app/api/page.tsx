@@ -211,8 +211,14 @@ export default function AdminPage() {
         },
         body: JSON.stringify(payload),
       });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json?.error || res.statusText);
+      let body: any = null;
+      try { body = await res.json(); } catch { body = await res.text(); }
+      if (!res.ok) {
+        const msg = typeof body === "string"
+          ? body
+          : body?.detail?.error?.message || body?.detail?.error || body?.detail || body?.error || res.statusText;
+        throw new Error(`${res.status} ${msg}`);
+      }
       setEvtStatus("Event created ✅");
   setEvt({ title: "", startISO: "", endISO: "", url: "", description: "", location: "" });
   setIsAllDay(false);
@@ -261,10 +267,14 @@ export default function AdminPage() {
           headers: token ? { authorization: `Bearer ${token}` } : {},
           body: form,
         });
-        const json = await res.json();
-        if (!res.ok) throw new Error(json?.error || res.statusText);
+        let body: any = null;
+        try { body = await res.json(); } catch { body = await res.text(); }
+        if (!res.ok) {
+          const msg = typeof body === "string" ? body : body?.error || body?.detail || res.statusText;
+          throw new Error(`${res.status} ${msg}`);
+        }
         setMediaStatus("PR opened ✅");
-        if (json?.pullRequestUrl) setPrUrl(json.pullRequestUrl);
+        if (typeof body === "object" && body?.pullRequestUrl) setPrUrl(body.pullRequestUrl);
         setTitle("");
         setDesc("");
         (document.getElementById("media-files") as HTMLInputElement).value = "";
@@ -282,8 +292,12 @@ export default function AdminPage() {
           headers: token ? { authorization: `Bearer ${token}` } : {},
           body: form,
         });
-        const json = await res.json();
-        if (!res.ok) throw new Error(json?.error || res.statusText);
+        let body: any = null;
+        try { body = await res.json(); } catch { body = await res.text(); }
+        if (!res.ok) {
+          const msg = typeof body === "string" ? body : body?.error || body?.detail || res.statusText;
+          throw new Error(`${res.status} ${msg}`);
+        }
         setMediaStatus("Upload complete ✅");
         setTitle("");
         setDesc("");
