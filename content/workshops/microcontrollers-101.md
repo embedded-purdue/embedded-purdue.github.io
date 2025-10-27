@@ -127,7 +127,7 @@ The ESP32 sends a **pulse-width modulation (PWM)** signal to the buzzer. The PWM
 
 #### 5. Breadboard
 
-   ![breadboard](/workshops/microcontroller-breadboard.jpeg)
+   ![breadboard](/workshops/microcontroller-breadboard.jpg)
    *Find the ***breadboard*** in your kit*
 
 **Purpose:**  
@@ -143,7 +143,7 @@ Each group of holes in a row or column are electrically connected. The central g
 
 The schematic for your hardware layout is provided below:
 
-![schematic](/workshops/microcontroller-schematic.jpeg)
+![schematic](/workshops/microcontroller-schematic.png)
 
 Using this schematic, please wire your breadboard together.
 
