@@ -12,7 +12,7 @@ instructors:
   - "Tom Concannon"
 ---
 
-![git meme](/workshops/microcontroller-meme.jpeg)
+![dino](/workshops/microcontroller-dino.png)
 
 ---
 
@@ -45,6 +45,10 @@ To program the ESP32 microcontroller, we first need to install the ESP32 board p
    - In the **Boards Manager** window (the second icon from the top on the left side pannel), type **ESP32** in the search bar. Click the **Install** button to start the  installation process. This will download and install the ESP32 board package.
 
 2. **Connect to the Board**
+
+   ![esp32](/workshops/microcontroller-esp.jpg)
+   *Find the ***ESP32 microcontroller*** in your kit*
+
    - Connect the ESP32 to your computer via the USB cable provided in your kit. If you do not have a USB Type-A port on your laptop, please see us at the front and we will provide you with a different cable or adapter.
    - Navigate to **Tools -> Board -> esp32** (the tools tab is in your toolbar), and select **ESP32 Dev Module**.
    - If your ESP32 is connected to your laptop, you can choose the correct port by clicking on **Tools -> Port**.
@@ -52,131 +56,106 @@ To program the ESP32 microcontroller, we first need to install the ESP32 board p
 
 ---
 
-### Task 2: Make and Push Changes
+### Task 2: What Components do I need?
 
-1. **Create Files**
+To start our project, we first need to get an idea of the required hardware. We’ll be using four main components in this build: the **ESP32 microcontroller**, **liquid crystal display (LCD)**, **push button**, and **buzzer**. Each of these plays a specific role in making our dino game come to life. Additionally we will need a **breadboard**, and lots of wires to interconnect all our components together.
 
-   ```bash
-   echo "Hello, world!" > hello.txt
-   echo "# My First Repository" > README.md
-   ```
+#### 1. Microcontroller (ESP32)
+**Purpose:**  
+The ESP32 will be the “brain” of your project. It'll run the Dino game code, handling the game logic, detecting button presses, updating the display, and generating audio signals.
 
-2. **Check status**
+**How it works:**  
+The ESP32 will execute your program instructions continuously, updating the game state (like when the dino jumps or collides with obstacles). It will send signals to the LCD to draw graphics and to the buzzer to produce sounds.
 
-   ```bash
-   git status
-   ```
-
-3. **Stage files**
-
-   ```bash
-   git add .
-   ```
-
-4. **Commit**
-
-   ```bash
-   git commit -m "Add hello.txt and README.md"
-   ```
-
-5. **Push**
-
-   ```bash
-   git push
-   ```
+**Connections:**  
+- Sends data to the **LCD display** via [I²C](https://en.wikipedia.org/wiki/I%C2%B2C) communication pins.  
+- Outputs sound signals through a **[pulse-width modulation (PWM)](https://en.wikipedia.org/wiki/Pulse-width_modulation) pin** connected to the **buzzer**.  
+- Reads input from the **push button** through a digital input pin.
 
 ---
 
-### Task 3: Work on a Branch + .gitignore
+#### 2. LCD Display
 
-1. **Create a branch**
+   ![lcd](/workshops/microcontroller-lcd.jpeg)
+   *Find the ***LCD*** in your kit*
 
-   ```bash
-   git checkout -b solo-changes
-   ```
+**Purpose:**  
+The [LCD (Liquid Crystal Display)](https://en.wikipedia.org/wiki/Liquid-crystal_display) shows the game graphics like the dinosaur, ground, and obstacles, in real time.
 
-2. **Add `.gitignore`**
+**How it works:**  
+The ESP32 will send pixel or character data to the LCD over I²C. The LCD refreshes its screen rapidly to show motion, creating the illusion of the dino running and jumping.
 
-   ```bash
-   echo "*.log" > .gitignore
-   git add .gitignore
-   git commit -m "Add .gitignore"
-   ```
-
-3. **Test it**
-
-   ```bash
-   echo "Temporary log data" > temp.log
-   git status   # temp.log should NOT appear
-   ```
-
-4. **Edit another file**
-
-   ```bash
-   echo "More text added during solo branch work." >> hello.txt
-   git add hello.txt
-   git commit -m "Update hello.txt"
-   ```
-
-5. **Merge back into main**
-
-   ```bash
-   git checkout main
-   git merge solo-changes
-   git push
-   ```
+**Connections:**  
+- Connected to the ESP32’s I²C pins, SDA (serial data) and SCL (serial clock).  
+- Powered by **5V** and **GND** from the ESP32.
 
 ---
 
-### Task 4: Collaborate + Pull Request
+#### 3. Push Button
 
-1. **Invite a collaborator**  
-   Settings → Collaborators → Add people
+   ![pb](/workshops/microcontroller-pb.webp)
+   *Find the ***push button*** in your kit*
 
-2. **Each partner clones repo & creates a branch**
+**Purpose:**
+The push button serves as the player’s input, pressing it will make the dinosaur jump.
 
-   ```bash
-   git checkout -b feature-[yourname]
-   ```
+**How it works:**  
+When you press the button, it will close an electrical circuit, sending a digital HIGH or LOW signal to one of the ESP32’s [GPIO](https://en.wikipedia.org/wiki/General-purpose_input/output) input pins. Your program will detect this change and update the game state to make the dinosaur jump.
 
-3. **Make changes**  
-   Edit `README.md` (to cause a conflict), add a personal `.txt` file.
-
-4. **Commit and push branch**
-
-   ```bash
-   git add .
-   git commit -m "Feature work by [your name]"
-   git push origin feature-[yourname]
-   ```
-
-5. **One partner merges both branches locally**
-
-   ```bash
-   git fetch origin feature-partner2
-   git merge origin/feature-partner2
-   ```
-
-6. **Resolve conflicts if needed**
-
-   ```bash
-   git add .
-   git commit -m "Merge partner branch"
-   ```
-
-7. **Push merged branch and open PR → main**
+**Connections:**  
+- One side will connect to a **GPIO input pin** on the ESP32.
+- The other side will connect to **GND**.
 
 ---
 
-## Extra Resources
+#### 4. Buzzer
 
-- [GitHub Learning Lab](https://lab.github.com/)  
-- [Git Handbook](https://docs.github.com/en/get-started/using-git/about-git)  
-- [Oh Shit, Git!?!](https://ohshitgit.com/)
+   ![pb](/workshops/microcontroller-buzzer.jpg)
+   *Find the ***buzzer*** in your kit*
+
+**Purpose:**  
+The buzzer will generate sound effects for our game to make it more interactive.
+
+**How it works:**  
+The ESP32 sends a **pulse-width modulation (PWM)** signal to the buzzer. The PWM frequency determines the pitch of the sound you hear.
+
+**Connections:**  
+- Connected to **PWM** output signal as its power source.
+- The other side will connect to **GND**.
+
+---
+
+#### 5. Breadboard
+
+   ![breadboard](/workshops/microcontroller-breadboard.jpeg)
+   *Find the ***breadboard*** in your kit*
+
+**Purpose:**  
+The breadboard allows us to build and test our circuit without [soldering](https://en.wikipedia.org/wiki/Soldering#Electronics_soldering). It provides a simple way to connect components together electrically using internal metal strips that run underneath the holes. The breadboard is used to mount the ESP32, button, LCD, and buzzer together. It makes it easy to wire connections between the microcontroller and each component using jumper wires, while keeping the setup neat and easy to modify as you test your dino game.
+
+**How it works:**  
+Each group of holes in a row or column are electrically connected. The central gap separates the two sides of the board, which is where you can place integrated circuits or modules. The long rails on the edges (usually marked with red and blue lines) act as power and ground buses, letting you easily distribute power to all your components.
+
+**Connections:**  
+- Literally everything
+
+---
+
+The schematic for your hardware layout is provided below:
+
+![schematic](/workshops/microcontroller-schematic.jpeg)
+
+Using this schematic, please wire your breadboard together.
+
+---
+
+### Task 3: Write your Software!
+
+Now that we've connected our hardware, we need to write software to control it. 
 
 ---
 
 ## Contributions
 
-- Slide deck: [Alex Aylward](https://www.linkedin.com/in/alexayl)  
-- Exercises: [Trevor Antle](https://www.linkedin.com/in/trevor-antle/)
+- Guide: [Tom Concannon](https://www.linkedin.com/in/thomascon)  
+- Project Design: [Connor Powell](https://www.linkedin.com/in/connorzanepowell)
