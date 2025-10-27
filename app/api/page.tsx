@@ -3,8 +3,12 @@
 
 import { useEffect, useState } from "react";
 
-const API_BASE =
-  (process.env.NEXT_PUBLIC_API_BASE as string) || ""; // "" = same-origin (when hosted on Vercel)
+// Prefer NEXT_PUBLIC_API_BASE; in local dev on port 3000, fall back to FastAPI at 127.0.0.1:8000.
+const DEFAULT_API_BASE: string =
+  (process.env.NEXT_PUBLIC_API_BASE as string) ||
+  ((typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") && window.location.port === "3000")
+    ? "http://127.0.0.1:8000"
+    : ""); // "" = same-origin (works in production if proxied)
 
 type CreateEventPayload = {
   title: string;
@@ -22,15 +26,20 @@ export default function AdminPage() {
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState<string>("");
   const [view, setView] = useState<"login" | "hub" | "events" | "media">("login");
+  const [apiBase, setApiBase] = useState<string>(DEFAULT_API_BASE);
 
   useEffect(() => {
     const saved = sessionStorage.getItem("ADMIN_TOKEN") || "";
     const savedUser = sessionStorage.getItem("ADMIN_USER") || "";
+    const savedApi = sessionStorage.getItem("ADMIN_API_BASE") || "";
     if (saved) {
       setToken(saved);
     }
     if (savedUser) {
       setUsername(savedUser);
+    }
+    if (savedApi) {
+      setApiBase(savedApi);
     }
     if (saved && savedUser === "stm32fan") {
       setView("hub");
@@ -51,6 +60,11 @@ export default function AdminPage() {
     sessionStorage.setItem("ADMIN_TOKEN", v);
   }
 
+  function persistApiBase(v: string) {
+    setApiBase(v);
+    sessionStorage.setItem("ADMIN_API_BASE", v);
+  }
+
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoginError("");
@@ -63,9 +77,10 @@ export default function AdminPage() {
       setLoginError("Please enter your admin token as the password.");
       return;
     }
-    // Persist and continue to hub. Real auth enforced on API calls.
+    // Persist selections and continue to hub. Real auth enforced on API calls.
     sessionStorage.setItem("ADMIN_TOKEN", loginPassword.trim());
     sessionStorage.setItem("ADMIN_USER", username.trim());
+    persistApiBase((apiBase || "").trim());
     setToken(loginPassword.trim());
     setView("hub");
   }
@@ -106,6 +121,25 @@ export default function AdminPage() {
   const [projectSlug, setProjectSlug] = useState("");
   const [prUrl, setPrUrl] = useState<string>("");
 
+  // Ensure RFC3339 date-time with seconds and offset when no timeZone is provided
+  function toRfc3339WithOffset(input: string): string {
+    if (!input) return input;
+    // If already contains 'Z' or an offset, just ensure seconds
+    const hasZone = /[zZ]|[+-]\d{2}:?\d{2}$/.test(input);
+    const hasSeconds = /T\d{2}:\d{2}:\d{2}/.test(input);
+    let base = input;
+    if (!hasSeconds) base = `${input}:00`;
+    if (hasZone) return base;
+    // Compute local offset for the given local date-time
+    const d = new Date(base);
+    const offMin = -d.getTimezoneOffset(); // minutes east of UTC
+    const sign = offMin >= 0 ? "+" : "-";
+    const abs = Math.abs(offMin);
+    const hh = String(Math.floor(abs / 60)).padStart(2, "0");
+    const mm = String(abs % 60).padStart(2, "0");
+    return `${base}${sign}${hh}:${mm}`;
+  }
+
   async function handleCreateEvent(e: React.FormEvent) {
     e.preventDefault();
     setEvtStatus("Saving...");
@@ -121,9 +155,15 @@ export default function AdminPage() {
         payload.startDate = startDate;
         payload.endDate = endDate || startDate;
       } else {
-        payload.startISO = evt.startISO;
-        payload.endISO = evt.endISO;
-        if (timeZone.trim()) payload.timeZone = timeZone.trim();
+        // For timed events, if no timeZone provided, include timezone offset in the dateTime strings
+        if (timeZone.trim()) {
+          payload.startISO = evt.startISO ? (evt.startISO.includes(":") && evt.startISO.length === 16 ? `${evt.startISO}:00` : evt.startISO) : "";
+          payload.endISO = evt.endISO ? (evt.endISO.includes(":") && evt.endISO.length === 16 ? `${evt.endISO}:00` : evt.endISO) : "";
+          payload.timeZone = timeZone.trim();
+        } else {
+          payload.startISO = toRfc3339WithOffset(evt.startISO);
+          payload.endISO = toRfc3339WithOffset(evt.endISO);
+        }
       }
 
       if (attendeesTxt.trim()) {
@@ -162,7 +202,8 @@ export default function AdminPage() {
         if (Object.keys(rep).length) payload.repeat = rep;
       }
 
-      const res = await fetch(`${API_BASE}/api/events`, {
+  const base = apiBase || "";
+  const res = await fetch(`${base}/api/events`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -214,7 +255,8 @@ export default function AdminPage() {
         if (desc) form.set("description", desc);
         Array.from(files).forEach((f) => form.append("files", f));
 
-        const res = await fetch(`${API_BASE}/api/media/upload-gh`, {
+  const base = apiBase || "";
+  const res = await fetch(`${base}/api/media/upload-gh`, {
           method: "POST",
           headers: token ? { authorization: `Bearer ${token}` } : {},
           body: form,
@@ -234,7 +276,8 @@ export default function AdminPage() {
         if (desc) form.set("description", desc);
         Array.from(files).forEach((f) => form.append("files", f));
 
-        const res = await fetch(`${API_BASE}/api/media/upload`, {
+  const base = apiBase || "";
+  const res = await fetch(`${base}/api/media/upload`, {
           method: "POST",
           headers: token ? { authorization: `Bearer ${token}` } : {},
           body: form,
@@ -273,6 +316,19 @@ export default function AdminPage() {
             />
           </label>
           <label className="grid gap-1">
+            <span className="text-sm text-muted-foreground">API Base URL</span>
+            <input
+              className="rounded-md border border-border bg-background p-2"
+              value={apiBase}
+              onChange={(e) => setApiBase(e.target.value)}
+              placeholder="https://embedded-purdue-api.vercel.app"
+            />
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <button type="button" onClick={() => persistApiBase("https://embedded-purdue-api.vercel.app")} className="underline">Use Vercel API</button>
+              <span>• If empty, the site will call same-origin (not valid on GitHub Pages).</span>
+            </div>
+          </label>
+          <label className="grid gap-1">
             <span className="text-sm text-muted-foreground">Password (Admin Token)</span>
             <input
               type="password"
@@ -285,8 +341,8 @@ export default function AdminPage() {
           </label>
           <button className="rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground">Sign in</button>
           {loginError && <p className="text-sm text-red-500">{loginError}</p>}
-          {API_BASE && (
-            <p className="text-xs text-muted-foreground">Using API: <code>{API_BASE}</code></p>
+          {apiBase && (
+            <p className="text-xs text-muted-foreground">Using API: <code>{apiBase}</code></p>
           )}
         </form>
       </main>
@@ -301,8 +357,8 @@ export default function AdminPage() {
             <p className="text-sm uppercase tracking-wide text-muted-foreground">Member Portal</p>
             <h1 className="text-3xl font-bold">Admin Hub</h1>
             <p className="text-sm text-muted-foreground">Welcome, {username}.</p>
-            {API_BASE && (
-              <p className="text-xs text-muted-foreground">Using API: <code>{API_BASE}</code></p>
+            {apiBase && (
+              <p className="text-xs text-muted-foreground">Using API: <code>{apiBase}</code></p>
             )}
           </div>
           <button onClick={handleLogout} className="rounded-md border border-border px-3 py-2 text-sm hover:bg-accent">Log out</button>
@@ -330,8 +386,8 @@ export default function AdminPage() {
         <div className="space-y-1">
           <p className="text-sm uppercase tracking-wide text-muted-foreground">Member Portal</p>
           <h1 className="text-3xl font-bold">{view === "events" ? "Events" : "Media"} Admin</h1>
-          {API_BASE && (
-            <p className="text-xs text-muted-foreground">Using API: <code>{API_BASE}</code></p>
+          {apiBase && (
+            <p className="text-xs text-muted-foreground">Using API: <code>{apiBase}</code></p>
           )}
         </div>
         <div className="flex gap-2">
