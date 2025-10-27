@@ -3,6 +3,8 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 
 // react-markdown renderer types
 type CodeProps = {
@@ -20,10 +22,43 @@ export default function Markdown({
   className?: string;
   imageBase?: string;
 }) {
+  // Allow a minimal, safe subset of raw HTML (for things like iframes)
+  // Extend the default sanitize schema to include "section" and "iframe" plus a few attributes.
+  const schema: any = {
+    ...defaultSchema,
+    tagNames: [...(defaultSchema.tagNames || []), "section", "iframe"],
+    attributes: {
+      ...(defaultSchema.attributes || {}),
+      "*": [
+        ...(defaultSchema.attributes?.["*"] || []),
+        "className",
+        "style",
+      ],
+      iframe: [
+        "src",
+        "width",
+        "height",
+        "loading",
+        "referrerpolicy",
+        "allow",
+        "allowfullscreen",
+        "frameborder",
+        "title",
+      ],
+      section: ["style", "className"],
+    },
+  };
+
   return (
     <div className={className}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
+        rehypePlugins={[
+          // Parse raw HTML in markdown
+          rehypeRaw,
+          // Sanitize that HTML to an allowlist
+          [rehypeSanitize, schema],
+        ]}
         components={{
           // ---------- IMAGES ----------
           img({ src, alt, ...props }) {
@@ -40,6 +75,17 @@ export default function Markdown({
                 className="my-4 rounded-lg border bg-muted/20"
                 {...props}
               />
+            );
+          },
+          // ---------- SAFE IFRAME PASSTHROUGH ----------
+          // With rehype-raw + sanitize, raw <iframe> is allowed. We can still
+          // wrap it with default styles if desired by mapping here too.
+          iframe(props: React.IframeHTMLAttributes<HTMLIFrameElement>) {
+            return (
+              <div className="my-6 overflow-hidden rounded-lg border bg-muted/10">
+                {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
+                <iframe {...props} className={`w-full ${props.className || ""}`} />
+              </div>
             );
           },
 
@@ -125,14 +171,7 @@ export default function Markdown({
           ul(p) {
             return <ul className="my-6 ml-6 space-y-2 list-none" {...p} />;
           },
-          li(p) {
-            return (
-              <li
-                className="relative pl-6 before:content-['•'] before:absolute before:left-0 before:text-primary before:font-bold before:text-lg"
-                {...p}
-              />
-            );
-          },
+          // use default <li> rendering to avoid a11y false-positives
           h1(p) {
             return (
               <h1
