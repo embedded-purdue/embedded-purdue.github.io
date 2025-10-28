@@ -196,6 +196,14 @@ export default function Markdown({
               />
             );
           },
+          a(p) {
+            return (
+              <a
+                className="text-primary font-medium underline decoration-2 underline-offset-2 hover:decoration-primary/50 hover:text-primary/80 transition-colors duration-150"
+                {...p}
+              />
+            );
+          },
         }}
       >
         {children}
