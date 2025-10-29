@@ -1,7 +1,7 @@
 ---
 title: "Microcontrollers 101"
 slug: "microcontrollers-101"
-date: "2025-11-17T18:00:00-04:00"
+date: "2025-11-18T18:00:00-04:00"
 location: "BHEE 117"
 summary: "Introduction to microcontrollers! By the end of this workshop, you should hopefully have a fully working Chrome Dino Run game running on your own liquid crystal display with audio support."
 tags: ["c++", "c", "microcontrollers", "beginner", "esp32"]
@@ -243,36 +243,36 @@ void loop () {
 ```
 
 #### 1. Defines
-- `BUZZER_PIN` - defines what pin your buzzer is connected to (25)
-- `LCD_SCL_PIN` - defines what pin your LCD SCL is connected to (22)
-- `LCD_SDA_PIN` - defines what pin your LCD SDA is connected to (21)
-- `BUTTON_PIN` - defines what pin your button is connected to (32)
+- **BUZZER_PIN** - defines what pin your buzzer is connected to (25)
+- **LCD_SCL_PIN** - defines what pin your LCD SCL is connected to (22)
+- **LCD_SDA_PIN** - defines what pin your LCD SDA is connected to (21)
+- **BUTTON_PIN** - defines what pin your button is connected to (32)
 
 #### 2. Global Variables
-- `lcd` - allows for control over the LCD
-- `dinoRow` - represents the row where the dino currently exists; valid row values are either 0 or 1; initialized to *1*
-- `isDinoJumping` - a boolean representing if the dino is currently jumping or not; initialized to *false*
-- `jumpDuration` - a constant variabe representing the duration of a jump; defaulted to *750ms*
-- `lastJumpTime` - records the last time when the dino jumped; initialized to *0ms*
-- `obstacleCol` - represents the coluumn where an obstacle currently exists; valid column values range from 0 to 15; initialized to *5*
-- `moveInterval` - represents the refresh rate for the game to run; lower values make the game run faster; initialized to *300ms*
-- `lastMoveTime` - records the last time when the obstacle position was updated; initialized to *0ms*
+- **lcd** - allows for control over the LCD
+- **dinoRow** - represents the row where the dino currently exists; valid row values are either 0 or 1; initialized to *1*
+- **isDinoJumping** - a boolean representing if the dino is currently jumping or not; initialized to *false*
+- **jumpDuration** - a constant variabe representing the duration of a jump; defaulted to *750ms*
+- **lastJumpTime** - records the last time when the dino jumped; initialized to *0ms*
+- **obstacleCol** - represents the coluumn where an obstacle currently exists; valid column values range from 0 to 15; initialized to *5*
+- **moveInterval** - represents the refresh rate for the game to run; lower values make the game run faster; initialized to *300ms*
+- **lastMoveTime** - records the last time when the obstacle position was updated; initialized to *0ms*
 
 #### 3. Functions
 
-- `end_game()` - when this function is called, the game should display some text to signify that the game has ended, the final user score, and then indefinitely stall the program execution until a reset. `lcd.clear()`, `lcd.setCursor()`, and `lcd.print()` may be useful here.
-- `buzzer_beep()` - when this funciton is called, the buzzer should beep. The beep duration should be finite, but it's up to you! The `analogWrite()`, and `delay()` function may prove to be useful here.
-- `check_jump_button()` - when this function is called, it should check if the jump button has been pressed, and update the `isJumping` and `jumpStartTime` variables. The `digitalRead()` and `millis()` functions may be useful here.
-- `update_dino_position()` - this function should update the dino's position depending on if the dino is currently jumping or not, and reset the `isDinoJumping` variable accordingly.
-- `update_obstacle_position()` - this function should update the obstacle positon as needed. `millis()` will be useful here.
-- `check_dino_collision()` - this function should check if the dino as collided with an obstacle, and take the proper action necessary if required.
-- `update_lcd()` - this function will be tasked with updating the LCD. It should display the dino, the obstacle, and the current score. `lcd.clear()`, `lcd.setCursor()`, `lcd.print()` and `delay()` may be useful here. 
-- `setup()` - this function is automatically called *ONCE* when the code is compiled. Starter code for the `setup()` function has been supplied for you, but feel free to change anything here.
-- `loop()` - this function is automatically called *REPEATEDLY* when the code is compiled, after `setup()` has been called. You should call most of your other functions from here.
+- **end_game()** - when this function is called, the game should display some text to signify that the game has ended, the final user score, and then indefinitely stall the program execution until a reset. **lcd.clear()**, **lcd.setCursor()**, and **lcd.print()** may be useful here.
+- **buzzer_beep()** - when this funciton is called, the buzzer should beep. The beep duration should be finite, but it's up to you! The **analogWrite()**, and **delay()** function may prove to be useful here.
+- **check_jump_button()** - when this function is called, it should check if the jump button has been pressed, and update the **isJumping** and **jumpStartTime** variables. The **digitalRead()** and **millis()** functions may be useful here.
+- **update_dino_position()** - this function should update the dino's position depending on if the dino is currently jumping or not, and reset the **isDinoJumping** variable accordingly.
+- **update_obstacle_position()** - this function should update the obstacle positon as needed. **millis()** will be useful here.
+- **check_dino_collision()** - this function should check if the dino as collided with an obstacle, and take the proper action necessary if required.
+- **update_lcd()** - this function will be tasked with updating the LCD. It should display the dino, the obstacle, and the current score. **lcd.clear()**, **lcd.setCursor()**, **lcd.print()** and **delay()** may be useful here. 
+- **setup()** - this function is automatically called *ONCE* when the code is compiled. Starter code for the **setup()** function has been supplied for you, but feel free to change anything here.
+- **loop()** - this function is automatically called *REPEATEDLY* when the code is compiled, after **setup()** has been called. You should call most of your other functions from here.
 
 ---
 
-Some of the supplied functions will need to call others, some will need to be called from `loop()`, it is up to you to figure out what needs to be called from where. Feel free to create additional variables and/or functions as you see fit, it is encouraged! Use google as a resource to find out what certain functions do. This is a common practice that you'll need to utilize as an engineer in the workforce!
+Some of the supplied functions will need to call others, some will need to be called from **loop()**, it is up to you to figure out what needs to be called from where. Feel free to create additional variables and/or functions as you see fit, it is encouraged! Use google as a resource to find out what certain functions do. This is a common practice that you'll need to utilize as an engineer in the workforce!
 
 ### Task 4: Extra
 
