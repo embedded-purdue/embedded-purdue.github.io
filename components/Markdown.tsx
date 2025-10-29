@@ -107,7 +107,7 @@ export default function Markdown({
             }
             return (
               <code
-                className="bg-muted/70 px-1.5 py-0.5 rounded-md text-sm font-mono border whitespace-pre-wrap break-words"
+                className="bg-muted/70 px-1.5 py-0.5 rounded-md text-sm font-mono border inline-block max-w-full overflow-x-auto whitespace-nowrap align-middle"
                 {...props}
               >
                 {children}
