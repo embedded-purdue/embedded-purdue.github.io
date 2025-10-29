@@ -3,7 +3,7 @@ title: "Microcontrollers 101"
 slug: "microcontrollers-101"
 date: "2025-11-17T18:00:00-04:00"
 location: "BHEE 117"
-summary: "Introduction to microcontrollers! By the end of this workshop, you should hopefully have a fully working **Chrome Dino Run** game running on your own liquid crystal display with audio support."
+summary: "Introduction to microcontrollers! By the end of this workshop, you should hopefully have a fully working Chrome Dino Run game running on your own liquid crystal display with audio support."
 tags: ["c++", "c", "microcontrollers", "beginner", "esp32"]
 duration: "120 min"
 level: "Beginner"
@@ -158,7 +158,7 @@ Using this schematic, please wire your breadboard together.
 
 Now that you’ve wired everything up, it’s time to bring your dino to life with code! We’ll be programming the ESP32 to draw frames on the LCD, read input from the button, and play sound effects through the buzzer. To start, create a new sketch in the Arduino IDE and coby the tempolate below over to your workspace. 
 
-```
+```cpp
 #include <LiquidCrystal_I2C.h>
 
 #define BUZZER_PIN 25   // GPIO for PWM buzzer
