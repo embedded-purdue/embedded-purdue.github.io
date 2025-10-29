@@ -15,15 +15,14 @@ type CodeProps = {
 
 export default function Markdown({
   children,
-  className = "prose-md",
+  className = "prose prose-neutral max-w-none break-words",
   imageBase,
 }: {
   children: string;
   className?: string;
   imageBase?: string;
 }) {
-  // Allow a minimal, safe subset of raw HTML (for things like iframes)
-  // Extend the default sanitize schema to include "section" and "iframe" plus a few attributes.
+  // Extend sanitize schema: allow minimal raw HTML and common attributes
   const schema: any = {
     ...defaultSchema,
     tagNames: [...(defaultSchema.tagNames || []), "section", "iframe"],
@@ -31,6 +30,7 @@ export default function Markdown({
       ...(defaultSchema.attributes || {}),
       "*": [
         ...(defaultSchema.attributes?.["*"] || []),
+        "class",
         "className",
         "style",
       ],
@@ -45,7 +45,7 @@ export default function Markdown({
         "frameborder",
         "title",
       ],
-      section: ["style", "className"],
+      section: ["style", "class", "className"],
     },
   };
 
@@ -54,9 +54,7 @@ export default function Markdown({
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[
-          // Parse raw HTML in markdown
           rehypeRaw,
-          // Sanitize that HTML to an allowlist
           [rehypeSanitize, schema],
         ]}
         components={{
@@ -72,24 +70,23 @@ export default function Markdown({
                 alt={alt as string}
                 loading="lazy"
                 draggable={false}
-                className="my-4 rounded-lg border bg-muted/20"
+                className="my-4 rounded-lg border bg-muted/20 max-w-full h-auto"
                 {...props}
               />
             );
           },
-          // ---------- SAFE IFRAME PASSTHROUGH ----------
-          // With rehype-raw + sanitize, raw <iframe> is allowed. We can still
-          // wrap it with default styles if desired by mapping here too.
+
+          // ---------- IFRAME WRAP ----------
           iframe(props: React.IframeHTMLAttributes<HTMLIFrameElement>) {
             return (
               <div className="my-6 overflow-hidden rounded-lg border bg-muted/10">
                 {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
-                <iframe {...props} className={`w-full ${props.className || ""}`} />
+                <iframe {...props} className={`w-full aspect-video ${props.className || ""}`} />
               </div>
             );
           },
 
-          // ---------- CODE ----------
+          // ---------- CODE BLOCKS / INLINE CODE ----------
           code({ inline, className, children, ...props }: CodeProps) {
             const lang = /language-(\w+)/.exec(className || "")?.[1];
             if (!inline) {
@@ -100,7 +97,7 @@ export default function Markdown({
                       {lang}
                     </div>
                   )}
-                  <pre className="bg-muted/50 border rounded-xl p-6 overflow-x-auto shadow-sm group-hover:shadow-md transition-all duration-200">
+                  <pre className="bg-muted/50 border rounded-xl p-4 overflow-hidden shadow-sm group-hover:shadow-md transition-all duration-200 whitespace-pre-wrap break-words">
                     <code className="text-sm font-mono leading-relaxed" {...props}>
                       {children}
                     </code>
@@ -110,7 +107,7 @@ export default function Markdown({
             }
             return (
               <code
-                className="bg-muted/70 px-2 py-1 rounded-md text-sm font-mono border"
+                className="bg-muted/70 px-1.5 py-0.5 rounded-md text-sm font-mono border whitespace-pre-wrap break-words"
                 {...props}
               >
                 {children}
@@ -128,14 +125,14 @@ export default function Markdown({
                 <div className="absolute top-2 left-2 text-primary/20 text-4xl font-serif leading-none">
                   "
                 </div>
-                <div className="relative z-10 pl-6">{children}</div>
+                <div className="relative z-10 pl-6 break-words">{children}</div>
               </blockquote>
             );
           },
           table({ children, ...props }) {
             return (
               <div className="my-6 overflow-x-auto rounded-lg border shadow-sm">
-                <table className="w-full border-collapse" {...props}>
+                <table className="w-full border-collapse text-sm" {...props}>
                   {children}
                 </table>
               </div>
@@ -163,15 +160,15 @@ export default function Markdown({
           td(p) {
             return (
               <td
-                className="px-4 py-3 border-r border-border last:border-r-0"
+                className="px-4 py-3 border-r border-border last:border-r-0 align-top break-words"
                 {...p}
               />
             );
           },
           ul(p) {
-            return <ul className="my-6 ml-6 space-y-2 list-none" {...p} />;
+            return <ul className="my-6 ml-6 space-y-2 list-disc" {...p} />;
           },
-          // use default <li> rendering to avoid a11y false-positives
+
           h1(p) {
             return (
               <h1
@@ -199,10 +196,15 @@ export default function Markdown({
           a(p) {
             return (
               <a
-                className="text-primary font-medium underline decoration-2 underline-offset-2 hover:decoration-primary/50 hover:text-primary/80 transition-colors duration-150"
+                className="text-primary font-medium underline decoration-2 underline-offset-2 hover:decoration-primary/50 hover:text-primary/80 transition-colors duration-150 break-words"
                 {...p}
               />
             );
+          },
+
+          // Also ensure paragraphs wrap nicely
+          p(p) {
+            return <p className="my-4 leading-7 break-words" {...p} />;
           },
         }}
       >
