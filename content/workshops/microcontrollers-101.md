@@ -18,7 +18,6 @@ instructors:
 
 **Level:** Beginner | **Offered:** Fall 2025 | **Time:** 2 hours
 
-- [📑 Slide deck](https://docs.google.com/presentation/d/1Dk7lakdtn65Ym86UzuRHYTsuG3ByWMMBZX1VucDLHyQ/edit?usp=sharing)
 - [🖥️ SunFounder ESP32 Starter Kit](https://www.amazon.com/SunFounder-Compatiple-Beginners-Engineers-ESP32-WROOM-32E/dp/B0CLDJ2DL7?sr=8-1)
 
 ---
