@@ -1,14 +1,11 @@
 // app/api/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { projects } from "../projects/_data";
 
-// Prefer NEXT_PUBLIC_API_BASE; in local dev on port 3000, fall back to FastAPI at 127.0.0.1:8000.
-const DEFAULT_API_BASE: string =
-  (process.env.NEXT_PUBLIC_API_BASE as string) ||
-  ((typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") && window.location.port === "3000")
-    ? "http://127.0.0.1:8000"
-    : ""); // "" = same-origin (works in production if proxied)
+// Prefer NEXT_PUBLIC_API_BASE from env. Avoid window checks at module scope to prevent hydration mismatches.
+const DEFAULT_API_BASE: string = (process.env.NEXT_PUBLIC_API_BASE as string) || ""; // "" = same-origin (works if proxied)
 
 type CreateEventPayload = {
   title: string;
@@ -20,6 +17,7 @@ type CreateEventPayload = {
 };
 
 export default function AdminPage() {
+  const DEFAULT_TIME_ZONE = "America/Indiana/Indianapolis";
   // --- Auth & routing state ---
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("stm32fan");
@@ -27,11 +25,17 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState<string>("");
   const [view, setView] = useState<"login" | "hub" | "events" | "media">("login");
   const [apiBase, setApiBase] = useState<string>(DEFAULT_API_BASE);
+  const [apiOk, setApiOk] = useState<null | boolean>(null);
+  const [authOk, setAuthOk] = useState<null | boolean>(null);
+  const [checking, setChecking] = useState(false);
 
   useEffect(() => {
     const saved = sessionStorage.getItem("ADMIN_TOKEN") || "";
     const savedUser = sessionStorage.getItem("ADMIN_USER") || "";
     const savedApi = sessionStorage.getItem("ADMIN_API_BASE") || "";
+    const savedKind = sessionStorage.getItem("ADMIN_UPLOAD_KIND") as any;
+    const savedProj = sessionStorage.getItem("ADMIN_PROJECT_SLUG") || "";
+    const savedWork = sessionStorage.getItem("ADMIN_WORKSHOP_SLUG") || "";
     if (saved) {
       setToken(saved);
     }
@@ -40,10 +44,19 @@ export default function AdminPage() {
     }
     if (savedApi) {
       setApiBase(savedApi);
+    } else {
+      // Client-only: if running Next dev on :3000, default API to local FastAPI
+      if (typeof window !== "undefined") {
+        const isLocalDev = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") && window.location.port === "3000";
+        if (isLocalDev) setApiBase("http://127.0.0.1:8000");
+      }
     }
     if (saved && savedUser === "stm32fan") {
       setView("hub");
     }
+    if (savedKind === "project" || savedKind === "workshop") setUploadKind(savedKind);
+    if (savedProj) setProjectSlug(savedProj);
+    if (savedWork) setWorkshopSlug(savedWork);
   }, []);
 
   function handleLogout() {
@@ -63,7 +76,11 @@ export default function AdminPage() {
   function persistApiBase(v: string) {
     setApiBase(v);
     sessionStorage.setItem("ADMIN_API_BASE", v);
+    setApiOk(null);
+    setAuthOk(null);
   }
+
+  // Persist quick selections for convenience (hooks defined after state vars below)
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -85,6 +102,30 @@ export default function AdminPage() {
     setView("hub");
   }
 
+  async function testConnection() {
+    try {
+      setChecking(true);
+      setApiOk(null);
+      setAuthOk(null);
+      const base = apiBase || "";
+      // Health
+      const hr = await fetch(`${base}/api/health`, { cache: "no-store" });
+      setApiOk(hr.ok);
+      // Auth check (if we have a token)
+      if (token) {
+        const ar = await fetch(`${base}/api/admin/check`, { headers: { authorization: `Bearer ${token}` } });
+        setAuthOk(ar.ok);
+      } else {
+        setAuthOk(false);
+      }
+    } catch {
+      setApiOk(false);
+      setAuthOk(false);
+    } finally {
+      setChecking(false);
+    }
+  }
+
   // --- Event form state ---
   const [evt, setEvt] = useState<CreateEventPayload>({
     title: "",
@@ -95,10 +136,11 @@ export default function AdminPage() {
     location: "",
   });
   const [evtStatus, setEvtStatus] = useState<string>("");
+  const [evtBusy, setEvtBusy] = useState(false);
   const [isAllDay, setIsAllDay] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [timeZone, setTimeZone] = useState("");
+  // Time zone is fixed to Indianapolis; no user input
   const [attendeesTxt, setAttendeesTxt] = useState("");
   const [useDefaultReminders, setUseDefaultReminders] = useState(true);
   const [emailReminderMinutes, setEmailReminderMinutes] = useState<string>("");
@@ -117,9 +159,47 @@ export default function AdminPage() {
   const [desc, setDesc] = useState("");
   const [files, setFiles] = useState<FileList | null>(null);
   const [mediaStatus, setMediaStatus] = useState<string>("");
-  const [uploadMode, setUploadMode] = useState<"blob" | "github">("blob");
+  const [mediaBusy, setMediaBusy] = useState(false);
+  const [uploadKind, setUploadKind] = useState<"project" | "workshop">("project");
   const [projectSlug, setProjectSlug] = useState("");
+  const [workshopSlug, setWorkshopSlug] = useState("");
   const [prUrl, setPrUrl] = useState<string>("");
+  const [initOpen, setInitOpen] = useState(false);
+  const [initSlug, setInitSlug] = useState("");
+  const [initTitle, setInitTitle] = useState("");
+  const [initDesc, setInitDesc] = useState("");
+  const [initStatus, setInitStatus] = useState("");
+  const [initBusy, setInitBusy] = useState(false);
+
+  const [projectSlugExtra, setProjectSlugExtra] = useState<string[]>([]);
+  const [workshopSlugExtra, setWorkshopSlugExtra] = useState<string[]>([]);
+
+  // Persist quick selections for convenience
+  useEffect(() => {
+    sessionStorage.setItem("ADMIN_UPLOAD_KIND", uploadKind);
+  }, [uploadKind]);
+  useEffect(() => {
+    if (projectSlug) sessionStorage.setItem("ADMIN_PROJECT_SLUG", projectSlug);
+  }, [projectSlug]);
+  useEffect(() => {
+    if (workshopSlug) sessionStorage.setItem("ADMIN_WORKSHOP_SLUG", workshopSlug);
+  }, [workshopSlug]);
+
+  // Precompute dropdown options
+  const projectSlugOptions = useMemo(() => {
+    try {
+      const base = projects.map((p) => p.slug);
+      const merged = Array.from(new Set([...base, ...projectSlugExtra]));
+      return merged.sort((a, b) => a.localeCompare(b));
+    } catch {
+      return projectSlugExtra.slice().sort((a, b) => a.localeCompare(b));
+    }
+  }, [projectSlugExtra]);
+  const workshopSlugOptions = useMemo(() => {
+    const base = ["git-101", "intro-to-stm32", "pcb-design-101", "template"];
+    const merged = Array.from(new Set([...base, ...workshopSlugExtra]));
+    return merged.sort((a, b) => a.localeCompare(b));
+  }, [workshopSlugExtra]);
 
   // Ensure RFC3339 date-time with seconds and offset when no timeZone is provided
   function toRfc3339WithOffset(input: string): string {
@@ -142,6 +222,7 @@ export default function AdminPage() {
 
   async function handleCreateEvent(e: React.FormEvent) {
     e.preventDefault();
+    setEvtBusy(true);
     setEvtStatus("Saving...");
     try {
       const payload: any = {
@@ -155,15 +236,14 @@ export default function AdminPage() {
         payload.startDate = startDate;
         payload.endDate = endDate || startDate;
       } else {
-        // For timed events, if no timeZone provided, include timezone offset in the dateTime strings
-        if (timeZone.trim()) {
-          payload.startISO = evt.startISO ? (evt.startISO.includes(":") && evt.startISO.length === 16 ? `${evt.startISO}:00` : evt.startISO) : "";
-          payload.endISO = evt.endISO ? (evt.endISO.includes(":") && evt.endISO.length === 16 ? `${evt.endISO}:00` : evt.endISO) : "";
-          payload.timeZone = timeZone.trim();
-        } else {
-          payload.startISO = toRfc3339WithOffset(evt.startISO);
-          payload.endISO = toRfc3339WithOffset(evt.endISO);
-        }
+        // Timed events: enforce seconds, use fixed Indianapolis timezone
+        const ensureSeconds = (s: string) => {
+          if (!s) return s;
+          return /T\d{2}:\d{2}:\d{2}/.test(s) ? s : `${s}:00`;
+        };
+        payload.startISO = ensureSeconds(evt.startISO);
+        payload.endISO = ensureSeconds(evt.endISO);
+        payload.timeZone = DEFAULT_TIME_ZONE;
       }
 
       if (attendeesTxt.trim()) {
@@ -219,12 +299,11 @@ export default function AdminPage() {
           : body?.detail?.error?.message || body?.detail?.error || body?.detail || body?.error || res.statusText;
         throw new Error(`${res.status} ${msg}`);
       }
-      setEvtStatus("Event created ✅");
+  setEvtStatus("Event created ✅");
   setEvt({ title: "", startISO: "", endISO: "", url: "", description: "", location: "" });
   setIsAllDay(false);
   setStartDate("");
   setEndDate("");
-  setTimeZone("");
   setAttendeesTxt("");
   setUseDefaultReminders(true);
   setEmailReminderMinutes("");
@@ -238,6 +317,8 @@ export default function AdminPage() {
   setUntil("");
     } catch (err: any) {
       setEvtStatus(`Error: ${err.message || String(err)}`);
+    } finally {
+      setEvtBusy(false);
     }
   }
 
@@ -247,65 +328,94 @@ export default function AdminPage() {
       setMediaStatus("Please choose at least one file.");
       return;
     }
+    setMediaBusy(true);
     setMediaStatus("Uploading...");
     try {
       setPrUrl("");
-      if (uploadMode === "github") {
-        if (!projectSlug.trim()) {
-          setMediaStatus("Please provide a project slug for the GitHub upload.");
-          return;
-        }
-        const form = new FormData();
-        form.set("projectSlug", projectSlug.trim());
-        form.set("title", title);
-        if (desc) form.set("description", desc);
-        Array.from(files).forEach((f) => form.append("files", f));
-
-  const base = apiBase || "";
-  const res = await fetch(`${base}/api/media/upload-gh`, {
-          method: "POST",
-          headers: token ? { authorization: `Bearer ${token}` } : {},
-          body: form,
-        });
-        let body: any = null;
-        try { body = await res.json(); } catch { body = await res.text(); }
-        if (!res.ok) {
-          const msg = typeof body === "string" ? body : body?.error || body?.detail || res.statusText;
-          throw new Error(`${res.status} ${msg}`);
-        }
-        setMediaStatus("PR opened ✅");
-        if (typeof body === "object" && body?.pullRequestUrl) setPrUrl(body.pullRequestUrl);
-        setTitle("");
-        setDesc("");
-        (document.getElementById("media-files") as HTMLInputElement).value = "";
-        setFiles(null);
-      } else {
-        const form = new FormData();
-        form.set("kind", kind);
-        form.set("title", title);
-        if (desc) form.set("description", desc);
-        Array.from(files).forEach((f) => form.append("files", f));
-
-  const base = apiBase || "";
-  const res = await fetch(`${base}/api/media/upload`, {
-          method: "POST",
-          headers: token ? { authorization: `Bearer ${token}` } : {},
-          body: form,
-        });
-        let body: any = null;
-        try { body = await res.json(); } catch { body = await res.text(); }
-        if (!res.ok) {
-          const msg = typeof body === "string" ? body : body?.error || body?.detail || res.statusText;
-          throw new Error(`${res.status} ${msg}`);
-        }
-        setMediaStatus("Upload complete ✅");
-        setTitle("");
-        setDesc("");
-        (document.getElementById("media-files") as HTMLInputElement).value = "";
-        setFiles(null);
+      // GitHub PR upload only
+      const chosenSlug = uploadKind === "project" ? projectSlug.trim() : workshopSlug.trim();
+      if (!chosenSlug) {
+        setMediaStatus(`Please choose a ${uploadKind} slug for the GitHub upload.`);
+        return;
       }
+      const form = new FormData();
+      form.set("projectSlug", chosenSlug);
+      form.set("kind", uploadKind);
+      form.set("title", title);
+      if (desc) form.set("description", desc);
+      Array.from(files).forEach((f) => form.append("files", f));
+
+      const base = apiBase || "";
+      const res = await fetch(`${base}/api/media/upload-gh`, {
+        method: "POST",
+        headers: token ? { authorization: `Bearer ${token}` } : {},
+        body: form,
+      });
+      let body: any = null;
+      try { body = await res.json(); } catch { body = await res.text(); }
+      if (!res.ok) {
+        const msg = typeof body === "string" ? body : body?.error || body?.detail || res.statusText;
+        throw new Error(`${res.status} ${msg}`);
+      }
+  setMediaStatus("PR opened ✅");
+      if (typeof body === "object" && body?.pullRequestUrl) setPrUrl(body.pullRequestUrl);
+      setTitle("");
+      setDesc("");
+      (document.getElementById("media-files") as HTMLInputElement).value = "";
+      setFiles(null);
     } catch (err: any) {
       setMediaStatus(`Error: ${err.message || String(err)}`);
+    } finally {
+      setMediaBusy(false);
+    }
+  }
+
+  async function handleInitSlugSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setInitBusy(true);
+    setInitStatus("Creating...");
+    setPrUrl("");
+    try {
+      const slug = initSlug.trim();
+      if (!slug) {
+        setInitStatus("Please enter a slug.");
+        return;
+      }
+      const form = new FormData();
+      form.set("kind", uploadKind);
+      form.set("slug", slug);
+      if (initTitle.trim()) form.set("title", initTitle.trim());
+      if (initDesc.trim()) form.set("description", initDesc.trim());
+      const base = apiBase || "";
+      const res = await fetch(`${base}/api/media/init-gh`, {
+        method: "POST",
+        headers: token ? { authorization: `Bearer ${token}` } : {},
+        body: form,
+      });
+      let body: any = null;
+      try { body = await res.json(); } catch { body = await res.text(); }
+      if (!res.ok) {
+        const msg = typeof body === "string" ? body : body?.error || body?.detail || res.statusText;
+        throw new Error(`${res.status} ${msg}`);
+      }
+      setInitStatus("PR opened ✅");
+      if (typeof body === "object" && body?.pullRequestUrl) setPrUrl(body.pullRequestUrl);
+      // Update dropdowns and selection
+      if (uploadKind === "project") {
+        setProjectSlugExtra((s) => Array.from(new Set([...s, slug])));
+        setProjectSlug(slug);
+      } else {
+        setWorkshopSlugExtra((s) => Array.from(new Set([...s, slug])));
+        setWorkshopSlug(slug);
+      }
+      setInitOpen(false);
+      setInitSlug("");
+      setInitTitle("");
+      setInitDesc("");
+    } catch (err: any) {
+      setInitStatus(`Error: ${err.message || String(err)}`);
+    } finally {
+      setInitBusy(false);
     }
   }
 
@@ -374,6 +484,21 @@ export default function AdminPage() {
             {apiBase && (
               <p className="text-xs text-muted-foreground">Using API: <code>{apiBase}</code></p>
             )}
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+              <button disabled={checking} onClick={testConnection} className="rounded-md border border-border px-2 py-1 hover:bg-accent disabled:opacity-60">
+                {checking ? "Checking…" : "Test connection"}
+              </button>
+              {apiOk !== null && (
+                <span className={`rounded px-2 py-0.5 ${apiOk ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                  API {apiOk ? "OK" : "Down"}
+                </span>
+              )}
+              {authOk !== null && (
+                <span className={`rounded px-2 py-0.5 ${authOk ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
+                  Auth {authOk ? "Valid" : "Missing/Invalid"}
+                </span>
+              )}
+            </div>
           </div>
           <button onClick={handleLogout} className="rounded-md border border-border px-3 py-2 text-sm hover:bg-accent">Log out</button>
         </header>
@@ -388,6 +513,11 @@ export default function AdminPage() {
             <h2 className="mb-2 text-xl font-semibold">Manage Media</h2>
             <p className="mb-4 text-sm text-muted-foreground">Upload files to storage or open a GitHub PR.</p>
             <button onClick={() => setView("media")} className="rounded-md bg-primary px-4 py-2 text-primary-foreground">Open Media</button>
+          </article>
+          <article className="rounded-xl border border-border bg-card p-6 shadow-sm">
+            <h2 className="mb-2 text-xl font-semibold">Members Forms</h2>
+            <p className="mb-4 text-sm text-muted-foreground">Create member profiles from CSV or manual entry.</p>
+            <a href="/forms" className="inline-block rounded-md bg-primary px-4 py-2 text-primary-foreground">Open Forms</a>
           </article>
         </section>
       </main>
@@ -451,15 +581,7 @@ export default function AdminPage() {
                   required
                 />
               </label>
-              <label className="grid gap-1 md:col-span-2">
-                <span className="text-sm text-muted-foreground">Time Zone (optional)</span>
-                <input
-                  className="rounded-md border border-border bg-background p-2"
-                  placeholder="e.g., America/Indiana/Indianapolis"
-                  value={timeZone}
-                  onChange={(e) => setTimeZone(e.target.value)}
-                />
-              </label>
+              {/* Time zone fixed to Indianapolis (America/Indiana/Indianapolis) */}
             </div>
           ) : (
             <div className="grid gap-3 md:grid-cols-2">
@@ -589,8 +711,8 @@ export default function AdminPage() {
             )}
           </div>
 
-          <button className="rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground">
-            Create Event
+          <button disabled={evtBusy || !evt.title || (!isAllDay && (!evt.startISO || !evt.endISO)) || (isAllDay && !startDate)} className="rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-60">
+            {evtBusy ? "Saving…" : "Create Event"}
           </button>
           {evtStatus && <p className="text-sm text-muted-foreground">{evtStatus}</p>}
         </form>
@@ -600,48 +722,65 @@ export default function AdminPage() {
       {view === "media" && (
       <section className="grid gap-4 rounded-xl border border-border bg-card p-6 shadow-sm">
         <h2 className="text-2xl font-semibold">Upload Media</h2>
-        <form className="grid gap-3" onSubmit={handleUploadMedia}>
-          {/* Upload destination toggle */}
+  <form className="grid gap-3" onSubmit={handleUploadMedia}>
+          {/* Type toggle: Project vs Workshop */}
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
             <label className="grid gap-1">
-              <span className="text-sm text-muted-foreground">Destination</span>
+              <span className="text-sm text-muted-foreground">Type</span>
               <select
                 className="rounded-md border border-border bg-background p-2"
-                value={uploadMode}
-                onChange={(e) => setUploadMode(e.target.value as any)}
+                value={uploadKind}
+                onChange={(e) => setUploadKind(e.target.value as any)}
               >
-                <option value="blob">Vercel Blob (API storage)</option>
-                <option value="github">GitHub PR (commit to repo)</option>
+                <option value="project">Project</option>
+                <option value="workshop">Workshop</option>
               </select>
             </label>
           </div>
 
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-            {uploadMode === "blob" ? (
-              <label className="grid gap-1">
-                <span className="text-sm text-muted-foreground">Kind</span>
-                <select
-                  className="rounded-md border border-border bg-background p-2"
-                  value={kind}
-                  onChange={(e) => setKind(e.target.value as any)}
-                >
-                  <option value="project">Project</option>
-                  <option value="workshop">Workshop</option>
-                  <option value="other">Other</option>
-                </select>
-              </label>
+            {uploadKind === "project" ? (
+              <div className="grid gap-2">
+                <label className="grid gap-1">
+                  <span className="text-sm text-muted-foreground">Project Slug</span>
+                  <select
+                    className="rounded-md border border-border bg-background p-2"
+                    value={projectSlug}
+                    onChange={(e) => setProjectSlug(e.target.value)}
+                    required
+                  >
+                    <option value="">Select a project…</option>
+                    {projectSlugOptions.map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                  <span className="text-xs text-muted-foreground">Files will be committed under public/projects/&lt;slug&gt;/</span>
+                </label>
+                <div className="text-xs text-muted-foreground">
+                  <button type="button" className="underline" onClick={() => { setInitOpen((v) => !v); setInitStatus(""); }}>Create new project</button>
+                </div>
+              </div>
             ) : (
-              <label className="grid gap-1">
-                <span className="text-sm text-muted-foreground">Project Slug</span>
-                <input
-                  className="rounded-md border border-border bg-background p-2"
-                  value={projectSlug}
-                  onChange={(e) => setProjectSlug(e.target.value)}
-                  placeholder="e.g., smart-watch"
-                  required
-                />
-                <span className="text-xs text-muted-foreground">Files will be committed under public/projects/&lt;slug&gt;/</span>
-              </label>
+              <div className="grid gap-2">
+                <label className="grid gap-1">
+                  <span className="text-sm text-muted-foreground">Workshop Slug</span>
+                  <select
+                    className="rounded-md border border-border bg-background p-2"
+                    value={workshopSlug}
+                    onChange={(e) => setWorkshopSlug(e.target.value)}
+                    required
+                  >
+                    <option value="">Select a workshop…</option>
+                    {workshopSlugOptions.map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                  <span className="text-xs text-muted-foreground">Markdown goes to content/workshops, images to public/workshops/&lt;slug&gt;/</span>
+                </label>
+                <div className="text-xs text-muted-foreground">
+                  <button type="button" className="underline" onClick={() => { setInitOpen((v) => !v); setInitStatus(""); }}>Create new workshop</button>
+                </div>
+              </div>
             )}
             <label className="grid gap-1 md:col-span-2">
               <span className="text-sm text-muted-foreground">Title</span>
@@ -654,6 +793,30 @@ export default function AdminPage() {
             </label>
           </div>
 
+          {initOpen && (
+            <form className="grid gap-2 rounded-md border border-dashed border-border p-3" onSubmit={handleInitSlugSubmit}>
+              <div className="text-sm font-medium">Initialize new {uploadKind}</div>
+              <div className="grid gap-2 md:grid-cols-3">
+                <label className="grid gap-1">
+                  <span className="text-xs text-muted-foreground">Slug</span>
+                  <input className="rounded-md border border-border bg-background p-2" value={initSlug} onChange={(e) => setInitSlug(e.target.value)} placeholder={uploadKind === "project" ? "e.g., smart-watch" : "e.g., intro-to-xyz"} required />
+                </label>
+                <label className="grid gap-1 md:col-span-2">
+                  <span className="text-xs text-muted-foreground">Title (optional)</span>
+                  <input className="rounded-md border border-border bg-background p-2" value={initTitle} onChange={(e) => setInitTitle(e.target.value)} placeholder="Display title" />
+                </label>
+              </div>
+              <label className="grid gap-1">
+                <span className="text-xs text-muted-foreground">Description (optional)</span>
+                <textarea className="min-h-[80px] rounded-md border border-border bg-background p-2" value={initDesc} onChange={(e) => setInitDesc(e.target.value)} />
+              </label>
+              <div className="flex items-center gap-2">
+                <button disabled={initBusy || !initSlug} className="rounded-md border border-border px-3 py-2 text-sm disabled:opacity-60">{initBusy ? "Creating…" : "Create"}</button>
+                {initStatus && <span className="text-xs text-muted-foreground">{initStatus}</span>}
+              </div>
+            </form>
+          )}
+
           <label className="grid gap-1">
             <span className="text-sm text-muted-foreground">Description (optional)</span>
             <textarea
@@ -665,45 +828,33 @@ export default function AdminPage() {
 
           <label className="grid gap-1">
             <span className="text-sm text-muted-foreground">
-              Files {uploadMode === "blob" ? (
-                <>
-                  (images and/or <code>.md</code>)
-                </>
-              ) : (
-                <>
-                  (images, videos, PDFs, markdown, code, CSV, HTML)
-                </>
-              )}
+              Files (images, videos, PDFs, markdown, code, CSV, HTML)
             </span>
             <input
               id="media-files"
               type="file"
-              accept={
-                uploadMode === "blob"
-                  ? "image/*,.md,text/markdown"
-                  : [
-                      "image/*",
-                      "video/mp4",
-                      "video/webm",
-                      "application/pdf",
-                      "text/markdown,.md,.mdx,.markdown",
-                      "text/csv,.csv",
-                      "application/json,.json",
-                      "text/plain,.txt,.log",
-                      "text/html,.html,.htm",
-                      "text/css,.css,.scss",
-                      ".ts,.tsx,.js,.jsx,.py,.c,.cpp,.hpp,.h,.ino,.rs,.go,.java,.kt,.swift,.sh,.bash,.zsh",
-                      ".yaml,.yml,.toml",
-                    ].join(",")
-              }
+              accept={[
+                "image/*",
+                "video/mp4",
+                "video/webm",
+                "application/pdf",
+                "text/markdown,.md,.mdx,.markdown",
+                "text/csv,.csv",
+                "application/json,.json",
+                "text/plain,.txt,.log",
+                "text/html,.html,.htm",
+                "text/css,.css,.scss",
+                ".ts,.tsx,.js,.jsx,.py,.c,.cpp,.hpp,.h,.ino,.rs,.go,.java,.kt,.swift,.sh,.bash,.zsh",
+                ".yaml,.yml,.toml",
+              ].join(",")}
               multiple
               onChange={(e) => setFiles(e.target.files)}
               className="rounded-md border border-border bg-background p-2"
             />
           </label>
 
-          <button className="rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground">
-            Upload
+          <button disabled={mediaBusy || !title || !files || files.length === 0 || !((uploadKind === "project" && projectSlug) || (uploadKind === "workshop" && workshopSlug))} className="rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground disabled:opacity-60">
+            {mediaBusy ? "Uploading…" : "Upload"}
           </button>
           {mediaStatus && <p className="text-sm text-muted-foreground">{mediaStatus}</p>}
           {prUrl && (

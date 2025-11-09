@@ -16,19 +16,19 @@ export type Project = {
 };
 
 export const projects: Project[] = [
-  {
-    slug: "agrovolo",
-    title: "Agrovolo (Aerial Farm Imaging)",
-    description:
-      "Drone that captures field images for farmers; focus on control, wireless links, and UI.",
-    technologies: ["Control Systems", "Wireless", "PCB", "High-Speed", "UI"],
-    status: "Active",
-    icon: Camera,
-    image: "/projects/agrovolo-1.jpg",
-    pm: "PM: Tim Ausec",
-    semester: "Fall 2025",
-    readmeUrl: "/projects/agrovolo", // local details page
-  },
+  // {
+  //   slug: "agrovolo",
+  //   title: "Agrovolo (Aerial Farm Imaging)",
+  //   description:
+  //     "Drone that captures field images for farmers; focus on control, wireless links, and UI.",
+  //   technologies: ["Control Systems", "Wireless", "PCB", "High-Speed", "UI"],
+  //   status: "Active",
+  //   icon: Camera,
+  //   image: "/projects/agrovolo-1.jpg",
+  //   pm: "PM: Tim Ausec",
+  //   semester: "Fall 2025",
+  //   readmeUrl: "/projects/agrovolo", // local details page
+  // },
   {
     slug: "berryweather",
     title: "BerryWeather (IoT Weather Station)",
