@@ -379,6 +379,7 @@ export default function AdminPage() {
       const slug = initSlug.trim();
       if (!slug) {
         setInitStatus("Please enter a slug.");
+        setInitBusy(false);
         return;
       }
       const form = new FormData();
@@ -387,13 +388,17 @@ export default function AdminPage() {
       if (initTitle.trim()) form.set("title", initTitle.trim());
       if (initDesc.trim()) form.set("description", initDesc.trim());
       const base = apiBase || "";
+      console.log(`[Init] Creating ${uploadKind} with slug: ${slug}`);
+      console.log(`[Init] Calling: ${base}/api/media/init-gh`);
       const res = await fetch(`${base}/api/media/init-gh`, {
         method: "POST",
         headers: token ? { authorization: `Bearer ${token}` } : {},
         body: form,
       });
+      console.log(`[Init] Response status: ${res.status}`);
       let body: any = null;
       try { body = await res.json(); } catch { body = await res.text(); }
+      console.log(`[Init] Response body:`, body);
       if (!res.ok) {
         const msg = typeof body === "string" ? body : body?.error || body?.detail || res.statusText;
         throw new Error(`${res.status} ${msg}`);
@@ -413,6 +418,7 @@ export default function AdminPage() {
       setInitTitle("");
       setInitDesc("");
     } catch (err: any) {
+      console.error(`[Init] Error:`, err);
       setInitStatus(`Error: ${err.message || String(err)}`);
     } finally {
       setInitBusy(false);
