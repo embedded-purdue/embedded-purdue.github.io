@@ -1,7 +1,112 @@
-<section style="max-width:1200px;margin:auto">
-  <h2>WeatherBerry Live Dashboard</h2>
+<!-- Load Geist Sans -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.0/index.min.css"
+/>
+
+<style>
+  :root {
+    --bw-font: "Geist Sans", "GeistSans Fallback", system-ui, -apple-system,
+               BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+               sans-serif;
+
+    --bw-text-size: 18px;
+    --bw-bg: #050505;
+    --bw-text: #f5f5f5;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* hide scrollbars */
+    background: var(--bw-bg);
+    font-family: var(--bw-font);
+    font-size: var(--bw-text-size);
+  }
+
+  /* OUTER: full viewport, flex column */
+  .berryweather-dashboard {
+    width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: var(--bw-bg);
+    color: var(--bw-text);
+    font-family: var(--bw-font);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* INNER: padding only around header */
+  .berryweather-dashboard__inner {
+    padding: 1.25rem 1.25rem 1rem 1.25rem;
+    box-sizing: border-box;
+  }
+
+  /* HEADER */
+  .berryweather-dashboard__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .berryweather-dashboard__logo {
+    height: 48px;
+    width: auto;
+  }
+
+  .berryweather-dashboard__title {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--bw-text);
+    letter-spacing: -0.2px;
+  }
+
+  /* IFRAME: fills remaining height, edge-to-edge */
+  .dashboard-frame {
+    flex: 1 1 auto;   /* use all remaining vertical space */
+    width: 100vw;     /* flush with viewport left/right */
+    border: none;
+    display: block;
+  }
+
+  /* Mobile tweaks */
+  @media (max-width: 768px) {
+    .berryweather-dashboard__inner {
+      padding: 1rem;
+    }
+
+    .berryweather-dashboard__logo {
+      height: 40px;
+    }
+
+    .berryweather-dashboard__title {
+      font-size: 24px;
+    }
+  }
+</style>
+
+<section class="berryweather-dashboard">
+  <div class="berryweather-dashboard__inner">
+    <div class="berryweather-dashboard__header">
+      <img
+        src="/logo.svg"
+        class="berryweather-dashboard__logo"
+        alt="Embedded Systems at Purdue logo"
+      />
+      <h2 class="berryweather-dashboard__title">BerryWeather Live Dashboard</h2>
+    </div>
+  </div>
+
   <iframe
-    src="https://grafana.yaoy.io/api/hassio_ingress/f5AFWJtDCKFrXsQPUQeUnMkbPPSzub4mln_WcnAgUSk/public-dashboards/16333bd7181d43f68c072d38cbf50bc4?from=now-3h&to=now&timezone=browser"
-    width="100%" height="900" frameborder="0" loading="lazy" referrerpolicy="no-referrer">
-  </iframe>
+    id="bw-frame"
+    class="dashboard-frame"
+    src="https://grafana.yaoy.io/api/hassio_ingress/f5AFWJtDCKFrXsQPUQeUnMkbPPSzub4mln_WcnAgUSk/public-dashboards/b0c30b7ecd454bdeabac082e4fa8a7fe?from=now-3h&to=now&timezone=browser"
+    loading="lazy"
+    referrerpolicy="no-referrer"
+  ></iframe>
 </section>
