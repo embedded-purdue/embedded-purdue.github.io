@@ -1,5 +1,5 @@
 ---
-title: "Google AIY Vision Kit Workshop"
+title: "Google AIY Embedded Computer Vision Workshop"
 slug: "vision-kit-workshop"
 date: "2026-02-16T18:30:00-05:00"
 location: "BHEE 117"
