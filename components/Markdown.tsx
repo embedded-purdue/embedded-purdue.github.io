@@ -70,7 +70,7 @@ export default function Markdown({
                 alt={alt as string}
                 loading="lazy"
                 draggable={false}
-                className="my-4 rounded-lg border bg-muted/20 max-w-full h-auto"
+                className="my-6 mx-auto rounded-lg border bg-muted/20 max-w-[75%] h-auto block"
                 {...props}
               />
             );
@@ -87,29 +87,46 @@ export default function Markdown({
           },
 
           // ---------- CODE BLOCKS / INLINE CODE ----------
+          // Pre component handles code blocks to avoid hydration errors
+          pre({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) {
+            // Extract language from code child if present
+            const codeChild = React.Children.toArray(children).find(
+              (child: any) => child?.type === 'code'
+            ) as any;
+
+            const lang = codeChild?.props?.className
+              ? /language-(\w+)/.exec(codeChild.props.className)?.[1]
+              : null;
+
+            return (
+              <div className="relative my-6 group not-prose">
+                {lang && (
+                  <div className="absolute top-3 right-3 text-xs text-muted-foreground bg-background/90 backdrop-blur-sm px-3 py-1.5 rounded-md border font-mono uppercase tracking-wide shadow-sm z-10">
+                    {lang}
+                  </div>
+                )}
+                <pre className="bg-[#1e1e1e] border border-gray-700 rounded-xl p-4 overflow-x-auto shadow-sm group-hover:shadow-md transition-all duration-200" {...props}>
+                  {children}
+                </pre>
+              </div>
+            );
+          },
+
           code({ inline, className, children, ...props }: CodeProps) {
-            const lang = /language-(\w+)/.exec(className || "")?.[1];
-            if (!inline) {
+            // Only handle inline code here; block code is handled by pre
+            if (inline) {
               return (
-                <div className="relative my-6 group not-prose">
-                  {lang && (
-                    <div className="absolute top-3 right-3 text-xs text-muted-foreground bg-background/90 backdrop-blur-sm px-3 py-1.5 rounded-md border font-mono uppercase tracking-wide shadow-sm">
-                      {lang}
-                    </div>
-                  )}
-                  <pre className="bg-muted/50 border rounded-xl p-4 overflow-hidden shadow-sm group-hover:shadow-md transition-all duration-200 whitespace-pre-wrap break-words">
-                    <code className="text-sm font-mono leading-relaxed" {...props}>
-                      {children}
-                    </code>
-                  </pre>
-                </div>
+                <code
+                  className="bg-muted/70 px-1.5 py-0.5 rounded-md text-sm font-mono border inline-block max-w-full overflow-x-auto whitespace-nowrap align-middle"
+                  {...props}
+                >
+                  {children}
+                </code>
               );
             }
+            // For block code, just render the code element (pre wrapper handles styling)
             return (
-              <code
-                className="bg-muted/70 px-1.5 py-0.5 rounded-md text-sm font-mono border inline-block max-w-full overflow-x-auto whitespace-nowrap align-middle"
-                {...props}
-              >
+              <code className="text-sm font-mono leading-relaxed" {...props}>
                 {children}
               </code>
             );
@@ -202,9 +219,23 @@ export default function Markdown({
             );
           },
 
-          // Also ensure paragraphs wrap nicely
-          p(p) {
-            return <p className="my-4 leading-7 break-words" {...p} />;
+          // Unwrap paragraphs containing single block-level children
+          p(props) {
+            const { children } = props;
+            const childArray = React.Children.toArray(children);
+
+            // If single child and it's a block element, unwrap it
+            if (childArray.length === 1) {
+              const child = childArray[0] as any;
+              // Check for our custom div wrappers or pre elements
+              if (child?.props?.className?.includes('not-prose') ||
+                child?.props?.className?.includes('relative my-6') ||
+                child?.type === 'pre') {
+                return <>{children}</>;
+              }
+            }
+
+            return <p className="my-4 leading-7 break-words" {...props} />;
           },
         }}
       >
