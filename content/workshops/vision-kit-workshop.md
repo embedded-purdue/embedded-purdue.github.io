@@ -403,28 +403,26 @@ Wait ~10 seconds until the green LED stops flashing. The SSH connection will clo
 - Clean up your workspace
 - Let us know if your kit is damaged
 
----
-
 ## Troubleshooting
 
-**SSH connection refused?**
-- Wait longer for the Pi to boot (try 3-5 minutes)
-- Check the USB cable is in the **Data** port, not PWR
-- Try `ssh pi@raspberrypi` instead of `.local`
+### SSH Connection Issues
+- **Connection refused?** Wait 3-5 minutes for the Pi to fully boot
+- **Can't connect?** Check the USB cable is in the **Data** port, not PWR
+- **Still not working?** Try `ssh pi@raspberrypi` instead of `.local`
 
-**Model not working?**
-- Make sure you selected **Quantized** when exporting
-- Check that `model.tflite` and `labels.txt` are in the home directory (`~/`)
-- Verify the TFLite runtime installed: `pip3 list | grep tflite`
+### Model Issues
+- **Model not loading?** Verify you selected **Quantized** when exporting from Teachable Machine
+- **Files not found?** Check that `model.tflite` and `labels.txt` are in the home directory (`~/`)
+- **Import errors?** Verify TFLite runtime is installed: `pip3 list | grep tflite`
 
-**Camera not found?**
-- Make sure the ribbon cable is fully inserted
-- Check that you stopped the joy_detection_demo
+### Hardware Issues
+- **Camera not detected?** Ensure the ribbon cable is fully inserted in both connectors
+- **Camera in use?** Stop the background demo: `sudo systemctl stop joy_detection_demo`
 
-**Low accuracy?**
-- Capture more training images (aim for 300+ per class)
-- Add more variety in your training data
-- Make sure lighting conditions match between training and deployment
+### Performance Issues
+- **Low accuracy?** Capture more training images (aim for 300+ per class)
+- **Inconsistent results?** Add more variety in backgrounds, angles, and lighting
+- **Works in training but not deployment?** Match lighting conditions between training and real-world use
 
 ---
 
