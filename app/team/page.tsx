@@ -144,7 +144,7 @@ const projectManagers: Member[] = [
   },
   {
     name: "Garima Thapliyal",
-    role: "PM of Eyecue",
+    role: "PM • EyeCue",
     linkedin: "https://www.linkedin.com/in/garimat9606",
     tags: [],
     image: "/team/garima.jpg"
