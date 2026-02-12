@@ -184,16 +184,21 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <h2 className="mb-4 text-2xl font-semibold">Events & Workshops</h2>
 
-          <div className="overflow-hidden rounded-xl border bg-background">
+          <div className="overflow-hidden rounded-xl border bg-black">
             <iframe
               title="Embedded Systems @ Purdue calendar"
-              src="https://calendar.google.com/calendar/embed?src=embedded%40purdue.edu&mode=MONTH&ctz=America%2FIndiana%2FIndianapolis&showTitle=0&showTabs=0&showPrint=0&showCalendars=0"
-              style={{ border: 0 }}
+              src="https://calendar.google.com/calendar/embed?src=embedded%40purdue.edu&ctz=America%2FIndiana%2FIndianapolis&showCalendars=0"
+              style={{
+                border: 0,
+                filter: "invert(0.90) hue-rotate(180deg)", //this kinda works? may be better option to get it into a yellow hue than blue hue
+              }}
               width="100%"
               height="600"
               loading="lazy"
             />
           </div>
+
+
 
           <div className="mt-4 flex flex-wrap gap-2">
             <Button variant="outline" asChild>
