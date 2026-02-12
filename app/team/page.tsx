@@ -28,116 +28,193 @@ const BLUR_DATA_URL =
 /* ---------- PEOPLE (define these BEFORE sections) ---------- */
 const executives: Member[] = [
   {
-    name: "Alex Aylward",
+    name: "Thomas Concannon",
     role: "President",
-    image: "/team/alex.jpeg",
-    email: "mailto:alex@purdue.edu",
-    linkedin: "https://www.linkedin.com/in/alexaylward",
-  },
-  {
-    name: "Trevor Antle",
-    role: "Vice President",
-    image: "/team/trevor.jpg",
-    email: "mailto:trevor@purdue.edu",
-    linkedin: "https://www.linkedin.com/in/trevor-antle",
+    linkedin: "https://www.linkedin.com/in/thomascon/",
+    tags: [],
+    image: "/team/thomas.jpg"
   },
   {
     name: "Aakash Bathini",
-    role: "Treasurer",
-    image: "/team/aakash.jpg",
-    email: "mailto:aakash@purdue.edu",
-    linkedin: "https://www.linkedin.com/in/aakashbathini",
-  },
-  {
-    name: "Connor Powell",
-    role: "Projects Manager",
-    image: "/team/connor.jpg",
-    email: "mailto:connor@purdue.edu",
-    linkedin: "https://www.linkedin.com/in/connorpowell",
-  },
-  {
-    name: "Neal Singh",
-    role: "Professional Development",
-    image: "/team/neal.jpg",
-    email: "mailto:neal@purdue.edu",
-    linkedin: "https://www.linkedin.com/in/nealsingh",
-  },
-]
-
-const chairs: Member[] = [
-  {
-    name: "Astha Patel",
-    role: "Social Media Chair",
-    image: "/team/logo.png",
-  },
-  {
-    name: "Carson Weiler",
-    role: "Graphics Designer",
-    image: "/team/logo.png",
-  },
-  {
-    name: "Geuntae",
-    role: "Photographer",
-    image: "/team/logo.png",
-  },
-  {
-    name: "Jain Iftesam",
-    role: "Marketing Chair",
-    image: "/team/jain.jpeg",
+    role: "Vice President",
+    linkedin: "https://www.linkedin.com/in/aakashbathini/",
+    tags: [],
+    image: "/team/aakash.jpg"
   },
   {
     name: "Patrick Jordan",
-    role: "Fundraisin Chair",
-    image: "/team/logo.png",
+    role: "Treasurer",
+    tags: [],
+    image: "/team/patrick.jpg"
   },
   {
-    name: "Peter Konst",
-    role: "Outreach Chair",
-    image: "/team/logo.png",
-  },
-  {
-    name: "Srihari CS",
-    role: "Fundraising CHair",
-    image: "/team/logo.png",
-  },
-  {
-    name: "Tom Concannon",
-    role: "Events Chair",
-    image: "/team/tom.jpg",
-  },
-]
-
-const projectManagers: Member[] = [
-  {
-    name: "Tim Ausec",
-    role: "PM • Agrovolo",
-    github: "https://github.com/",
-    linkedin: "https://www.linkedin.com/",
-    image: "/team/logo.png",
-    tags: ["Control", "RF"],
+    name: "Ryan Wurtz",
+    role: "Executive Software Engineer",
+    linkedin: "https://www.linkedin.com/in/ryan-wurtz/",
+    tags: [],
+    image: "/team/ryan.jpg"
   },
   {
     name: "Connor Powell",
-    role: "PM • BerryWeather",
-    linkedin: "https://www.linkedin.com/",
-    image: "/team/connor.jpg",
-    tags: ["Sensors", "Power"],
+    role: "Executive Hardware Engineer",
+    linkedin: "https://www.linkedin.com/in/connorzanepowell/",
+    tags: [],
+    image: "/team/connor.jpg"
+  }
+];
+
+
+const chairs: Member[] = [
+  {
+    name: "Arman Islam",
+    role: "Outreach Director",
+    linkedin: "https://www.linkedin.com/in/armanislam2007/",
+    tags: [],
+    image: "/team/arman.jpg"
   },
   {
-    name: "Varun",
-    role: "PM • HarmoniCore (FPGA DSP)",
-    github: "https://github.com/",
-    image: "/team/logo.png",
-    tags: ["FPGA", "DSP"],
+    name: "Astha Patel",
+    role: "Public Relations Director",
+    linkedin: "https://www.linkedin.com/in/astha-p/",
+    tags: [],
+    image: "/team/astha.jpg"
   },
   {
-    name: "Katherine M",
+    name: "Benji Emini",
+    role: "Workshops Director",
+    linkedin: "https://www.linkedin.com/in/benjamin-emini/",
+    tags: [],
+    image: "/team/benji.jpg"
+  },
+  {
+    name: "Gillian Hanley",
+    role: "Web Director",
+    linkedin: "https://www.linkedin.com/in/gillian-hanley-a77024242/",
+    tags: [],
+    image: "/team/gillian.jpg"
+  },
+  {
+    name: "Magdalena Gonzalez Navarrine",
+    role: "Events Director",
+    tags: [],
+    image: "/team/magdalena.jpg"
+  },
+  {
+    name: "Anish Sarkar",
+    role: "Photographer",
+    tags: [],
+    image: "/team/anish.jpg"
+  },
+];
+
+
+const projectManagers: Member[] = [
+  // BB-8
+  {
+    name: "Hayden Logan",
+    role: "PM • BB-8",
+    linkedin: "https://linkedin.com/in/hayden-logan-2a539a261",
+    tags: [],
+    image: "/team/hayden.jpg"
+  },
+
+  // Embedded Tetris
+  {
+    name: "Mahdi El Husseini",
+    role: "PM • Embedded Tetris",
+    linkedin: "https://www.linkedin.com/in/mahdi-el-husseini",
+    image: "/team/mahdi.jpg",
+    tags: [],
+  },
+  {
+    name: "Sabastian Hamilton",
+    role: "PM • Embedded Tetris",
+    linkedin: "https://www.linkedin.com/in/sabastianhamilton",
+    image: "/team/sabastian.jpg",
+    tags: [],
+  },
+
+  // EyeCue
+  {
+    name: "Aarushi Deshwal",
     role: "PM • EyeCue",
-    linkedin: "https://www.linkedin.com/",
-    image: "/team/logo.png",
-    tags: ["CV", "Accessibility"],
+    linkedin: "https://www.linkedin.com/in/aarushi-deshwal-42450b328/",
+    image: "/team/aarushi.jpg",
+    tags: [],
   },
-]
+  {
+    name: "Garima Thapliyal",
+    role: "PM of Eyecue",
+    linkedin: "https://www.linkedin.com/in/garimat9606",
+    tags: [],
+    image: "/team/garima.jpg"
+  },
+  {
+    name: "Katherine Ma",
+    role: "PM • EyeCue",
+    image: "/team/katherine.jpg",
+    tags: [],
+  },
+  {
+    name: "Shruthi Arunkumar",
+    role: "PM • EyeCue",
+    linkedin: "https://www.linkedin.com/in/shruthi-arunkumar",
+    image: "/team/shruthi.jpg",
+    tags: [],
+  },
+
+  // HarmoniCore
+  {
+    name: "Sam Morales",
+    role: "PM • HarmoniCore",
+    linkedin: "https://www.linkedin.com/in/samorales03/",
+    image: "/team/samuel.jpg",
+    tags: [],
+  },
+
+  // Holo-Adapt
+  {
+    name: "Neal Singh",
+    role: "PM • Holo-Adapt",
+    linkedin: "https://www.linkedin.com/in/neal-ssingh",
+    tags: [],
+    image: "/team/neal.jpg"
+  },
+
+  // MicroPiano
+  {
+    name: "Alex Forrest",
+    role: "PM • MicroPiano",
+    linkedin: "https://www.linkedin.com/in/alex-forrest-ee/",
+    image: "/team/alex.jpg",
+    tags: [],
+  },
+  {
+    name: "Alexander Rizzi",
+    role: "PM • MicroPiano",
+    linkedin: "https://www.linkedin.com/in/alexander-rizzi/",
+    image: "/team/alexander.jpg",
+    tags: [],
+  },
+
+  // SlayterHIL
+  {
+    name: "Amber Khauv",
+    role: "PM • SlayterHIL",
+    linkedin: "https://www.linkedin.com/in/akkhauv/",
+    // image: "/team/amber.jpg",
+    tags: [],
+  },
+  {
+    name: "Nikhil Chaudhary",
+    role: "PM • SlayterHIL",
+    linkedin: "https://www.linkedin.com/in/nikhilmchaudhary/",
+    tags: [],
+    image: "/team/nikhil.jpg"
+  }
+];
+
+
 
 /* ---------- SECTIONS (now safe) ---------- */
 const sections: Section[] = [
@@ -148,12 +225,12 @@ const sections: Section[] = [
 
 /* ---------- UI ---------- */
 function MemberCard({ m }: { m: Member }) {
-  const src = m.image || "/team/logo.png";
+  const src = m.image ? m.image : "/team/logo.png";
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-lg">
       {/* Portrait media box */}
-      <div className="relative aspect-[4/5] bg-muted/50 border-b">
+      <div className="relative aspect-[5/5] bg-muted/50 border-b">
         <Image
           src={src}
           alt={m.name}
@@ -245,7 +322,7 @@ export default function TeamPage() {
 
       {/* Sections */}
       <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto space-y-16">
+        <div className="max-w-7xl mx-auto space-y-16 p-14">
           {sections.map((s) => {
             const Icon = s.icon
             return (
@@ -254,7 +331,7 @@ export default function TeamPage() {
                   <Icon className="w-6 h-6 text-primary" />
                   <h2 className="text-2xl font-semibold">{s.title}</h2>
                 </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                   {s.members.map((m) => (
                     <MemberCard key={`${s.title}-${m.name}`} m={m} />
                   ))}
