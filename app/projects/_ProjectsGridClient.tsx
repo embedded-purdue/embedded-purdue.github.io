@@ -59,9 +59,8 @@ function FilterChip({ label, href, active }: { label: string; href: string; acti
   return (
     <Link
       href={href}
-      className={`rounded-full border px-3 py-1 text-sm transition-colors ${
-        active ? "border-primary text-primary" : "text-muted-foreground hover:text-foreground"
-      }`}
+      className={`rounded-full border px-3 py-1 text-sm transition-colors ${active ? "border-primary text-primary" : "text-muted-foreground hover:text-foreground"
+        }`}
     >
       {label}
     </Link>
@@ -151,10 +150,16 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
 
             const CardInner = (
               <Card className="h-full overflow-hidden transition-all hover:shadow-md">
-                {img && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={img} alt={`${p.title} cover`} className="h-40 w-full object-cover" loading="lazy" />
-                )}
+                <img
+                  src={img || "/images/fallback.jpg"}
+                  alt={`${p.title} cover`}
+                  className="h-40 w-full object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null; // prevents infinite loop
+                    e.currentTarget.src = "/projects/logo.png";
+                  }}
+                />
                 <CardHeader>
                   <div className="mb-2 flex items-center justify-between">
                     <Badge variant={p.status === "Active" ? "default" : p.status === "Completed" ? "secondary" : "outline"}>
