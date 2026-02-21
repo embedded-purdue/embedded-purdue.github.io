@@ -66,7 +66,7 @@ const chairs: Member[] = [
   { name: "Benji Emini", role: "Workshops Director", linkedin: "https://www.linkedin.com/in/benjamin-emini/", tags: [], image: benjiImg },
   { name: "Gillian Hanley", role: "Web Director", linkedin: "https://www.linkedin.com/in/gillian-hanley-a77024242/", tags: [], image: gillianImg },
   { name: "Magdalena Gonzalez Navarrine", role: "Events Director", tags: [], image: magdalenaImg },
-  { name: "Anish Sarkar", role: "Photographer", tags: [], image: anishImg },
+  { name: "Anish Sarkar", role: "Photographer", linkedin: "https://www.linkedin.com/in/sarkar-anish/", tags: [], image: anishImg },
 ];
 
 const projectManagers: Member[] = [
@@ -75,7 +75,7 @@ const projectManagers: Member[] = [
   { name: "Sabastian Hamilton", role: "PM • Embedded Tetris", linkedin: "https://www.linkedin.com/in/sabastianhamilton", image: sabastianImg, tags: [] },
   { name: "Aarushi Deshwal", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/aarushi-deshwal-42450b328/", image: aarushiImg, tags: [] },
   { name: "Garima Thapliyal", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/garimat9606", image: garimaImg, tags: [] },
-  { name: "Katherine Ma", role: "PM • EyeCue", image: katherineImg, tags: [] },
+  { name: "Katherine Ma", role: "PM • EyeCue", image: katherineImg, linkedin:"https://www.linkedin.com/in/katheriinema/", tags: [] },
   { name: "Shruthi Arunkumar", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/shruthi-arunkumar", image: shruthiImg, tags: [] },
   { name: "Sam Morales", role: "PM • HarmoniCore", linkedin: "https://www.linkedin.com/in/samorales03/", image: samuelImg, tags: [] },
   { name: "Neal Singh", role: "PM • Holo-Adapt", linkedin: "https://www.linkedin.com/in/neal-ssingh", image: nealImg, tags: [] },
