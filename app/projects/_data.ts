@@ -4,11 +4,11 @@ import { Cpu, Zap, Wifi, Camera, Car, Watch } from "lucide-react";
 export type Project = {
   slug: string;
   title: string;
-  description: string;
+  description?: string;
   technologies: string[];
   status: "Active" | "Planned" | "Completed";
-  icon: any;
-  image: string;
+  icon?: any;
+  image?: string;
   pm?: string;
   semester?: string;
   /** Where “Read more” should go (README.md or long-form doc) */
@@ -35,7 +35,7 @@ export const projects: Project[] = [
     description:
       "Sensor-equipped wireless weather station on Pi/MCU with power-conscious design.",
     technologies: ["Raspberry Pi OS", "Sensors", "Embedded C", "Schematic/PCB", "Power"],
-    status: "Active",
+    status: "Completed",
     icon: Wifi,
     image: "/projects/logo.png",
     pm: "PM: Connor Powell",
@@ -112,7 +112,7 @@ export const projects: Project[] = [
     description:
       "Club website + workflow automation for media intake and requests.",
     technologies: ["TypeScript", "Astro/Next", "Tailwind", "APIs", "Automation"],
-    status: "Active",
+    status: "Completed",
     icon: Cpu,
     image: "/projects/digital-ops-1.jpg",
     pm: "PM: Trevor Antle",
@@ -125,7 +125,7 @@ export const projects: Project[] = [
     description:
       "A smart watch for the people! Build your own wearable with ESP32, sensors, and custom firmware.",
     technologies: ["ESP32", "PCB Design", "Data Storage", "Sensors", "Wireless", "App Design", "Watch Mechanics"],
-    status: "Active",
+    status: "Completed",
     icon: Watch,
     image: "/projects/logo.png",
     pm: "PM: Patrick Shea",
