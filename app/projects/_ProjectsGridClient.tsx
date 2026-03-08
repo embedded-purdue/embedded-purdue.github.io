@@ -148,7 +148,7 @@ function TechCheckboxDropdown({
 
 // Shared classes for all dropdown trigger buttons — keeps status, tech, and semester visually identical
 const TRIGGER_CLS =
-  "flex items-center gap-2 rounded-md border bg-background px-3 py-2 text-sm shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-ring w-40";
+  "flex items-center gap-2 rounded-md border bg-background px-3 py-2 text-sm shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-ring w-full sm:w-40";
 
 // Shared label span inside every trigger — truncates long values with ellipsis
 const TRIGGER_LABEL_CLS = "flex-1 text-left truncate overflow-hidden";
@@ -309,7 +309,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
   return (
     <>
       {/* Search + Filters */}
-      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
         {/* Search — controlled by URL param, updates on every keystroke */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
