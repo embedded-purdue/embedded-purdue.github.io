@@ -1,30 +1,20 @@
 // app/projects/page.tsx
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { projects as RAW } from "./_data";
+import type { Project } from "./_data";
 import ProjectsGridClient from "./_ProjectsGridClient";
 
 // Force static; do NOT read searchParams on the server
 export const dynamic = "error";
 export const revalidate = false;
 
-type SafeProject = {
-  slug: string;
-  title: string;
-  description?: string;
-  image?: string;
-  status: string;
-  technologies: string[];
-  pm?: string;
-  semester?: string;
-  readmeUrl?: string;
-};
+type SafeProject = Omit<Project, "icon">;
 
 // Strip out non-serializable fields like icon components
 function sanitizeProjects(): SafeProject[] {
-  return RAW.map((p: any) => ({
+  return RAW.map((p) => ({
     slug: p.slug,
     title: p.title,
     description: p.description,
