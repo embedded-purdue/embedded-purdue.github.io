@@ -1,7 +1,7 @@
 ---
 title: "Reverse Engineering"
 slug: "reverse-engineering"
-date: "2026-3-11T18:00:00-07:00"
+date: "2026-03-11T18:00:00-07:00"
 location: "ME G061"
 summary: "This workshop will involve dumping the data stored in an EEPROM and interpretting it to put back together a lost file."
 tags: ["c++", "c", "microcontrollers", "intermediate", "esp32", "python"]
