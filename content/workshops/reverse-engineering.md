@@ -1,7 +1,7 @@
 ---
 title: "Reverse Engineering"
 slug: "reverse-engineering"
-date: "2026-3-11T11:00:00-07:00"
+date: "2026-3-11T18:00:00-07:00"
 location: "ME G061"
 summary: "This workshop will involve dumping the data stored in an EEPROM and interpretting it to put back together a lost file."
 tags: ["c++", "c", "microcontrollers", "intermediate", "esp32", "python"]
@@ -34,26 +34,18 @@ Use AI, the internet, and your peers to your advantage!
 ### Task 0: Environment Setup
 
 If you do not already, install the arduino IDE using this
-[guide](https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE) and follow the steps to install on your personal device.
+[guide](https://support.arduino.cc/hc/en-us/articles/360019833020-Download-and-install-Arduino-IDE) and follow the steps to install on your personal device. Then, follow the steps below.
+
+- In the **Boards Manager** window (the second icon from the top on the left side pannel), type **ESP32** in the search bar. Click the **Install** button to start the  installation process. This will download and install the ESP32 board package.
+- Connect the ESP32 to your computer via the USB cable provided in your kit. If you do not have a USB Type-A port on your laptop, please see us at the front and we will provide you with a different cable or adapter.
+- Navigate to **Tools -> Board -> esp32** (the tools tab is in your toolbar), and select **ESP32 Dev Module**.
+- If your ESP32 is connected to your laptop, you can choose the correct port by clicking on **Tools -> Port**.
+- You are now ready to upload code to your board!
 
 ---
 
-### Task 1: H
+### Task 1: Extract the Data
 To program the ESP32 microcontroller, we first need to install the ESP32 board package in the Arduino IDE. A board package is a collection of software files and configurations that allow the Arduino IDE to recognize and compile code specifically for a given microcontroller or development board.
-
-1. **Install the ESP32 Board**
-   - In the **Boards Manager** window (the second icon from the top on the left side pannel), type **ESP32** in the search bar. Click the **Install** button to start the  installation process. This will download and install the ESP32 board package.
-
-2. **Connect to the Board**
-
-   ![esp32](/workshops/microcontroller-esp.jpg)
-
-   *Find the ***ESP32 microcontroller*** in your kit*
-
-   - Connect the ESP32 to your computer via the USB cable provided in your kit. If you do not have a USB Type-A port on your laptop, please see us at the front and we will provide you with a different cable or adapter.
-   - Navigate to **Tools -> Board -> esp32** (the tools tab is in your toolbar), and select **ESP32 Dev Module**.
-   - If your ESP32 is connected to your laptop, you can choose the correct port by clicking on **Tools -> Port**.
-   - You are now ready to upload code to your board!
 
 ---
 
