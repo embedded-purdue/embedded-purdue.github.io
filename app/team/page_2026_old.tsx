@@ -32,7 +32,6 @@ import nealImg from "../../public/team/neal.jpg";
 import alexImg from "../../public/team/alex.jpg";
 import alexanderImg from "../../public/team/alexander.jpg";
 import nikhilImg from "../../public/team/nikhil.jpg";
-import gautamImg from "../../public/team/gautam.jpg";
 
 type Member = {
   name: string;
@@ -54,23 +53,42 @@ const FALLBACK_IMG = "/team/logo.png";
 
 /* ---------- PEOPLE ---------- */
 const executives: Member[] = [
-  { name: "Arman Islam", role: "President", linkedin: "https://www.linkedin.com/in/thomascon/", tags: [], image: armanImg },
-  { name: "Astha Patel", role: "Vice President", linkedin: "https://www.linkedin.com/in/astha-p/", tags: [], image: asthaImg },
+  { name: "Thomas Concannon", role: "President", linkedin: "https://www.linkedin.com/in/thomascon/", tags: [], image: thomasImg },
+  { name: "Aakash Bathini", role: "Vice President", linkedin: "https://www.linkedin.com/in/aakashbathini/", tags: [], image: aakashImg },
   { name: "Patrick Jordan", role: "Treasurer", tags: [], image: patrickImg },
-  { name: "Gautam Aravindan", role: "Development Engineer", linkedin: "https://www.linkedin.com/in/gautamaravindan/", tags: [], image: gautamImg },
-  { name: "Mahdi El Husseini", role: "Executive Engineer", linkedin: "https://www.linkedin.com/in/mahdi-el-husseini/", tags: [], image: mahdiImg },
+  { name: "Ryan Wurtz", role: "Executive Software Engineer", linkedin: "https://www.linkedin.com/in/ryan-wurtz/", tags: [], image: ryanImg },
+  { name: "Connor Powell", role: "Executive Hardware Engineer", linkedin: "https://www.linkedin.com/in/connorzanepowell/", tags: [], image: connorImg },
 ];
 
-const chairs: Member[] = [];
+const chairs: Member[] = [
+  { name: "Arman Islam", role: "Outreach Director", linkedin: "https://www.linkedin.com/in/armanislam2007/", tags: [], image: armanImg },
+  { name: "Astha Patel", role: "Public Relations Director", linkedin: "https://www.linkedin.com/in/astha-p/", tags: [], image: asthaImg },
+  { name: "Benji Emini", role: "Workshops Director", linkedin: "https://www.linkedin.com/in/benjamin-emini/", tags: [], image: benjiImg },
+  { name: "Gillian Hanley", role: "Web Director", linkedin: "https://www.linkedin.com/in/gillian-hanley-a77024242/", tags: [], image: gillianImg },
+  { name: "Magdalena Gonzalez Navarrine", role: "Events Director", tags: [], image: magdalenaImg },
+  { name: "Anish Sarkar", role: "Photographer", linkedin: "https://www.linkedin.com/in/sarkar-anish/", tags: [], image: anishImg },
+];
 
 const projectManagers: Member[] = [
+  { name: "Hayden Logan", role: "PM • BB-8", linkedin: "https://linkedin.com/in/hayden-logan-2a539a261", tags: [], image: haydenImg },
+  { name: "Mahdi El Husseini", role: "PM • Embedded Tetris", linkedin: "https://www.linkedin.com/in/mahdi-el-husseini", image: mahdiImg, tags: [] },
+  { name: "Sabastian Hamilton", role: "PM • Embedded Tetris", linkedin: "https://www.linkedin.com/in/sabastianhamilton", image: sabastianImg, tags: [] },
+  { name: "Aarushi Deshwal", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/aarushi-deshwal-42450b328/", image: aarushiImg, tags: [] },
+  { name: "Garima Thapliyal", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/garimat9606", image: garimaImg, tags: [] },
+  { name: "Katherine Ma", role: "PM • EyeCue", image: katherineImg, linkedin:"https://www.linkedin.com/in/katheriinema/", tags: [] },
+  { name: "Shruthi Arunkumar", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/shruthi-arunkumar", image: shruthiImg, tags: [] },
+  { name: "Sam Morales", role: "PM • HarmoniCore", linkedin: "https://www.linkedin.com/in/samorales03/", image: samuelImg, tags: [] },
+  { name: "Neal Singh", role: "PM • Holo-Adapt", linkedin: "https://www.linkedin.com/in/neal-ssingh", image: nealImg, tags: [] },
+  { name: "Alex Forrest", role: "PM • MicroPiano", linkedin: "https://www.linkedin.com/in/alex-forrest-ee/", image: alexImg, tags: [] },
+  { name: "Alexander Rizzi", role: "PM • MicroPiano", linkedin: "https://www.linkedin.com/in/alexander-rizzi/", image: alexanderImg, tags: [] },
+  { name: "Nikhil Chaudhary", role: "PM • SlayterHIL", linkedin: "https://www.linkedin.com/in/nikhilmchaudhary/", image: nikhilImg, tags: [] },
 ];
 
 /* ---------- SECTIONS ---------- */
 const sections: Section[] = [
   { title: "Executive Board", icon: Shield, members: executives },
-  { title: "Chairs - To Be Decided", icon: Users, members: chairs },
-  { title: "Project Managers - Coming Soon", icon: Users, members: projectManagers },
+  { title: "Chairs", icon: Users, members: chairs },
+  { title: "Project Managers", icon: Users, members: projectManagers },
 ];
 
 /* ---------- UI ---------- */
