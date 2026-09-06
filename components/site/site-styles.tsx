@@ -6,9 +6,22 @@ html:has([data-site-navigation]) {
 }
 
 body:has([data-site-navigation]) {
+  --site-section-rhythm: clamp(1.75rem, 3.6vw, 3.5rem);
   background: #0c0c0b;
   color-scheme: dark;
   -webkit-tap-highlight-color: transparent;
+}
+
+body:has([data-site-navigation]) main[data-site-main] > section:not(:first-child) {
+  padding-top: var(--site-section-rhythm);
+}
+
+body:has([data-site-navigation]) main[data-site-main] > section:last-child {
+  padding-bottom: var(--site-section-rhythm);
+}
+
+body:has([data-site-navigation]) main[data-site-main] > section:not(:first-child) > .site-rail {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 body:has([data-site-navigation]) h1,

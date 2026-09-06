@@ -12,27 +12,29 @@ type Bridge = {
 }
 
 function resolveBridge(pathname: string): Bridge | null {
-  if (pathname.startsWith("/api") || pathname.startsWith("/forms")) return null
+  const route = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname
 
-  if (pathname.startsWith("/projects/")) {
+  if (route.startsWith("/api") || route.startsWith("/forms")) return null
+
+  if (route.startsWith("/projects/")) {
     return { eyebrow: "Return / Project archive", title: "Back to all systems.", href: "/projects", direction: "back" }
   }
-  if (pathname.startsWith("/workshops/")) {
+  if (route.startsWith("/workshops/")) {
     return { eyebrow: "Return / Workshop archive", title: "Back to all sessions.", href: "/workshops", direction: "back" }
   }
-  if (pathname === "/about") {
+  if (route === "/about") {
     return { eyebrow: "Next / Projects", title: "See the systems being built.", href: "/projects" }
   }
-  if (pathname === "/projects") {
+  if (route === "/projects") {
     return { eyebrow: "Next / Workshops", title: "Learn the tools behind the builds.", href: "/workshops" }
   }
-  if (pathname === "/workshops") {
+  if (route === "/workshops") {
     return { eyebrow: "Next / Team", title: "Meet the people behind the work.", href: "/team" }
   }
-  if (pathname === "/team") {
+  if (route === "/team") {
     return { eyebrow: "Next / Sponsors", title: "Help put better tools in their hands.", href: "/sponsors" }
   }
-  if (pathname === "/sponsors") {
+  if (route === "/sponsors") {
     return { eyebrow: "Loop / About", title: "Return to the ES@P system.", href: "/about" }
   }
 
@@ -50,7 +52,7 @@ export function SiteRouteBridge() {
     <div className="border-t border-white/[0.08] bg-black text-[#f3efe6]">
       <Link
         href={bridge.href}
-        className="group mx-auto grid w-full grid-cols-[1fr_auto] items-center gap-6 px-5 py-6 no-underline sm:px-8 lg:w-[calc(100%_-_48px)] lg:border-x lg:border-white/[0.05] lg:px-10 lg:py-7 xl:px-12 2xl:w-[calc(100%_-_80px)]"
+        className="group mx-auto grid w-full grid-cols-[1fr_auto] items-center gap-6 px-5 py-8 no-underline sm:px-8 lg:w-[calc(100%_-_48px)] lg:border-x lg:border-white/[0.05] lg:px-10 lg:py-9 xl:px-12 2xl:w-[calc(100%_-_80px)]"
       >
         <div className="min-w-0">
           <p className="font-mono text-[0.53rem] uppercase tracking-[0.17em] text-[#756f67]">{bridge.eyebrow}</p>

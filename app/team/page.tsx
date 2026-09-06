@@ -44,7 +44,7 @@ const pendingRoles = [
   },
 ] as const
 
-const WIDE_RAIL = "mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
+const WIDE_RAIL = "site-rail mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
 
 function HeroPortrait({ member, className }: { member: Member; className?: string }) {
   return (
@@ -76,7 +76,7 @@ function MemberDirectoryRow({ member, index }: { member: Member; index: number }
   return (
     <article
       data-site-lift="card"
-      className="group grid min-h-[96px] gap-4 border-b border-white/[0.08] px-5 py-5 transition-colors last:border-b-0 hover:bg-white/[0.018] sm:grid-cols-[56px_1.15fr_1fr_auto] sm:items-center sm:px-8 lg:px-10"
+      className="group grid min-h-[112px] gap-4 border-b border-white/[0.08] px-5 py-6 transition-colors last:border-b-0 hover:bg-white/[0.018] sm:grid-cols-[56px_1.15fr_1fr_auto] sm:items-center sm:px-8 lg:min-h-[124px] lg:px-10 lg:py-7"
     >
       <span className="font-mono text-[0.52rem] uppercase tracking-[0.16em] text-[#5f5b55]">
         E-{String(index + 1).padStart(2, "0")}
@@ -132,12 +132,12 @@ export default function TeamPage() {
     <div className="min-h-screen bg-[#0c0c0b] text-[#f3efe6]">
       <SiteNavigation />
 
-      <main>
+      <main data-site-main>
         <section className="border-b border-white/[0.08] bg-black">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
             <div className="grid lg:grid-cols-12">
-              <div className="border-b border-white/[0.08] px-5 py-9 sm:px-8 lg:col-span-7 lg:min-h-[430px] lg:border-b-0 lg:border-r lg:px-12 lg:py-11 xl:px-16">
-                <div className="flex h-full flex-col justify-between gap-10">
+              <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:col-span-7 lg:min-h-[480px] lg:border-b-0 lg:border-r lg:px-12 lg:py-14 xl:px-16">
+                <div className="flex h-full flex-col justify-between gap-12">
                   <div className="flex items-center justify-between gap-5">
                     <div className="flex items-center gap-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#aaa398]">
                       <span className="h-1.5 w-1.5 rounded-full bg-[#f4c64d] shadow-[0_0_8px_rgba(244,198,77,0.38)]" />
@@ -154,14 +154,14 @@ export default function TeamPage() {
                       The people
                       <span className="block text-[#d8aa27]">behind the systems.</span>
                     </h1>
-                    <p className="mt-6 max-w-2xl text-base leading-7 text-[#8d887f]">
+                    <p className="mt-7 max-w-2xl text-base leading-7 text-[#8d887f]">
                       Students responsible for keeping ES@P organized, technically ambitious, and moving from ideas to working hardware.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="grid min-h-[400px] grid-cols-2 grid-rows-3 gap-px bg-white/[0.08] lg:col-span-5 lg:min-h-[430px]">
+              <div className="grid min-h-[430px] grid-cols-2 grid-rows-3 gap-px bg-white/[0.08] lg:col-span-5 lg:min-h-[480px]">
                 <HeroPortrait member={executives[0]} className="row-span-2" />
                 <HeroPortrait member={executives[1]} />
                 <HeroPortrait member={executives[2]} />
@@ -177,7 +177,7 @@ export default function TeamPage() {
         <section className="border-b border-white/[0.08] bg-[#0c0c0b]">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
             <div className="grid lg:grid-cols-12">
-              <div className="border-b border-white/[0.08] px-5 py-8 sm:px-8 lg:col-span-4 lg:border-b-0 lg:border-r lg:px-12 lg:py-10 xl:px-16">
+              <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:col-span-4 lg:border-b-0 lg:border-r lg:px-12 lg:py-14 xl:px-16">
                 <div className="lg:sticky lg:top-[108px]">
                   <div className="flex items-center gap-3 font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#777169]">
                     <Shield className="h-4 w-4 text-[#8f7325]" aria-hidden="true" />
@@ -204,7 +204,7 @@ export default function TeamPage() {
         <section className="border-b border-white/[0.08] bg-black">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
             <div className="grid lg:grid-cols-12">
-              <div className="border-b border-white/[0.08] px-5 py-8 sm:px-8 lg:col-span-4 lg:border-b-0 lg:border-r lg:px-12 xl:px-16">
+              <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:col-span-4 lg:border-b-0 lg:border-r lg:px-12 lg:py-14 xl:px-16">
                 <div className="flex items-center gap-3 font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#777169]">
                   <Users className="h-4 w-4 text-[#8f7325]" aria-hidden="true" />
                   Structure in progress
@@ -216,7 +216,7 @@ export default function TeamPage() {
                 {pendingRoles.map((role, index) => (
                   <div
                     key={role.title}
-                    className={`grid gap-3 px-5 py-6 sm:grid-cols-[64px_180px_1fr] sm:items-center sm:px-8 lg:px-10 ${
+                    className={`grid min-h-[132px] gap-4 px-5 py-8 sm:grid-cols-[64px_180px_1fr] sm:items-center sm:px-8 lg:min-h-[146px] lg:px-10 lg:py-9 ${
                       index === 0 ? "border-b border-white/[0.08]" : ""
                     }`}
                   >
@@ -235,7 +235,7 @@ export default function TeamPage() {
 
         <section className="bg-[#0c0c0b]">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
-            <div className="flex flex-col gap-6 px-5 py-9 sm:px-8 lg:flex-row lg:items-end lg:justify-between lg:px-12 lg:py-11 xl:px-16">
+            <div className="flex flex-col gap-8 px-5 py-10 sm:px-8 sm:py-12 lg:flex-row lg:items-end lg:justify-between lg:px-12 lg:py-14 xl:px-16">
               <div>
                 <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#6b665f]">Build with us</p>
                 <h2 className="mt-3 max-w-3xl text-[clamp(2.6rem,4.5vw,4.8rem)] font-medium leading-[0.9] tracking-[-0.06em]">

@@ -6,6 +6,7 @@ import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { ArrowUpRight, ChevronDown, Search, X } from "lucide-react"
 
+import { resolveProjectImagePath } from "@/lib/project-media-path"
 import { allStatuses, collectSemesters, collectTechs } from "./_data"
 import type { Project as DataProject } from "./_data"
 
@@ -23,17 +24,6 @@ const MENU_CLS =
   "absolute left-0 top-full z-50 mt-1 min-w-full border border-white/[0.1] bg-[#090908]/98 text-[#c7c1b7] shadow-[0_20px_50px_rgba(0,0,0,.46)] backdrop-blur-xl"
 const MENU_ITEM_CLS =
   "w-full px-3.5 py-2.5 text-left text-sm transition-colors hover:bg-[#daa000]/[0.07] hover:text-[#f2c34f]"
-
-function resolveProjectImage(project: Project) {
-  const raw = project.image || ""
-  if (!raw) return "/projects/logo.png"
-  if (/^https?:\/\//i.test(raw)) return raw
-
-  let path = raw.replace(/^\/+/, "")
-  if (path.startsWith("projects/")) path = path.slice("projects/".length)
-  if (path.startsWith(`${project.slug}/`)) return `/projects/${path}`
-  return `/projects/${project.slug}/${path}`
-}
 
 function resolveProjectHref(project: Project): { href: string; external: boolean } {
   const url = project.readmeUrl?.trim()
@@ -277,8 +267,8 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
 
   return (
     <>
-      <div className="border-b border-white/[0.08] px-5 py-6 sm:px-8 lg:px-12 lg:py-7 xl:px-16">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-end">
+      <div className="border-b border-white/[0.08] px-5 py-8 sm:px-8 sm:py-9 lg:px-12 lg:py-10 xl:px-16">
+        <div className="flex flex-col gap-5 xl:flex-row xl:items-end">
           <div className="relative min-w-0 flex-1">
             <Search className="pointer-events-none absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6e6961]" aria-hidden="true" />
             <input
@@ -313,7 +303,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
           </div>
         </div>
 
-        <div className="mt-3 flex min-h-5 flex-wrap items-center justify-between gap-3 font-mono text-[0.56rem] uppercase tracking-[0.15em]">
+        <div className="mt-5 flex min-h-5 flex-wrap items-center justify-between gap-3 font-mono text-[0.56rem] uppercase tracking-[0.15em]">
           <span className="text-[#69645d]">
             {filtered.length} project{filtered.length === 1 ? "" : "s"}{hasFilters ? " matching filters" : " in archive"}
           </span>
@@ -327,7 +317,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
       </div>
 
       {!filtered.length ? (
-        <div className="px-5 py-14 text-center sm:px-8 lg:px-12">
+        <div className="px-5 py-20 text-center sm:px-8 lg:px-12 lg:py-24">
           <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#666159]">No matching systems</p>
           <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing fits those filters.</h2>
           <Link href="/projects" className="mt-5 inline-flex items-center gap-2 text-sm text-[#b28c25] transition-colors hover:text-[#f2c34f]">
@@ -338,7 +328,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
       ) : (
         <div className="grid gap-px bg-white/[0.08] md:grid-cols-2 xl:grid-cols-12">
           {filtered.map((project, index) => {
-            const image = resolveProjectImage(project)
+            const image = resolveProjectImagePath(project.slug, project.image)
             const { href, external } = resolveProjectHref(project)
             const solo = filtered.length === 1
             const featured = index === 0 && filtered.length > 1
@@ -351,15 +341,15 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
 
             const inner = (
               <article
-                className={`group h-full min-h-[400px] bg-[#0c0c0b] transition-colors hover:bg-[#11110f] ${
+                className={`group h-full min-h-[440px] bg-[#0c0c0b] transition-colors hover:bg-[#11110f] ${
                   emphasized ? "flex flex-col xl:grid xl:grid-cols-[1.14fr_.86fr]" : "flex flex-col"
                 }`}
               >
                 <div
                   className={`relative overflow-hidden bg-black ${
                     emphasized
-                      ? "min-h-[230px] border-b border-white/[0.08] xl:min-h-full xl:border-b-0 xl:border-r"
-                      : "h-[190px] border-b border-white/[0.08]"
+                      ? "min-h-[250px] border-b border-white/[0.08] xl:min-h-full xl:border-b-0 xl:border-r"
+                      : "h-[210px] border-b border-white/[0.08]"
                   }`}
                 >
                   <img
@@ -386,7 +376,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                   <ArrowUpRight className="absolute bottom-4 right-4 h-5 w-5 text-[#c4bfb5] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#f2c34f]" aria-hidden="true" />
                 </div>
 
-                <div className={`flex flex-1 flex-col px-5 py-5 sm:px-6 ${emphasized ? "xl:px-8 xl:py-8" : ""}`}>
+                <div className={`flex flex-1 flex-col px-5 py-6 sm:px-7 sm:py-7 ${emphasized ? "xl:px-9 xl:py-9" : ""}`}>
                   <p className="font-mono text-[0.53rem] uppercase tracking-[0.16em] text-[#5e5a54]">Project / {project.slug}</p>
                   <h2
                     className={`mt-2.5 font-medium leading-[1.02] tracking-[-0.05em] text-[#e9e4da] ${
@@ -396,13 +386,13 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                     {project.title}
                   </h2>
                   {project.description && (
-                    <p className={`mt-3 text-sm leading-6 text-[#817c74] ${emphasized ? "line-clamp-5" : "line-clamp-3"}`}>
+                    <p className={`mt-4 text-sm leading-6 text-[#817c74] ${emphasized ? "line-clamp-5" : "line-clamp-3"}`}>
                       {project.description}
                     </p>
                   )}
 
                   {!!project.technologies.length && (
-                    <div className="mt-auto flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.07] pt-4">
+                    <div className="mt-auto flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.07] pt-5">
                       {project.technologies.slice(0, emphasized ? 7 : 5).map((technology) => (
                         <span key={`${project.slug}-${technology}`} className="font-mono text-[0.52rem] uppercase tracking-[0.13em] text-[#77726a]">
                           {technology}

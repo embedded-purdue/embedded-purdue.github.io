@@ -87,8 +87,8 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
 
   return (
     <>
-      <div className="border-b border-white/[0.08] px-5 py-6 sm:px-8 lg:px-12 lg:py-7 xl:px-16">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div className="border-b border-white/[0.08] px-5 py-8 sm:px-8 sm:py-9 lg:px-12 lg:py-10 xl:px-16">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex flex-wrap gap-x-6 gap-y-3">
             {(
               [
@@ -128,7 +128,7 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
         </div>
 
         {allTags.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 border-t border-white/[0.06] pt-3.5">
+          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3 border-t border-white/[0.06] pt-4">
             <Link
               href={filterHref(when, "")}
               aria-current={!tag ? "page" : undefined}
@@ -155,7 +155,7 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
       </div>
 
       {!list.length ? (
-        <div className="px-5 py-14 text-center sm:px-8 lg:px-12">
+        <div className="px-5 py-20 text-center sm:px-8 lg:px-12 lg:py-24">
           <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#666159]">No sessions found</p>
           <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing matches this view.</h2>
           <Link
@@ -179,7 +179,7 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
                 href={`/workshops/${workshop.slug}`}
                 data-site-lift="card"
                 className={`group block bg-[#0c0c0b] no-underline transition-colors hover:bg-[#11110f] ${
-                  featured ? "min-h-[390px] md:col-span-2" : "min-h-[360px]"
+                  featured ? "min-h-[440px] md:col-span-2" : "min-h-[410px]"
                 }`}
               >
                 <article
@@ -190,8 +190,8 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
                   <div
                     className={`relative overflow-hidden bg-black ${
                       featured
-                        ? "min-h-[220px] border-b border-white/[0.08] lg:min-h-full lg:border-b-0 lg:border-r"
-                        : "h-[180px] border-b border-white/[0.08]"
+                        ? "min-h-[250px] border-b border-white/[0.08] lg:min-h-full lg:border-b-0 lg:border-r"
+                        : "h-[200px] border-b border-white/[0.08]"
                     }`}
                   >
                     {cover ? (
@@ -225,7 +225,7 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
                     />
                   </div>
 
-                  <div className={`flex flex-1 flex-col px-5 py-5 sm:px-7 ${featured ? "lg:px-9 lg:py-8" : ""}`}>
+                  <div className={`flex flex-1 flex-col px-5 py-6 sm:px-7 sm:py-7 ${featured ? "lg:px-9 lg:py-9" : ""}`}>
                     <p className="font-mono text-[0.52rem] uppercase tracking-[0.15em] text-[#625e58]">
                       {featured ? "Featured session" : "Workshop session"}
                     </p>
@@ -237,13 +237,13 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
                       {workshop.title}
                     </h2>
                     {workshop.summary && (
-                      <p className={`mt-3 max-w-xl text-sm leading-6 text-[#817c74] ${featured ? "line-clamp-5" : "line-clamp-3"}`}>
+                      <p className={`mt-4 max-w-xl text-sm leading-6 text-[#817c74] ${featured ? "line-clamp-5" : "line-clamp-3"}`}>
                         {workshop.summary}
                       </p>
                     )}
 
-                    <div className="mt-auto pt-5">
-                      <div className="flex flex-col gap-3 border-t border-white/[0.07] pt-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="mt-auto pt-6">
+                      <div className="flex flex-col gap-3 border-t border-white/[0.07] pt-5 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex flex-wrap gap-x-5 gap-y-2 font-mono text-[0.53rem] uppercase tracking-[0.13em] text-[#777169]">
                           <span className="inline-flex items-center gap-2">
                             <CalendarDays className="h-3.5 w-3.5 text-[#8d7328]" aria-hidden="true" />

@@ -22,7 +22,7 @@ type Meta = {
   slug: string
 }
 
-const WIDE_RAIL = "mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
+const WIDE_RAIL = "site-rail mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
 
 function normalizeMeta(loose: unknown): Meta | null {
   const meta = (loose as Record<string, unknown>) || {}
@@ -109,12 +109,12 @@ export default async function WorkshopDetailPage({ params }: { params: Promise<R
     <div className="min-h-screen bg-[#0c0c0b] text-[#f3efe6]">
       <SiteNavigation />
 
-      <main>
+      <main data-site-main>
         <section className="border-b border-white/[0.08] bg-black">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
             <div className="grid lg:grid-cols-12">
-              <div className="border-b border-white/[0.08] px-5 py-8 sm:px-8 lg:col-span-7 lg:min-h-[430px] lg:border-b-0 lg:border-r lg:px-12 lg:py-10 xl:px-16">
-                <div className="flex h-full flex-col justify-between gap-10">
+              <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:col-span-7 lg:min-h-[470px] lg:border-b-0 lg:border-r lg:px-12 lg:py-14 xl:px-16">
+                <div className="flex h-full flex-col justify-between gap-12">
                   <div className="flex items-center justify-between gap-5">
                     <Link
                       href="/workshops"
@@ -134,10 +134,10 @@ export default async function WorkshopDetailPage({ params }: { params: Promise<R
                       {meta.title}
                     </h1>
                     {meta.summary && (
-                      <p className="mt-5 max-w-3xl text-[clamp(1rem,1.3vw,1.18rem)] leading-8 text-[#918b82]">{meta.summary}</p>
+                      <p className="mt-6 max-w-3xl text-[clamp(1rem,1.3vw,1.18rem)] leading-8 text-[#918b82]">{meta.summary}</p>
                     )}
                     {!!meta.tags?.length && (
-                      <div className="mt-5 flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.07] pt-4">
+                      <div className="mt-6 flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.07] pt-5">
                         {meta.tags.slice(0, 7).map((tag) => (
                           <span key={tag} className="font-mono text-[0.51rem] uppercase tracking-[0.12em] text-[#716c65]">
                             {tag}
@@ -149,7 +149,7 @@ export default async function WorkshopDetailPage({ params }: { params: Promise<R
                 </div>
               </div>
 
-              <div className="relative min-h-[320px] overflow-hidden bg-[#080807] lg:col-span-5 lg:min-h-[430px]">
+              <div className="relative min-h-[350px] overflow-hidden bg-[#080807] lg:col-span-5 lg:min-h-[470px]">
                 {cover ? (
                   cover.startsWith("/") ? (
                     <Image
@@ -187,7 +187,7 @@ export default async function WorkshopDetailPage({ params }: { params: Promise<R
 
         <section className="bg-[#0c0c0b]">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
-            <div className="flex flex-col gap-3 border-b border-white/[0.08] px-5 py-6 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-12 xl:px-16">
+            <div className="flex flex-col gap-4 border-b border-white/[0.08] px-5 py-8 sm:px-8 sm:py-9 lg:flex-row lg:items-center lg:justify-between lg:px-12 lg:py-10 xl:px-16">
               <div>
                 <p className="font-mono text-[0.55rem] uppercase tracking-[0.16em] text-[#796f59]">Workshop notes</p>
                 <p className="mt-1 text-sm text-[#777169]">Setup, examples, references, and follow-up material.</p>
@@ -195,7 +195,7 @@ export default async function WorkshopDetailPage({ params }: { params: Promise<R
               <span className="font-mono text-[0.49rem] uppercase tracking-[0.14em] text-[#55514b]">Material / {slug}</span>
             </div>
 
-            <article data-site-markdown className="mx-auto max-w-[980px] px-5 py-9 sm:px-8 lg:px-12 lg:py-12 xl:px-16">
+            <article data-site-markdown className="mx-auto max-w-[980px] px-5 py-12 sm:px-8 sm:py-14 lg:px-12 lg:py-16 xl:px-16">
               <Markdown className="prose prose-invert max-w-none break-words">{entry.content}</Markdown>
             </article>
           </div>

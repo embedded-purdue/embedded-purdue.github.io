@@ -10,7 +10,7 @@ import ProjectsGridClient from "./_ProjectsGridClient"
 export const dynamic = "error"
 export const revalidate = false
 
-const WIDE_RAIL = "mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
+const WIDE_RAIL = "site-rail mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
 
 type SafeProject = Omit<Project, "icon">
 
@@ -45,12 +45,12 @@ export default function ProjectsPage() {
     <div className="min-h-screen bg-[#0c0c0b] text-[#f3efe6]">
       <SiteNavigation />
 
-      <main>
+      <main data-site-main>
         <section className="border-b border-white/[0.08] bg-black">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
             <div className="grid lg:grid-cols-12">
-              <div className="border-b border-white/[0.08] px-5 py-9 sm:px-8 lg:col-span-7 lg:min-h-[420px] lg:border-b-0 lg:border-r lg:px-12 lg:py-11 xl:px-16">
-                <div className="flex h-full flex-col justify-between gap-10">
+              <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:col-span-7 lg:min-h-[480px] lg:border-b-0 lg:border-r lg:px-12 lg:py-14 xl:px-16">
+                <div className="flex h-full flex-col justify-between gap-12">
                   <div className="flex items-center justify-between gap-5">
                     <div className="flex items-center gap-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#aaa398]">
                       <span className="h-1.5 w-1.5 rounded-full bg-[#f4c64d] shadow-[0_0_8px_rgba(244,198,77,0.38)]" />
@@ -67,14 +67,14 @@ export default function ProjectsPage() {
                       Systems
                       <span className="block text-[#d8aa27]">we build.</span>
                     </h1>
-                    <p className="mt-6 max-w-2xl text-base leading-7 text-[#8d887f]">
+                    <p className="mt-7 max-w-2xl text-base leading-7 text-[#8d887f]">
                       Custom boards, embedded firmware, robotics, FPGA work, controls, sensing, and the systems required to make them operate together.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="relative min-h-[330px] overflow-hidden bg-[#080807] lg:col-span-5 lg:min-h-[420px]">
+              <div className="relative min-h-[360px] overflow-hidden bg-[#080807] lg:col-span-5 lg:min-h-[480px]">
                 <Image
                   src="/projects/digital-ops-1.jpg"
                   alt="ES@P embedded systems project work"

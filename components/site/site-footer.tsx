@@ -64,9 +64,9 @@ export function SiteFooter() {
   return (
     <>
       <SiteRouteBridge />
-      <footer className="border-t border-white/[0.08] bg-[#090908] py-11 text-[#f3efe6] lg:py-12">
+      <footer className="border-t border-white/[0.08] bg-[#090908] py-14 text-[#f3efe6] lg:py-16">
         <div className="mx-auto w-full px-5 sm:px-8 lg:w-[calc(100%_-_48px)] lg:border-x lg:border-white/[0.05] lg:px-8 xl:px-10 2xl:w-[calc(100%_-_80px)] 2xl:px-12">
-          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-start">
+          <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-start">
             <div>
               <Link href="/" className="inline-flex items-center gap-4" aria-label="Embedded Systems @ Purdue home">
                 <Image src="/logo.svg" alt="Embedded Systems @ Purdue" width={96} height={31} className="h-auto w-24" />
@@ -87,7 +87,7 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <div className="mt-10 flex flex-col gap-3 border-t border-white/[0.07] pt-5 font-mono text-[0.56rem] uppercase tracking-[0.15em] text-[#55524d] sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-12 flex flex-col gap-3 border-t border-white/[0.07] pt-6 font-mono text-[0.56rem] uppercase tracking-[0.15em] text-[#55524d] sm:flex-row sm:items-center sm:justify-between">
             <span>Embedded Systems @ Purdue · {new Date().getFullYear()}</span>
             <a href="#site-top" className="group inline-flex w-fit items-center gap-2 transition-colors hover:text-[#c6a13e]">
               Back to top

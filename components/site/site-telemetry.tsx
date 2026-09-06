@@ -34,7 +34,7 @@ export function SiteTelemetry({ items, variant = "grid" }: SiteTelemetryProps) {
           <div
             key={`${item.label}-${index}`}
             className={`relative flex flex-col justify-between px-5 sm:px-7 ${
-              rail ? "min-h-[108px] py-4 lg:min-h-[118px] lg:px-8 lg:py-5" : "min-h-[132px] py-5 lg:min-h-0 lg:px-7 lg:py-6"
+              rail ? "min-h-[118px] py-5 lg:min-h-[132px] lg:px-8 lg:py-6" : "min-h-[144px] py-6 lg:min-h-0 lg:px-7 lg:py-7"
             } ${railBorder}`}
           >
             <span className="font-mono text-[0.53rem] uppercase tracking-[0.16em] text-[#625e57]">{item.label}</span>

@@ -7,6 +7,7 @@ import Markdown from "@/components/Markdown"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteNavigation } from "@/components/site/site-navigation"
 import { SiteTelemetry } from "@/components/site/site-telemetry"
+import { resolveProjectImagePath } from "@/lib/project-media-path"
 import {
   getAdditionalMarkdown,
   getAllProjectSlugs,
@@ -21,7 +22,7 @@ import { projects as DATA } from "../_data"
 export const dynamic = "error"
 export const dynamicParams = false
 
-const WIDE_RAIL = "mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
+const WIDE_RAIL = "site-rail mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   const contentSlugs = await getAllProjectSlugs()
@@ -81,7 +82,9 @@ export default async function ProjectDetailPage({
 
   const media = await getProjectMedia(slug)
   const mediaCount = media.images.length + media.videos.length + media.docs.length + media.files.length
-  const listedImage = fallback?.image && fallback.image !== "/projects/logo.png" ? fallback.image : null
+  const listedImage = fallback?.image && fallback.image !== "/projects/logo.png"
+    ? resolveProjectImagePath(slug, fallback.image)
+    : null
   const heroImage = listedImage ?? media.images[0] ?? null
   const telemetry = [
     { label: "State", value: fallback?.status ?? "Documented", detail: fallback?.semester ?? "project record", accent: true },
@@ -94,12 +97,12 @@ export default async function ProjectDetailPage({
     <div className="min-h-screen bg-[#0c0c0b] text-[#f3efe6]">
       <SiteNavigation />
 
-      <main>
+      <main data-site-main>
         <section className="border-b border-white/[0.08] bg-black">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
             <div className="grid lg:grid-cols-12">
-              <div className="border-b border-white/[0.08] px-5 py-8 sm:px-8 lg:col-span-7 lg:min-h-[430px] lg:border-b-0 lg:border-r lg:px-12 lg:py-10 xl:px-16">
-                <div className="flex h-full flex-col justify-between gap-10">
+              <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:col-span-7 lg:min-h-[470px] lg:border-b-0 lg:border-r lg:px-12 lg:py-14 xl:px-16">
+                <div className="flex h-full flex-col justify-between gap-12">
                   <div className="flex items-center justify-between gap-5">
                     <Link
                       href="/projects"
@@ -119,10 +122,10 @@ export default async function ProjectDetailPage({
                       {title}
                     </h1>
                     {summary && (
-                      <p className="mt-5 max-w-3xl text-[clamp(1rem,1.3vw,1.18rem)] leading-8 text-[#918b82]">{summary}</p>
+                      <p className="mt-6 max-w-3xl text-[clamp(1rem,1.3vw,1.18rem)] leading-8 text-[#918b82]">{summary}</p>
                     )}
                     {!!fallback?.technologies.length && (
-                      <div className="mt-5 flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.07] pt-4">
+                      <div className="mt-6 flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.07] pt-5">
                         {fallback.technologies.slice(0, 7).map((technology) => (
                           <span key={technology} className="font-mono text-[0.51rem] uppercase tracking-[0.12em] text-[#716c65]">
                             {technology}
@@ -134,7 +137,7 @@ export default async function ProjectDetailPage({
                 </div>
               </div>
 
-              <div className="relative min-h-[320px] overflow-hidden bg-[#080807] lg:col-span-5 lg:min-h-[430px]">
+              <div className="relative min-h-[350px] overflow-hidden bg-[#080807] lg:col-span-5 lg:min-h-[470px]">
                 {heroImage ? (
                   heroImage.startsWith("/") ? (
                     <Image
@@ -181,7 +184,7 @@ export default async function ProjectDetailPage({
         <section className="border-b border-white/[0.08] bg-[#0c0c0b]">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
             <div className="grid lg:grid-cols-12">
-              <aside className="border-b border-white/[0.08] px-5 py-7 sm:px-8 lg:col-span-3 lg:border-b-0 lg:border-r lg:px-10 lg:py-10">
+              <aside className="border-b border-white/[0.08] px-5 py-9 sm:px-8 sm:py-10 lg:col-span-3 lg:border-b-0 lg:border-r lg:px-10 lg:py-14">
                 <div className="lg:sticky lg:top-[108px]">
                   <p className="font-mono text-[0.57rem] uppercase tracking-[0.17em] text-[#796f59]">01 / Project notes</p>
                   <p className="mt-3 max-w-xs text-sm leading-6 text-[#6f6a63]">
@@ -190,7 +193,7 @@ export default async function ProjectDetailPage({
                 </div>
               </aside>
 
-              <div className="px-5 py-9 sm:px-8 lg:col-span-9 lg:px-12 lg:py-11 xl:px-16">
+              <div className="px-5 py-11 sm:px-8 sm:py-12 lg:col-span-9 lg:px-12 lg:py-16 xl:px-16">
                 {content ? (
                   <article data-site-markdown>
                     <Markdown className="prose prose-invert max-w-none break-words" imageBase={`/projects/${slug}`}>
@@ -198,7 +201,7 @@ export default async function ProjectDetailPage({
                     </Markdown>
                   </article>
                 ) : (
-                  <article className="border-y border-white/[0.08] py-6">
+                  <article className="border-y border-white/[0.08] py-8">
                     <p className="font-mono text-[0.56rem] uppercase tracking-[0.15em] text-[#6f6a62]">Documentation pending</p>
                     <p className="mt-2 text-lg text-[#9b958c]">This project page is currently being worked on.</p>
                   </article>
@@ -211,17 +214,17 @@ export default async function ProjectDetailPage({
         {!!extraPages.length && (
           <section className="border-b border-white/[0.08] bg-black">
             <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
-              <div className="border-b border-white/[0.08] px-5 py-7 sm:px-8 lg:px-12 xl:px-16">
+              <div className="border-b border-white/[0.08] px-5 py-9 sm:px-8 sm:py-10 lg:px-12 lg:py-12 xl:px-16">
                 <p className="font-mono text-[0.57rem] uppercase tracking-[0.17em] text-[#796f59]">02 / Additional documentation</p>
               </div>
               <div className="divide-y divide-white/[0.08]">
                 {extraPages.map((page, index) => (
                   <article key={`${page.file}-${index}`} className="grid lg:grid-cols-12">
-                    <div className="border-b border-white/[0.08] px-5 py-7 sm:px-8 lg:col-span-3 lg:border-b-0 lg:border-r lg:px-10">
+                    <div className="border-b border-white/[0.08] px-5 py-9 sm:px-8 sm:py-10 lg:col-span-3 lg:border-b-0 lg:border-r lg:px-10 lg:py-12">
                       <span className="font-mono text-[0.54rem] uppercase tracking-[0.15em] text-[#625e58]">D-{String(index + 1).padStart(2, "0")}</span>
                       <h2 className="mt-3 text-2xl font-medium tracking-[-0.04em] text-[#e5dfd5]">{page.title}</h2>
                     </div>
-                    <div data-site-markdown className="px-5 py-8 sm:px-8 lg:col-span-9 lg:px-12 xl:px-16">
+                    <div data-site-markdown className="px-5 py-11 sm:px-8 sm:py-12 lg:col-span-9 lg:px-12 lg:py-16 xl:px-16">
                       <Markdown className="prose prose-invert max-w-none break-words" imageBase={`/projects/${slug}`}>
                         {page.content}
                       </Markdown>
@@ -236,13 +239,13 @@ export default async function ProjectDetailPage({
         {!!postsClean.length && (
           <section className="border-b border-white/[0.08] bg-[#0c0c0b]">
             <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
-              <div className="border-b border-white/[0.08] px-5 py-7 sm:px-8 lg:px-12 xl:px-16">
+              <div className="border-b border-white/[0.08] px-5 py-9 sm:px-8 sm:py-10 lg:px-12 lg:py-12 xl:px-16">
                 <p className="font-mono text-[0.57rem] uppercase tracking-[0.17em] text-[#796f59]">03 / Build log</p>
               </div>
               <div className="divide-y divide-white/[0.08]">
                 {postsClean.map((post, index) => (
                   <article key={post.slug} id={`post-${post.slug}`} className="grid lg:grid-cols-12">
-                    <div className="px-5 py-7 sm:px-8 lg:col-span-3 lg:border-r lg:border-white/[0.08] lg:px-10">
+                    <div className="px-5 py-9 sm:px-8 sm:py-10 lg:col-span-3 lg:border-r lg:border-white/[0.08] lg:px-10 lg:py-12">
                       <span className="font-mono text-[0.54rem] uppercase tracking-[0.15em] text-[#625e58]">L-{String(index + 1).padStart(2, "0")}</span>
                       <h3 className="mt-3 text-2xl font-medium tracking-[-0.04em] text-[#e5dfd5]">{post.title}</h3>
                       {post.date && (
@@ -251,7 +254,7 @@ export default async function ProjectDetailPage({
                         </p>
                       )}
                     </div>
-                    <div data-site-markdown className="px-5 py-8 sm:px-8 lg:col-span-9 lg:px-12 xl:px-16">
+                    <div data-site-markdown className="px-5 py-11 sm:px-8 sm:py-12 lg:col-span-9 lg:px-12 lg:py-16 xl:px-16">
                       <Markdown className="prose prose-invert max-w-none break-words" imageBase={`/projects/${slug}`}>
                         {post.content}
                       </Markdown>
@@ -266,7 +269,7 @@ export default async function ProjectDetailPage({
         {mediaCount > 0 && (
           <section className="bg-black">
             <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
-              <div className="flex items-end justify-between gap-6 border-b border-white/[0.08] px-5 py-7 sm:px-8 lg:px-12 xl:px-16">
+              <div className="flex items-end justify-between gap-6 border-b border-white/[0.08] px-5 py-9 sm:px-8 sm:py-10 lg:px-12 lg:py-12 xl:px-16">
                 <div>
                   <p className="font-mono text-[0.57rem] uppercase tracking-[0.17em] text-[#796f59]">04 / Media</p>
                   <h2 className="mt-2 text-[clamp(2.4rem,3.8vw,4rem)] font-medium tracking-[-0.055em] text-[#e8e2d8]">Project artifacts</h2>
@@ -275,7 +278,11 @@ export default async function ProjectDetailPage({
               </div>
 
               {!!media.images.length && (
-                <div className="grid gap-px bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-3">
+                <div
+                  className={`grid gap-px bg-white/[0.08] ${
+                    media.images.length === 1 ? "grid-cols-1" : "sm:grid-cols-2 lg:grid-cols-3"
+                  }`}
+                >
                   {media.images.map((src) => (
                     <a
                       key={src}
@@ -283,7 +290,9 @@ export default async function ProjectDetailPage({
                       target="_blank"
                       rel="noopener noreferrer"
                       data-site-lift="card"
-                      className="group relative block h-56 overflow-hidden bg-black"
+                      className={`group relative block overflow-hidden bg-black ${
+                        media.images.length === 1 ? "h-[clamp(300px,44vw,560px)]" : "h-64 lg:h-72"
+                      }`}
                     >
                       <img src={src} alt="Project image" className="h-full w-full object-cover opacity-78 transition duration-700 group-hover:scale-[1.018] group-hover:opacity-100" />
                       <ArrowUpRight className="absolute bottom-4 right-4 h-5 w-5 text-[#d8d2c7] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#f2c34f]" aria-hidden="true" />
