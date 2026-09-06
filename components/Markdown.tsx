@@ -59,6 +59,7 @@ export default function Markdown({
                 src={finalSrc}
                 alt={alt as string}
                 loading="lazy"
+                decoding="async"
                 draggable={false}
                 className="my-8 block h-auto w-full max-w-full border-y border-white/[0.08] bg-black object-contain"
                 {...props}

@@ -139,15 +139,15 @@ export default function AboutPage() {
 
               <div className="relative min-h-[390px] overflow-hidden lg:col-span-5 lg:min-h-[520px]">
                 <Image
-                  src="/founders.jpeg"
+                  src="/site-media/about-founders.webp"
                   alt="Embedded Systems @ Purdue members"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
-                  className="object-cover opacity-[0.78] grayscale-[16%]"
+                  className="object-cover opacity-[0.76]"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/28" />
-                <div className="absolute inset-x-0 bottom-0 grid grid-cols-2 border-t border-white/[0.12] bg-black/76 backdrop-blur-sm">
+                <div className="absolute inset-x-0 bottom-0 grid grid-cols-2 border-t border-white/[0.12] bg-black/90">
                   <div className="border-r border-white/[0.1] px-5 py-4 sm:px-7">
                     <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#6f6a62]">Community</p>
                     <p className="mt-1.5 text-2xl font-medium tracking-[-0.04em] text-[#f0ece2]">100+ members</p>
@@ -241,11 +241,11 @@ export default function AboutPage() {
             <div className="grid lg:grid-cols-12">
               <div className="relative min-h-[330px] overflow-hidden border-b border-white/[0.08] bg-black lg:col-span-5 lg:min-h-[430px] lg:border-b-0 lg:border-r">
                 <Image
-                  src="/bb8.jpg"
+                  src="/site-media/about-bb8.webp"
                   alt="ES@P project hardware"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
-                  className="object-cover opacity-[0.76] grayscale-[14%]"
+                  className="object-cover opacity-[0.74]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/10 to-black/24" />
                 <div className="absolute inset-x-0 bottom-0 px-5 py-6 sm:px-8 lg:px-10">

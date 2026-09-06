@@ -157,11 +157,16 @@ export default async function WorkshopDetailPage({ params }: { params: Promise<R
                       alt={`${meta.title} workshop`}
                       fill
                       sizes="(max-width: 1024px) 100vw, 42vw"
-                      className="object-cover opacity-[0.8] grayscale-[9%] saturate-[0.86]"
+                      className="object-cover opacity-[0.78]"
                       priority
                     />
                   ) : (
-                    <img src={cover} alt={`${meta.title} workshop`} className="h-full w-full object-cover opacity-[0.8] grayscale-[9%]" />
+                    <img
+                      src={cover}
+                      alt={`${meta.title} workshop`}
+                      className="h-full w-full object-cover opacity-[0.78]"
+                      decoding="async"
+                    />
                   )
                 ) : (
                   <div className="absolute inset-0 bg-[linear-gradient(rgba(218,160,0,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(218,160,0,.045)_1px,transparent_1px)] bg-[size:34px_34px]">
@@ -171,10 +176,10 @@ export default async function WorkshopDetailPage({ params }: { params: Promise<R
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-transparent to-black/18" />
-                <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/60 px-4 py-3 backdrop-blur-sm">
+                <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/84 px-4 py-3">
                   <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#8d887f]">Session material</p>
                 </div>
-                <div className="absolute inset-x-0 bottom-0 border-t border-white/[0.1] bg-black/70 px-5 py-4 backdrop-blur-sm sm:px-7">
+                <div className="absolute inset-x-0 bottom-0 border-t border-white/[0.1] bg-black/88 px-5 py-4 sm:px-7">
                   <p className="font-mono text-[0.49rem] uppercase tracking-[0.15em] text-[#756f67]">Workshop principle</p>
                   <p className="mt-1 text-lg font-medium tracking-[-0.035em] text-[#dfd9cf]">Build it during the session. Understand it after.</p>
                 </div>

@@ -142,19 +142,19 @@ export default function SponsorsPage() {
 
               <div className="relative min-h-[360px] overflow-hidden bg-[#080807] lg:col-span-5 lg:min-h-[480px]">
                 <Image
-                  src="/industry_ins.jpg"
+                  src="/site-media/sponsors-industry.webp"
                   alt="ES@P industry engagement"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
-                  className="object-cover opacity-[0.7] grayscale-[18%] saturate-[0.78]"
+                  className="object-cover opacity-[0.68]"
                   priority
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.2),transparent_34%,rgba(0,0,0,.86))]" />
                 <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,.18),transparent_52%)]" />
-                <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/58 px-4 py-3 backdrop-blur-sm">
+                <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/82 px-4 py-3">
                   <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#8d887f]">Partner interface</p>
                 </div>
-                <div className="absolute inset-x-0 bottom-0 border-t border-white/[0.1] bg-black/68 px-5 py-4 backdrop-blur-sm sm:px-7">
+                <div className="absolute inset-x-0 bottom-0 border-t border-white/[0.1] bg-black/86 px-5 py-4 sm:px-7">
                   <div className="flex items-end justify-between gap-6">
                     <div>
                       <p className="font-mono text-[0.5rem] uppercase tracking-[0.15em] text-[#756f67]">Partnership principle</p>

@@ -145,11 +145,16 @@ export default async function ProjectDetailPage({
                       alt={`${title} project`}
                       fill
                       sizes="(max-width: 1024px) 100vw, 42vw"
-                      className="object-cover opacity-[0.74] grayscale-[13%] saturate-[0.84]"
+                      className="object-cover opacity-[0.72]"
                       priority
                     />
                   ) : (
-                    <img src={heroImage} alt={`${title} project`} className="h-full w-full object-cover opacity-[0.74] grayscale-[13%]" />
+                    <img
+                      src={heroImage}
+                      alt={`${title} project`}
+                      className="h-full w-full object-cover opacity-[0.72]"
+                      decoding="async"
+                    />
                   )
                 ) : (
                   <div className="absolute inset-0 bg-[linear-gradient(rgba(218,160,0,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(218,160,0,.045)_1px,transparent_1px)] bg-[size:36px_36px]">
@@ -160,10 +165,10 @@ export default async function ProjectDetailPage({
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/86 via-transparent to-black/22" />
-                <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/60 px-4 py-3 backdrop-blur-sm">
+                <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/84 px-4 py-3">
                   <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#8d887f]">System / {fallback?.status ?? "documented"}</p>
                 </div>
-                <div className="absolute inset-x-0 bottom-0 border-t border-white/[0.1] bg-black/68 px-5 py-4 backdrop-blur-sm sm:px-7">
+                <div className="absolute inset-x-0 bottom-0 border-t border-white/[0.1] bg-black/86 px-5 py-4 sm:px-7">
                   <div className="flex items-end justify-between gap-5">
                     <div>
                       <p className="font-mono text-[0.49rem] uppercase tracking-[0.15em] text-[#756f67]">Project surface</p>
@@ -294,7 +299,13 @@ export default async function ProjectDetailPage({
                         media.images.length === 1 ? "h-[clamp(300px,44vw,560px)]" : "h-64 lg:h-72"
                       }`}
                     >
-                      <img src={src} alt="Project image" className="h-full w-full object-cover opacity-78 transition duration-700 group-hover:scale-[1.018] group-hover:opacity-100" />
+                      <img
+                        src={src}
+                        alt="Project image"
+                        className="h-full w-full object-cover opacity-[0.78] transition-opacity duration-300 group-hover:opacity-100"
+                        loading="lazy"
+                        decoding="async"
+                      />
                       <ArrowUpRight className="absolute bottom-4 right-4 h-5 w-5 text-[#d8d2c7] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#f2c34f]" aria-hidden="true" />
                     </a>
                   ))}

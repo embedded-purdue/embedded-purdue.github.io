@@ -197,7 +197,20 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
   const selectedStatus = searchParams.get("status") ?? "all"
   const selectedTechs = useMemo(() => decodeTechs(searchParams.get("techs") ?? ""), [searchParams])
   const selectedSemester = searchParams.get("semester") ?? "all"
-  const query = searchParams.get("q") ?? ""
+  const urlQuery = searchParams.get("q") ?? ""
+  const [query, setQuery] = useState(urlQuery)
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    setQuery(urlQuery)
+  }, [urlQuery])
+
+  useEffect(
+    () => () => {
+      if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
+    },
+    []
+  )
 
   const allTechs = useMemo(() => collectTechs(projects), [projects])
   const allSemesters = useMemo(() => collectSemesters(projects), [projects])
@@ -248,6 +261,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
 
   const navigate = useCallback(
     (status: string, techs: string[], semester: string, search: string) => {
+      if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
       router.push(hrefWith(status, techs, semester, search), { scroll: false })
     },
     [hrefWith, router]
@@ -259,7 +273,12 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
   }
 
   function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
-    router.replace(hrefWith(selectedStatus, selectedTechs, selectedSemester, event.target.value), { scroll: false })
+    const nextQuery = event.target.value
+    setQuery(nextQuery)
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
+    searchTimerRef.current = setTimeout(() => {
+      router.replace(hrefWith(selectedStatus, selectedTechs, selectedSemester, nextQuery), { scroll: false })
+    }, 220)
   }
 
   const hasFilters =
@@ -355,8 +374,9 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                   <img
                     src={image}
                     alt={`${project.title} cover`}
-                    className="h-full w-full object-cover opacity-[0.72] grayscale-[16%] transition duration-700 ease-out group-hover:scale-[1.018] group-hover:opacity-[0.9] group-hover:grayscale-0"
+                    className="h-full w-full object-cover opacity-[0.72] transition-opacity duration-300 ease-out group-hover:opacity-[0.9]"
                     loading="lazy"
+                    decoding="async"
                     onError={(event) => {
                       event.currentTarget.onerror = null
                       event.currentTarget.src = "/projects/logo.png"
@@ -364,11 +384,11 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-transparent to-black/18" />
                   <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 p-4">
-                    <span className={`border px-2.5 py-1 font-mono text-[0.53rem] uppercase tracking-[0.14em] backdrop-blur-sm ${statusClass(project.status)}`}>
+                    <span className={`border px-2.5 py-1 font-mono text-[0.53rem] uppercase tracking-[0.14em] ${statusClass(project.status)}`}>
                       {project.status}
                     </span>
                     {project.semester && (
-                      <span className="bg-black/64 px-2.5 py-1 font-mono text-[0.52rem] uppercase tracking-[0.13em] text-[#989289] backdrop-blur-sm">
+                      <span className="bg-black/82 px-2.5 py-1 font-mono text-[0.52rem] uppercase tracking-[0.13em] text-[#989289]">
                         {project.semester}
                       </span>
                     )}

@@ -55,7 +55,7 @@ function HeroPortrait({ member, className }: { member: Member; className?: strin
           alt={member.name}
           fill
           sizes="(max-width: 1024px) 50vw, 22vw"
-          className="object-cover object-top opacity-[0.78] grayscale-[22%] transition duration-700 ease-out group-hover:scale-[1.02] group-hover:opacity-[0.94] group-hover:grayscale-0"
+          className="object-cover object-top opacity-[0.78] transition-opacity duration-300 ease-out group-hover:opacity-[0.94]"
           placeholder="blur"
         />
       )}

@@ -76,19 +76,19 @@ export default function ProjectsPage() {
 
               <div className="relative min-h-[360px] overflow-hidden bg-[#080807] lg:col-span-5 lg:min-h-[480px]">
                 <Image
-                  src="/projects/digital-ops-1.jpg"
+                  src="/site-media/projects/digital-ops.webp"
                   alt="ES@P embedded systems project work"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
-                  className="object-cover opacity-[0.72] grayscale-[12%] saturate-[0.82]"
+                  className="object-cover opacity-[0.7]"
                   priority
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.18),transparent_38%,rgba(0,0,0,.82))]" />
                 <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,.24),transparent_40%)]" />
-                <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/58 px-4 py-3 backdrop-blur-sm">
+                <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/82 px-4 py-3">
                   <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#8d887f]">Build surface</p>
                 </div>
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 border-t border-white/[0.1] bg-black/66 px-5 py-4 backdrop-blur-sm sm:px-7">
+                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-6 border-t border-white/[0.1] bg-black/86 px-5 py-4 sm:px-7">
                   <div>
                     <p className="font-mono text-[0.5rem] uppercase tracking-[0.15em] text-[#756f67]">Archive principle</p>
                     <p className="mt-1 text-lg font-medium tracking-[-0.035em] text-[#e0dbd1]">Show the work, not just the result.</p>

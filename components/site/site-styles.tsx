@@ -55,7 +55,7 @@ body:has([data-site-navigation]) button,
 body:has([data-site-navigation]) input,
 body:has([data-site-navigation]) select,
 body:has([data-site-navigation]) textarea {
-  transition-property: transform, box-shadow, color, background-color, border-color, opacity;
+  transition-property: box-shadow, color, background-color, border-color, opacity;
   transition-duration: 220ms;
   transition-timing-function: cubic-bezier(.22, 1, .36, 1);
 }
@@ -63,14 +63,6 @@ body:has([data-site-navigation]) textarea {
 body:has([data-site-navigation]) a,
 body:has([data-site-navigation]) button {
   touch-action: manipulation;
-}
-
-body:has([data-site-navigation]) [data-site-navigation] a,
-body:has([data-site-navigation]) [data-site-navigation] button,
-body:has([data-site-navigation]) footer a,
-body:has([data-site-navigation]) main a[class*="inline-flex"],
-body:has([data-site-navigation]) main button {
-  transform-origin: center;
 }
 
 body:has([data-site-navigation]) main a[href*="discord.gg"] {
@@ -89,9 +81,8 @@ body:has([data-site-navigation]) main a[href*="discord.gg"]:hover {
 
 body:has([data-site-navigation]) [data-site-lift="card"] {
   position: relative;
-  transform-origin: center;
-  transition-property: transform, box-shadow, background-color, border-color;
-  transition-duration: 320ms;
+  transition-property: box-shadow, background-color, border-color;
+  transition-duration: 240ms;
   transition-timing-function: cubic-bezier(.22, 1, .36, 1);
 }
 
@@ -115,7 +106,6 @@ body:has([data-site-navigation]) main > section:first-child {
   position: relative;
   isolation: isolate;
   overflow: clip;
-  animation: site-page-enter 480ms cubic-bezier(.22, 1, .36, 1) both;
 }
 
 body:has([data-site-navigation]) main > section:first-child::before {
@@ -147,7 +137,6 @@ body:has([data-site-navigation]) main > section:first-child::after {
   pointer-events: none;
   transform: translateX(-50%);
   background: radial-gradient(ellipse at center, rgba(218,160,0,.08), rgba(218,160,0,.018) 48%, transparent 72%);
-  filter: blur(8px);
 }
 
 body:has([data-site-navigation]) main > section:first-child > * {
@@ -399,55 +388,9 @@ body:has([data-site-navigation]) [data-site-markdown] pre {
   color: #f2c34f;
 }
 
-@keyframes site-page-enter {
-  from {
-    opacity: 0;
-    transform: translateY(7px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes site-section-reveal {
-  from {
-    opacity: .76;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@supports (animation-timeline: view()) {
-  body:has([data-site-navigation]) main > section:not(:first-child) > div {
-    animation-name: site-section-reveal;
-    animation-duration: 1ms;
-    animation-fill-mode: both;
-    animation-timing-function: linear;
-    animation-timeline: view();
-    animation-range: entry 0% entry 24%;
-  }
-
-  [data-site-resource-shell] main > section > div {
-    animation: none !important;
-  }
-}
-
 @media (hover: hover) and (pointer: fine) {
-  body:has([data-site-navigation]) [data-site-navigation] a:hover,
-  body:has([data-site-navigation]) [data-site-navigation] button:hover,
-  body:has([data-site-navigation]) footer a:hover,
-  body:has([data-site-navigation]) main a[class*="inline-flex"]:hover,
-  body:has([data-site-navigation]) main button:hover {
-    transform: translateY(-1px);
-  }
-
   body:has([data-site-navigation]) [data-site-lift="card"]:hover {
     z-index: 5;
-    transform: translateY(-2px) scale(1.002);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(244, 198, 77, 0.07);
   }
 
@@ -477,11 +420,6 @@ body:has([data-site-navigation]) [data-site-markdown] pre {
 @media (prefers-reduced-motion: reduce) {
   html:has([data-site-navigation]) {
     scroll-behavior: auto;
-  }
-
-  body:has([data-site-navigation]) main > section:first-child,
-  body:has([data-site-navigation]) main > section:not(:first-child) > div {
-    animation: none !important;
   }
 
   body:has([data-site-navigation]) a,

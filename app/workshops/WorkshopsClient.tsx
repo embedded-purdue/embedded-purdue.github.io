@@ -198,8 +198,9 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
                       <img
                         src={cover}
                         alt={`${workshop.title} cover`}
-                        className="h-full w-full object-cover opacity-[0.72] grayscale-[14%] transition duration-700 ease-out group-hover:scale-[1.018] group-hover:opacity-[0.9] group-hover:grayscale-0"
+                        className="h-full w-full object-cover opacity-[0.72] transition-opacity duration-300 ease-out group-hover:opacity-[0.9]"
                         loading="lazy"
+                        decoding="async"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.028)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.028)_1px,transparent_1px)] bg-[size:28px_28px]" />
@@ -207,7 +208,7 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
                     <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-transparent to-black/20" />
                     <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
                       <span
-                        className={`border px-2.5 py-1 font-mono text-[0.52rem] uppercase tracking-[0.14em] backdrop-blur-sm ${
+                        className={`border px-2.5 py-1 font-mono text-[0.52rem] uppercase tracking-[0.14em] ${
                           upcomingSession
                             ? "border-[#daa000]/40 bg-[#daa000]/[0.1] text-[#e0b43a]"
                             : "border-white/[0.1] bg-black/55 text-[#8b857c]"
