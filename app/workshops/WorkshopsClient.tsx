@@ -177,6 +177,7 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
               <Link
                 key={workshop.slug}
                 href={`/workshops/${workshop.slug}`}
+                prefetch={false}
                 data-site-lift="card"
                 className={`group block bg-[#0c0c0b] no-underline transition-colors hover:bg-[#11110f] ${
                   featured ? "min-h-[440px] md:col-span-2" : "min-h-[410px]"

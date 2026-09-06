@@ -441,7 +441,13 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                 {inner}
               </a>
             ) : (
-              <Link key={project.slug} href={href} data-site-lift="card" className={`${spanClass} block h-full no-underline`}>
+              <Link
+                key={project.slug}
+                href={href}
+                prefetch={false}
+                data-site-lift="card"
+                className={`${spanClass} block h-full no-underline`}
+              >
                 {inner}
               </Link>
             )
