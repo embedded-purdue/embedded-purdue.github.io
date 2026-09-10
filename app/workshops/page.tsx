@@ -74,8 +74,8 @@ export default function WorkshopsPage() {
 
               <div className="relative min-h-[360px] overflow-hidden bg-[#080807] lg:col-span-5 lg:min-h-[480px]">
                 <Image
-                  src="/workshops/microcontroller-breadboard.jpg"
-                  alt="Microcontroller workshop hardware"
+                  src="/site-media/workshops/esp32.webp"
+                  alt="ESP32 development board used in ES@P workshops"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
                   className="object-cover opacity-[0.74]"

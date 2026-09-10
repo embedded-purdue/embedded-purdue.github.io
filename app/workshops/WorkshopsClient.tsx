@@ -102,15 +102,16 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
                 <Link
                   key={value}
                   href={filterHref(value, tag)}
+                  scroll={false}
                   aria-current={active ? "page" : undefined}
-                  className={`relative inline-flex h-9 items-center border-b font-mono text-[0.57rem] uppercase tracking-[0.14em] transition-colors ${
+                  className={`relative inline-flex h-11 items-center border-b font-mono text-[0.65rem] uppercase tracking-[0.12em] transition-colors ${
                     active
                       ? "border-[#daa000] text-[#e3b93e]"
-                      : "border-transparent text-[#7f7a72] hover:border-white/[0.16] hover:text-[#d8d2c7]"
+                      : "border-transparent text-[#a49d91] hover:border-white/[0.16] hover:text-[#d8d2c7]"
                   }`}
                 >
                   {label}
-                  <span className="ml-2 text-[#5e5a54]">{count}</span>
+                  <span className="ml-2 text-[#969087]">{count}</span>
                 </Link>
               )
             })}
@@ -119,7 +120,8 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
           {hasFilters && (
             <Link
               href="/workshops"
-              className="inline-flex w-fit items-center gap-2 font-mono text-[0.56rem] uppercase tracking-[0.14em] text-[#777169] transition-colors hover:text-[#f2c34f]"
+              scroll={false}
+              className="inline-flex min-h-8 w-fit items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.12em] text-[#a49d91] transition-colors hover:text-[#f2c34f]"
             >
               <X className="h-3 w-3" aria-hidden="true" />
               Clear filters
@@ -128,12 +130,13 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
         </div>
 
         {allTags.length > 0 && (
-          <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3 border-t border-white/[0.06] pt-4">
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 border-t border-white/[0.1] pt-3">
             <Link
               href={filterHref(when, "")}
+              scroll={false}
               aria-current={!tag ? "page" : undefined}
-              className={`font-mono text-[0.54rem] uppercase tracking-[0.14em] transition-colors ${
-                !tag ? "text-[#e2b63a]" : "text-[#69645d] hover:text-[#bdb7ad]"
+              className={`inline-flex min-h-8 items-center border-b font-mono text-[0.625rem] uppercase tracking-[0.1em] transition-colors ${
+                !tag ? "border-[#daa000]/50 text-[#e2b63a]" : "border-transparent text-[#969087] hover:text-[#d8d2c7]"
               }`}
             >
               All topics
@@ -142,9 +145,10 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
               <Link
                 key={topic}
                 href={filterHref(when, topic)}
+                scroll={false}
                 aria-current={tag === topic ? "page" : undefined}
-                className={`font-mono text-[0.54rem] uppercase tracking-[0.14em] transition-colors ${
-                  tag === topic ? "text-[#e2b63a]" : "text-[#69645d] hover:text-[#bdb7ad]"
+                className={`inline-flex min-h-8 items-center border-b font-mono text-[0.625rem] uppercase tracking-[0.1em] transition-colors ${
+                  tag === topic ? "border-[#daa000]/50 text-[#e2b63a]" : "border-transparent text-[#969087] hover:text-[#d8d2c7]"
                 }`}
               >
                 {topic}
@@ -160,6 +164,7 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
           <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing matches this view.</h2>
           <Link
             href="/workshops"
+            scroll={false}
             className="mt-5 inline-flex items-center gap-2 text-sm text-[#b28c25] transition-colors hover:text-[#f2c34f]"
           >
             Reset workshop archive
@@ -172,52 +177,50 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
             const cover = workshop.cover ?? workshop.image
             const upcomingSession = isUpcoming(workshop.date)
             const featured = index === 0 && list.length > 1
+            const fullRow = index === 0 || (index === list.length - 1 && list.length % 2 === 0)
 
             return (
               <Link
                 key={workshop.slug}
                 href={`/workshops/${workshop.slug}`}
+                aria-label={`View ${workshop.title}`}
                 prefetch={false}
                 data-site-lift="card"
                 className={`group block bg-[#0c0c0b] no-underline transition-colors hover:bg-[#11110f] ${
-                  featured ? "min-h-[440px] md:col-span-2" : "min-h-[410px]"
+                  fullRow ? "md:col-span-2" : ""
                 }`}
               >
                 <article
                   className={`h-full ${
-                    featured ? "flex flex-col lg:grid lg:grid-cols-[1.08fr_.92fr]" : "flex flex-col"
+                    fullRow && cover ? "flex flex-col lg:grid lg:grid-cols-[1.08fr_.92fr]" : "flex flex-col"
                   }`}
                 >
-                  <div
-                    className={`relative overflow-hidden bg-black ${
-                      featured
-                        ? "min-h-[250px] border-b border-white/[0.08] lg:min-h-full lg:border-b-0 lg:border-r"
+                  {cover && <div
+                    className={`relative shrink-0 overflow-hidden bg-black ${
+                      fullRow
+                        ? "h-[250px] border-b border-white/[0.08] sm:h-[320px] lg:h-auto lg:min-h-[360px] lg:border-b-0 lg:border-r"
                         : "h-[200px] border-b border-white/[0.08]"
                     }`}
                   >
-                    {cover ? (
                       <img
                         src={cover}
                         alt={`${workshop.title} cover`}
-                        className="h-full w-full object-cover opacity-[0.72] transition-opacity duration-300 ease-out group-hover:opacity-[0.9]"
+                        className="absolute inset-0 h-full w-full object-cover opacity-[0.86] transition-opacity duration-300 ease-out group-hover:opacity-100"
                         loading="lazy"
                         decoding="async"
                       />
-                    ) : (
-                      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.028)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.028)_1px,transparent_1px)] bg-[size:28px_28px]" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-transparent to-black/20" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
                     <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
                       <span
-                        className={`border px-2.5 py-1 font-mono text-[0.52rem] uppercase tracking-[0.14em] ${
+                        className={`border px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.12em] ${
                           upcomingSession
-                            ? "border-[#daa000]/40 bg-[#daa000]/[0.1] text-[#e0b43a]"
-                            : "border-white/[0.1] bg-black/55 text-[#8b857c]"
+                            ? "border-[#daa000]/50 bg-[#171409]/95 text-[#edc458]"
+                            : "border-white/[0.2] bg-black/85 text-[#b2aca2]"
                         }`}
                       >
                         {upcomingSession ? "Upcoming" : "Archive"}
                       </span>
-                      <span className="font-mono text-[0.52rem] uppercase tracking-[0.14em] text-[#777169]">
+                      <span className="bg-black/85 px-2 py-1 font-mono text-[0.625rem] uppercase tracking-[0.12em] text-[#b2aca2]">
                         W-{String(index + 1).padStart(2, "0")}
                       </span>
                     </div>
@@ -225,12 +228,16 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
                       className="absolute bottom-4 right-4 h-5 w-5 text-[#c4bfb5] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#f2c34f]"
                       aria-hidden="true"
                     />
-                  </div>
+                  </div>}
 
                   <div className={`flex flex-1 flex-col px-5 py-6 sm:px-7 sm:py-7 ${featured ? "lg:px-9 lg:py-9" : ""}`}>
-                    <p className="font-mono text-[0.52rem] uppercase tracking-[0.15em] text-[#625e58]">
-                      {featured ? "Featured session" : "Workshop session"}
-                    </p>
+                    <div className="flex items-center justify-between gap-4">
+                      <p className="font-mono text-[0.625rem] uppercase tracking-[0.13em] text-[#969087]">
+                        {featured ? "Featured session" : "Workshop session"}
+                        {!cover && <span className="ml-3 text-[#b4a374]">{upcomingSession ? "Upcoming" : "Archive"}</span>}
+                      </p>
+                      {!cover && <ArrowUpRight className="h-5 w-5 shrink-0 text-[#b9b1a3] transition-colors group-hover:text-[#f2c34f]" aria-hidden="true" />}
+                    </div>
                     <h2
                       className={`mt-2 font-medium leading-[0.98] tracking-[-0.05em] text-[#ebe6dc] ${
                         featured ? "text-[clamp(2rem,3.4vw,3.2rem)]" : "text-[clamp(1.6rem,2.6vw,2.2rem)]"
@@ -239,14 +246,14 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
                       {workshop.title}
                     </h2>
                     {workshop.summary && (
-                      <p className={`mt-4 max-w-xl text-sm leading-6 text-[#817c74] ${featured ? "line-clamp-5" : "line-clamp-3"}`}>
+                      <p className={`mt-4 max-w-2xl text-sm leading-6 text-[#a29b90] ${featured ? "line-clamp-5" : "line-clamp-3"}`}>
                         {workshop.summary}
                       </p>
                     )}
 
                     <div className="mt-auto pt-6">
                       <div className="flex flex-col gap-3 border-t border-white/[0.07] pt-5 sm:flex-row sm:items-center sm:justify-between">
-                        <div className="flex flex-wrap gap-x-5 gap-y-2 font-mono text-[0.53rem] uppercase tracking-[0.13em] text-[#777169]">
+                        <div className="flex flex-wrap gap-x-5 gap-y-2 font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#aaa295]">
                           <span className="inline-flex items-center gap-2">
                             <CalendarDays className="h-3.5 w-3.5 text-[#8d7328]" aria-hidden="true" />
                             {formatDate(workshop.date)}
@@ -263,7 +270,7 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
                       {!!workshop.tags?.length && (
                         <div className="mt-3 flex flex-wrap gap-x-3 gap-y-2">
                           {workshop.tags.slice(0, featured ? 7 : 5).map((topic) => (
-                            <span key={topic} className="font-mono text-[0.51rem] uppercase tracking-[0.13em] text-[#625e58]">
+                            <span key={topic} className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#969087]">
                               {topic}
                             </span>
                           ))}

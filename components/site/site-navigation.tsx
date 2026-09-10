@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation"
 import { ArrowUpRight, Menu, X } from "lucide-react"
 
 import { SiteStyles } from "@/components/site/site-styles"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 const navigation = [
   { name: "About", href: "/about" },
@@ -34,7 +34,7 @@ export function SiteNavigation() {
         className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#090908] text-[#f3efe6] shadow-[0_8px_28px_rgba(0,0,0,.12)]"
       >
         <div className="relative mx-auto flex h-[68px] w-full items-center justify-between px-5 sm:px-8 lg:w-[calc(100%_-_48px)] lg:border-x lg:border-white/[0.05] lg:px-8 xl:px-10 2xl:w-[calc(100%_-_80px)] 2xl:px-12">
-          <Link href="/" className="flex items-center gap-4" aria-label="Embedded Systems @ Purdue home">
+          <Link href="/" className="flex shrink-0 items-center gap-4" aria-label="Embedded Systems @ Purdue home">
             <Image
               src="/logo.svg"
               alt="Embedded Systems @ Purdue"
@@ -43,12 +43,12 @@ export function SiteNavigation() {
               className="h-auto w-[72px] object-contain"
               priority
             />
-            <span className="hidden border-l border-white/[0.09] pl-4 font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#9b968d] sm:block">
+            <span className="hidden whitespace-nowrap border-l border-white/[0.09] pl-4 font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#9b968d] sm:block">
               Embedded Systems @ Purdue
             </span>
           </Link>
 
-          <div className="hidden items-center gap-7 md:flex lg:gap-9">
+          <div className="hidden shrink-0 items-center gap-6 lg:flex xl:gap-9">
             {navigation.map((item) => {
               const active = isActivePath(pathname, item.href)
               return (
@@ -82,7 +82,7 @@ export function SiteNavigation() {
             </Link>
           </div>
 
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <button
@@ -95,11 +95,12 @@ export function SiteNavigation() {
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-[88vw] max-w-[360px] border-l border-white/[0.08] bg-[#0d0d0b] p-0 text-[#f3efe6]"
+                className="w-[88vw] max-w-[360px] gap-0 overflow-y-auto border-l border-white/[0.08] bg-[#0d0d0b] p-0 text-[#f3efe6] [&>button]:grid [&>button]:h-10 [&>button]:w-10 [&>button]:place-items-center"
               >
-                <div className="border-b border-white/[0.08] px-6 py-6 font-mono text-[0.58rem] uppercase tracking-[0.16em] text-[#a8a197]">
-                  Embedded Systems @ Purdue
-                </div>
+                <SheetTitle className="border-b border-white/[0.08] px-6 py-7 pr-16 font-mono text-[0.62rem] font-normal uppercase tracking-[0.16em] text-[#a8a197]">
+                  Explore ES@P
+                </SheetTitle>
+                <SheetDescription className="sr-only">Explore Embedded Systems @ Purdue and join the community.</SheetDescription>
                 <div className="flex flex-col">
                   {navigation.map((item) => {
                     const active = isActivePath(pathname, item.href)

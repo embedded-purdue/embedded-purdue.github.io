@@ -6,6 +6,15 @@ import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { ArrowUpRight, ChevronDown, Search, X } from "lucide-react"
 
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { resolveProjectImagePath } from "@/lib/project-media-path"
 import { allStatuses, collectSemesters, collectTechs } from "./_data"
 import type { Project as DataProject } from "./_data"
@@ -18,12 +27,12 @@ type Project = Omit<DataProject, "description" | "image" | "icon"> & {
 const STATUS_ORDER: Record<string, number> = { Active: 0, Planned: 1, Completed: 2 }
 
 const TRIGGER_CLS =
-  "flex h-10 w-full items-center gap-2 border-0 border-b border-white/[0.12] bg-transparent px-0 font-mono text-[0.6rem] uppercase tracking-[0.11em] text-[#aaa49a] outline-none transition-colors hover:border-[#daa000]/45 hover:text-[#e6e0d5] focus-visible:border-[#daa000]/70 sm:w-44"
+  "group flex h-11 w-full items-center gap-2 border-0 border-b border-white/[0.16] bg-transparent px-0 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-[#b5afa4] outline-none transition-colors hover:border-[#daa000]/45 hover:text-[#e6e0d5] focus-visible:border-[#daa000]/70 data-[state=open]:border-[#daa000] data-[state=open]:text-[#f2c34f] xl:w-44"
 const TRIGGER_LABEL_CLS = "min-w-0 flex-1 truncate text-left"
 const MENU_CLS =
-  "absolute left-0 top-full z-50 mt-1 min-w-full border border-white/[0.1] bg-[#090908]/98 text-[#c7c1b7] shadow-[0_20px_50px_rgba(0,0,0,.46)] backdrop-blur-xl"
+  "min-w-[var(--radix-dropdown-menu-trigger-width)] rounded-none border-white/[0.16] bg-[#10100e] p-1 text-[#c7c1b7] shadow-[0_16px_40px_rgba(0,0,0,.4)] motion-reduce:animate-none"
 const MENU_ITEM_CLS =
-  "w-full px-3.5 py-2.5 text-left text-sm transition-colors hover:bg-[#daa000]/[0.07] hover:text-[#f2c34f]"
+  "min-h-11 cursor-pointer rounded-none py-2.5 text-sm focus:bg-[#daa000]/[0.1] focus:text-[#f2c34f] data-[state=checked]:text-[#f2c34f]"
 
 function resolveProjectHref(project: Project): { href: string; external: boolean } {
   const url = project.readmeUrl?.trim()
@@ -42,9 +51,29 @@ function decodeTechs(raw: string) {
 }
 
 function statusClass(status: string) {
-  if (status === "Active") return "border-[#daa000]/45 bg-[#daa000]/[0.1] text-[#e1b947]"
-  if (status === "Planned") return "border-[#7b87a3]/35 bg-black/35 text-[#aab3c7]"
-  return "border-white/[0.12] bg-black/40 text-[#817c74]"
+  if (status === "Active") return "border-[#daa000]/50 bg-[#171409]/95 text-[#edc458]"
+  if (status === "Planned") return "border-[#7b87a3]/45 bg-[#0c0c0b]/95 text-[#bbc4d8]"
+  return "border-white/[0.2] bg-[#0c0c0b]/90 text-[#b2aca2]"
+}
+
+function ProjectCover({ source, title }: { source: string; title: string }) {
+  const [failedSource, setFailedSource] = useState<string | null>(null)
+  const isPlaceholder = source === "/projects/logo.png" || source === failedSource
+
+  return isPlaceholder ? (
+    <div className="absolute inset-0 grid place-items-center bg-[linear-gradient(rgba(218,160,0,.055)_1px,transparent_1px),linear-gradient(90deg,rgba(218,160,0,.055)_1px,transparent_1px)] bg-[size:32px_32px]">
+      <img src="/logo.svg" alt="" className="h-auto w-40 max-w-[48%] opacity-65" loading="lazy" decoding="async" />
+    </div>
+  ) : (
+    <img
+      src={source}
+      alt={`${title} project`}
+      className="absolute inset-0 h-full w-full object-cover opacity-[0.86] transition-opacity duration-300 ease-out group-hover:opacity-100"
+      loading="lazy"
+      decoding="async"
+      onError={() => setFailedSource(source)}
+    />
+  )
 }
 
 function TechCheckboxDropdown({
@@ -56,17 +85,6 @@ function TechCheckboxDropdown({
   selectedTechs: string[]
   onChange: (next: string[]) => void
 }) {
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target as Node)) setOpen(false)
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
-
   function toggle(tech: string) {
     onChange(
       selectedTechs.includes(tech)
@@ -83,42 +101,33 @@ function TechCheckboxDropdown({
         : `${selectedTechs.length} technologies`
 
   return (
-    <div ref={ref} className="relative">
-      <button type="button" onClick={() => setOpen((value) => !value)} className={TRIGGER_CLS} aria-expanded={open}>
-        <span className={TRIGGER_LABEL_CLS}>{label}</span>
-        <ChevronDown className={`h-3.5 w-3.5 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden="true" />
-      </button>
-
-      {open && (
-        <div className={`${MENU_CLS} w-64`}>
-          {selectedTechs.length > 0 && (
-            <button
-              type="button"
-              onClick={() => onChange([])}
-              className="flex w-full items-center gap-2 border-b border-white/[0.08] px-3.5 py-2.5 font-mono text-[0.58rem] uppercase tracking-[0.12em] text-[#777169] transition-colors hover:text-[#f2c34f]"
-            >
-              <X className="h-3 w-3" aria-hidden="true" />
-              Clear selection
-            </button>
-          )}
-          <ul className="max-h-72 overflow-y-auto py-1.5">
-            {allTechs.map((tech) => (
-              <li key={tech}>
-                <label className="flex cursor-pointer items-center gap-3 px-3.5 py-2 text-sm transition-colors hover:bg-[#daa000]/[0.07] hover:text-[#f2c34f]">
-                  <input
-                    type="checkbox"
-                    checked={selectedTechs.includes(tech)}
-                    onChange={() => toggle(tech)}
-                    className="h-3.5 w-3.5 accent-[#daa000]"
-                  />
-                  {tech}
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button type="button" className={TRIGGER_CLS} aria-label={`Filter technologies: ${label}`}>
+          <span className={TRIGGER_LABEL_CLS}>{label}</span>
+          <ChevronDown className="h-3.5 w-3.5 shrink-0 transition-transform group-data-[state=open]:rotate-180" aria-hidden="true" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" collisionPadding={16} className={`${MENU_CLS} w-64 max-h-80`}>
+        {selectedTechs.length > 0 && (
+          <DropdownMenuItem onSelect={() => onChange([])} className={`${MENU_ITEM_CLS} border-b border-white/[0.1]`}>
+            <X className="h-3 w-3" aria-hidden="true" />
+            Clear selection
+          </DropdownMenuItem>
+        )}
+        {allTechs.map((tech) => (
+          <DropdownMenuCheckboxItem
+            key={tech}
+            checked={selectedTechs.includes(tech)}
+            onCheckedChange={() => toggle(tech)}
+            onSelect={(event) => event.preventDefault()}
+            className={MENU_ITEM_CLS}
+          >
+            {tech}
+          </DropdownMenuCheckboxItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
@@ -133,59 +142,25 @@ function SelectDropdown({
   placeholder: string
   onChange: (value: string) => void
 }) {
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target as Node)) setOpen(false)
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
-
   const label = value === "all" ? placeholder : value
 
   return (
-    <div ref={ref} className="relative">
-      <button type="button" onClick={() => setOpen((state) => !state)} className={TRIGGER_CLS} aria-expanded={open}>
-        <span className={TRIGGER_LABEL_CLS}>{label}</span>
-        <ChevronDown className={`h-3.5 w-3.5 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden="true" />
-      </button>
-
-      {open && (
-        <div className={MENU_CLS}>
-          <ul className="py-1.5">
-            <li>
-              <button
-                type="button"
-                onClick={() => {
-                  onChange("all")
-                  setOpen(false)
-                }}
-                className={`${MENU_ITEM_CLS} ${value === "all" ? "text-[#f2c34f]" : ""}`}
-              >
-                {placeholder}
-              </button>
-            </li>
-            {options.map((option) => (
-              <li key={option}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onChange(option)
-                    setOpen(false)
-                  }}
-                  className={`${MENU_ITEM_CLS} ${value === option ? "text-[#f2c34f]" : ""}`}
-                >
-                  {option}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button type="button" className={TRIGGER_CLS} aria-label={`${placeholder}: ${label}`}>
+          <span className={TRIGGER_LABEL_CLS}>{label}</span>
+          <ChevronDown className="h-3.5 w-3.5 shrink-0 transition-transform group-data-[state=open]:rotate-180" aria-hidden="true" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" collisionPadding={16} className={MENU_CLS}>
+        <DropdownMenuRadioGroup value={value} onValueChange={onChange}>
+          <DropdownMenuRadioItem value="all" className={MENU_ITEM_CLS}>{placeholder}</DropdownMenuRadioItem>
+          {options.map((option) => (
+            <DropdownMenuRadioItem key={option} value={option} className={MENU_ITEM_CLS}>{option}</DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
 
@@ -284,6 +259,11 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
   const hasFilters =
     selectedStatus !== "all" || selectedTechs.length > 0 || selectedSemester !== "all" || Boolean(query)
 
+  function clearFilters() {
+    setQuery("")
+    navigate("all", [], "all", "")
+  }
+
   return (
     <>
       <div className="border-b border-white/[0.08] px-5 py-8 sm:px-8 sm:py-9 lg:px-12 lg:py-10 xl:px-16">
@@ -297,7 +277,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
               autoComplete="off"
               spellCheck={false}
               placeholder="Search projects, systems, technologies…"
-              className="h-10 w-full border-0 border-b border-white/[0.12] bg-transparent py-2 pl-7 pr-4 text-sm text-[#e5dfd4] outline-none transition-colors placeholder:text-[#5f5a53] focus:border-[#daa000]/70"
+              className="h-11 w-full border-0 border-b border-white/[0.16] bg-transparent py-2 pl-7 pr-4 text-sm text-[#e5dfd4] outline-none transition-colors placeholder:text-[#948d82] focus:border-[#daa000]/70"
             />
           </div>
 
@@ -322,15 +302,15 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
           </div>
         </div>
 
-        <div className="mt-5 flex min-h-5 flex-wrap items-center justify-between gap-3 font-mono text-[0.56rem] uppercase tracking-[0.15em]">
-          <span className="text-[#69645d]">
+        <div className="mt-5 flex min-h-5 flex-wrap items-center justify-between gap-3 font-mono text-[0.625rem] uppercase tracking-[0.13em]">
+          <span role="status" className="text-[#969087]">
             {filtered.length} project{filtered.length === 1 ? "" : "s"}{hasFilters ? " matching filters" : " in archive"}
           </span>
           {hasFilters && (
-            <Link href="/projects" className="inline-flex items-center gap-2 text-[#9b958b] transition-colors hover:text-[#f2c34f]">
+            <button type="button" onClick={clearFilters} className="inline-flex min-h-8 items-center gap-2 uppercase tracking-[0.13em] text-[#b6afa3] transition-colors hover:text-[#f2c34f]">
               <X className="h-3 w-3" aria-hidden="true" />
               Clear all
-            </Link>
+            </button>
           )}
         </div>
       </div>
@@ -339,10 +319,10 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
         <div className="px-5 py-20 text-center sm:px-8 lg:px-12 lg:py-24">
           <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#666159]">No matching systems</p>
           <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing fits those filters.</h2>
-          <Link href="/projects" className="mt-5 inline-flex items-center gap-2 text-sm text-[#b28c25] transition-colors hover:text-[#f2c34f]">
+          <button type="button" onClick={clearFilters} className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm text-[#d8aa27] transition-colors hover:text-[#f2c34f]">
             Reset project archive
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-          </Link>
+          </button>
         </div>
       ) : (
         <div className="grid gap-px bg-white/[0.08] md:grid-cols-2 xl:grid-cols-12">
@@ -352,43 +332,39 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
             const solo = filtered.length === 1
             const featured = index === 0 && filtered.length > 1
             const emphasized = solo || featured
-            const spanClass = solo
-              ? "md:col-span-2 xl:col-span-12"
+            const last = index === filtered.length - 1
+            const remainder = filtered.length > 2 ? (filtered.length - 2) % 3 : 0
+            const inLastRow = remainder > 0 && index >= filtered.length - remainder
+            const wideAtDesktop = emphasized || (inLastRow && remainder === 1)
+            const tabletSpan = emphasized || (last && filtered.length % 2 === 0) ? "md:col-span-2" : ""
+            const desktopSpan = solo || (inLastRow && remainder === 1)
+              ? "xl:col-span-12"
               : featured
-                ? "md:col-span-2 xl:col-span-8"
-                : "xl:col-span-4"
+                ? "xl:col-span-8"
+                : inLastRow ? "xl:col-span-6" : "xl:col-span-4"
+            const spanClass = `${tabletSpan} ${desktopSpan}`
 
             const inner = (
               <article
                 className={`group h-full min-h-[440px] bg-[#0c0c0b] transition-colors hover:bg-[#11110f] ${
-                  emphasized ? "flex flex-col xl:grid xl:grid-cols-[1.14fr_.86fr]" : "flex flex-col"
+                  wideAtDesktop ? "flex flex-col xl:grid xl:grid-cols-[1.14fr_.86fr]" : "flex flex-col"
                 }`}
               >
                 <div
-                  className={`relative overflow-hidden bg-black ${
-                    emphasized
-                      ? "min-h-[250px] border-b border-white/[0.08] xl:min-h-full xl:border-b-0 xl:border-r"
+                  className={`relative shrink-0 overflow-hidden bg-black ${
+                    wideAtDesktop
+                      ? "h-[250px] border-b border-white/[0.08] sm:h-[320px] xl:h-auto xl:min-h-[440px] xl:border-b-0 xl:border-r"
                       : "h-[210px] border-b border-white/[0.08]"
                   }`}
                 >
-                  <img
-                    src={image}
-                    alt={`${project.title} cover`}
-                    className="h-full w-full object-cover opacity-[0.72] transition-opacity duration-300 ease-out group-hover:opacity-[0.9]"
-                    loading="lazy"
-                    decoding="async"
-                    onError={(event) => {
-                      event.currentTarget.onerror = null
-                      event.currentTarget.src = "/projects/logo.png"
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-transparent to-black/18" />
+                  <ProjectCover source={image} title={project.title} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
                   <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 p-4">
-                    <span className={`border px-2.5 py-1 font-mono text-[0.53rem] uppercase tracking-[0.14em] ${statusClass(project.status)}`}>
+                    <span className={`border px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.12em] ${statusClass(project.status)}`}>
                       {project.status}
                     </span>
                     {project.semester && (
-                      <span className="bg-black/82 px-2.5 py-1 font-mono text-[0.52rem] uppercase tracking-[0.13em] text-[#989289]">
+                      <span className="bg-black/85 px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#b6afa3]">
                         {project.semester}
                       </span>
                     )}
@@ -397,7 +373,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                 </div>
 
                 <div className={`flex flex-1 flex-col px-5 py-6 sm:px-7 sm:py-7 ${emphasized ? "xl:px-9 xl:py-9" : ""}`}>
-                  <p className="font-mono text-[0.53rem] uppercase tracking-[0.16em] text-[#5e5a54]">Project / {project.slug}</p>
+                  <p className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-[#969087]">Project / {project.slug}</p>
                   <h2
                     className={`mt-2.5 font-medium leading-[1.02] tracking-[-0.05em] text-[#e9e4da] ${
                       emphasized ? "text-[clamp(1.9rem,3vw,2.7rem)]" : "text-[1.65rem]"
@@ -406,23 +382,25 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                     {project.title}
                   </h2>
                   {project.description && (
-                    <p className={`mt-4 text-sm leading-6 text-[#817c74] ${emphasized ? "line-clamp-5" : "line-clamp-3"}`}>
+                    <p className={`mt-4 text-sm leading-6 text-[#a29b90] ${emphasized ? "line-clamp-5" : "line-clamp-3"}`}>
                       {project.description}
                     </p>
                   )}
 
                   {!!project.technologies.length && (
-                    <div className="mt-auto flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.07] pt-5">
-                      {project.technologies.slice(0, emphasized ? 7 : 5).map((technology) => (
-                        <span key={`${project.slug}-${technology}`} className="font-mono text-[0.52rem] uppercase tracking-[0.13em] text-[#77726a]">
-                          {technology}
-                        </span>
-                      ))}
-                      {project.technologies.length > (emphasized ? 7 : 5) && (
-                        <span className="font-mono text-[0.52rem] uppercase tracking-[0.13em] text-[#5c5852]">
-                          +{project.technologies.length - (emphasized ? 7 : 5)}
-                        </span>
-                      )}
+                    <div className="mt-auto pt-6">
+                      <div className="flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.1] pt-4">
+                        {project.technologies.slice(0, emphasized ? 7 : 5).map((technology) => (
+                          <span key={`${project.slug}-${technology}`} className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#969087]">
+                            {technology}
+                          </span>
+                        ))}
+                        {project.technologies.length > (emphasized ? 7 : 5) && (
+                          <span className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#969087]">
+                            +{project.technologies.length - (emphasized ? 7 : 5)}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -433,6 +411,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
               <a
                 key={project.slug}
                 href={href}
+                aria-label={`View ${project.title}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-site-lift="card"
@@ -444,6 +423,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
               <Link
                 key={project.slug}
                 href={href}
+                aria-label={`View ${project.title}`}
                 prefetch={false}
                 data-site-lift="card"
                 className={`${spanClass} block h-full no-underline`}

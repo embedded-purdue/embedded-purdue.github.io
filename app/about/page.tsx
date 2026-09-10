@@ -219,13 +219,13 @@ export default function AboutPage() {
                   <article
                     key={item.index}
                     data-site-lift="card"
-                    className="group flex min-h-[250px] flex-col bg-black px-5 py-8 transition-colors hover:bg-[#0c0c0b] sm:px-7 lg:py-9"
+                    className="group flex min-h-[250px] flex-col bg-black px-5 py-8 transition-colors hover:bg-[#0c0c0b] sm:px-7 sm:max-xl:last:col-span-2 sm:max-xl:last:min-h-0 lg:py-9"
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-[0.54rem] uppercase tracking-[0.16em] text-[#5f5b55]">{item.index}</span>
                       <Icon className="h-4.5 w-4.5 text-[#766021] transition-colors group-hover:text-[#daa000]" aria-hidden="true" />
                     </div>
-                    <div className="mt-auto pt-12">
+                    <div className="mt-auto pt-12 group-last:sm:max-xl:pt-7">
                       <h3 className="text-xl font-medium tracking-[-0.04em] text-[#e9e4da]">{item.title}</h3>
                       <p className="mt-3 text-sm leading-6 text-[#777169]">{item.detail}</p>
                     </div>
