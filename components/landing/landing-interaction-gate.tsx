@@ -14,7 +14,7 @@ const enhancementStyles = `
   position: relative;
   opacity: var(--landing-reveal-opacity);
   transform: translate3d(0, var(--landing-reveal-offset), 0);
-  will-change: opacity, transform;
+
 }
 
 #landing-content > section[data-landing-reveal="section"]::before {
@@ -39,7 +39,7 @@ const enhancementStyles = `
   --landing-tilt-x: 0deg;
   --landing-tilt-y: 0deg;
   transform-style: preserve-3d;
-  will-change: transform;
+
 }
 
 [data-landing-shell] [data-landing-reactive="true"]::after {
@@ -191,7 +191,10 @@ export function LandingInteractionGate() {
     let revealFrame = 0
     let removeRevealListeners: (() => void) | null = null
 
+    const previousProgress = new WeakMap<HTMLElement, number>()
     const setRevealProgress = (element: HTMLElement, progress: number) => {
+      if (previousProgress.get(element) === progress) return
+      previousProgress.set(element, progress)
       const eased = smoothstep(progress)
       const offset = (1 - eased) * 16
       const lineOpacity = Math.max(0, 1 - Math.abs(eased - 0.52) / 0.52) * 0.62
@@ -209,11 +212,16 @@ export function LandingInteractionGate() {
       const fadeEnd = viewportHeight * 0.72
       const fadeDistance = Math.max(1, fadeStart - fadeEnd)
 
-      revealElements.forEach((element) => {
-        const top = element.getBoundingClientRect().top
-        const rawProgress = (fadeStart - top) / fadeDistance
-        const progress = Math.max(0, Math.min(1, rawProgress))
-        setRevealProgress(element, progress)
+      // Read every section before writing styles, and exclude the reveal's own
+      // translation from its position so it cannot feed back into the next frame.
+      const progressValues = revealElements.map((element) => {
+        const previous = previousProgress.get(element) ?? 0
+        const offset = (1 - smoothstep(previous)) * 16
+        const top = element.getBoundingClientRect().top - offset
+        return Math.max(0, Math.min(1, (fadeStart - top) / fadeDistance))
+      })
+      revealElements.forEach((element, index) => {
+        setRevealProgress(element, progressValues[index])
       })
     }
 

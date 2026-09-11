@@ -37,10 +37,8 @@ export const metadata: Metadata = {
 
 const landingFrameScript = `
 (function () {
-  if (window.location.pathname !== "/") return;
-
   var root = document.documentElement;
-  var posterKey = "esap-landing-final-poster-v15";
+  var posterKey = "esap-landing-final-poster-v16";
   var seenKey = "esap-landing-animation-seen";
   var currentShell = null;
   var captureToken = 0;
@@ -116,9 +114,9 @@ const landingFrameScript = `
   }
 
   var bootPoster = readPoster();
-  if (bootPoster) {
+  if (bootPoster && window.location.pathname === "/") {
     activatePoster(bootPoster);
-  } else {
+  } else if (!bootPoster) {
     // A "seen" flag without the current poster cannot provide a stable first paint.
     // Replay the animation once and create the current poster instead.
     try {
@@ -138,46 +136,58 @@ const landingFrameScript = `
       sessionStorage.removeItem("esap-landing-final-poster-v12");
       sessionStorage.removeItem("esap-landing-final-poster-v13");
       sessionStorage.removeItem("esap-landing-final-poster-v14");
+      sessionStorage.removeItem("esap-landing-final-poster-v15");
       sessionStorage.removeItem("esap-landing-reload-scroll-y");
     } catch (e) {}
   }
 
+  var stopCapture = null;
   function capturePoster(shell, token) {
+    var hero = shell.querySelector("section:first-of-type");
+    if (!hero) return;
+    var timer = 0;
+    var observer = new MutationObserver(check);
+    observer.observe(hero, { attributes: true, attributeFilter: ["data-pcb-state"] });
+    stopCapture = function () {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
+
     function check() {
+      if (hero.getAttribute("data-pcb-state") !== "settled") return;
+      observer.disconnect();
+      // Let the compact-height handoff finish before encoding the cached image.
+      timer = setTimeout(capture, 900);
+    }
+
+    function capture() {
       if (token !== captureToken || !shell.isConnected) return;
-
-      var hero = shell.querySelector("section:first-of-type");
-      var canvas = hero && hero.querySelector("canvas");
-      var settled = hero && hero.className.indexOf("h-[min(66svh,600px)]") !== -1;
-
-      if (!hero || !canvas || !settled || canvas.width < 2 || canvas.height < 2) {
-        requestAnimationFrame(check);
-        return;
-      }
-
+      var canvas = hero.querySelector("canvas");
+      if (!canvas || canvas.width < 2 || canvas.height < 2) return;
       try {
-        // Capture the real finished canvas once. Return visits keep this exact visual
-        // for the whole visit; there is no cached-image -> live-canvas handoff.
+        // Save only the PCB scene, excluding viewport padding. Returns can then
+        // use the same responsive scene height as the live canvas after a resize.
+        var cssHeight = canvas.getBoundingClientRect().height;
+        var sceneHeight = Math.max(600, Math.min(cssHeight * .78, 760));
+        if (cssHeight < sceneHeight) return;
+        var ratio = canvas.height / cssHeight;
         var poster = document.createElement("canvas");
         poster.width = Math.min(1280, canvas.width);
-        poster.height = Math.max(1, Math.round(canvas.height * poster.width / canvas.width));
+        poster.height = Math.max(1, Math.round(sceneHeight * ratio * poster.width / canvas.width));
         var context = poster.getContext("2d", { alpha: false });
         if (!context) return;
-
         context.fillStyle = "#000000";
         context.fillRect(0, 0, poster.width, poster.height);
-        context.drawImage(canvas, 0, 0, poster.width, poster.height);
-
+        context.drawImage(canvas, 0, (cssHeight - sceneHeight) / 2 * ratio,
+          canvas.width, sceneHeight * ratio, 0, 0, poster.width, poster.height);
         var frame = poster.toDataURL("image/jpeg", 0.86);
         if (!frame || frame === "data:,") return;
-
         sessionStorage.setItem(posterKey, frame);
         sessionStorage.setItem(seenKey, "1");
-        // First visit remains the live canvas. This image is only for later visits.
       } catch (e) {}
     }
 
-    requestAnimationFrame(check);
+    check();
   }
 
   function syncLandingShell() {
@@ -186,7 +196,13 @@ const landingFrameScript = `
 
     currentShell = shell;
     captureToken += 1;
-    if (!shell) return;
+    if (stopCapture) stopCapture();
+    stopCapture = null;
+    if (!shell) {
+      root.removeAttribute("data-esap-return-poster");
+      root.style.removeProperty("--esap-return-poster");
+      return;
+    }
 
     var token = captureToken;
     var poster = readPoster();
@@ -248,7 +264,7 @@ html[data-esap-return-poster="1"] [data-landing-shell] > section:first-of-type::
   top: calc(50% + 34px) !important;
   bottom: auto !important;
   width: 100% !important;
-  height: 100svh !important;
+  height: clamp(600px, 78svh, 760px) !important;
   transform: translateY(-50%) !important;
   transform-origin: center !important;
   background-color: #000 !important;

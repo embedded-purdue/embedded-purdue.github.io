@@ -15,9 +15,9 @@ import { getAllWorkshops } from "@/lib/workshops"
 const featuredSlugs = new Set(["harmonicore", "slayterhil", "bb8"])
 const featuredProjects = projects.filter((project) => featuredSlugs.has(project.slug))
 const featuredProjectImages: Record<string, string> = {
-  harmonicore: "/projects/harmonicore/harmonicore-1.jpg",
-  slayterhil: "/projects/slayterhil/slayterHIL-1.jpg",
-  bb8: "/projects/bb8/bb8-1.jpg",
+  harmonicore: "/site-media/projects/harmonicore.webp",
+  slayterhil: "/site-media/projects/slayterhil.webp",
+  bb8: "/site-media/projects/bb8.webp",
 }
 const featuredWorkshops = getAllWorkshops().slice(0, 3)
 
@@ -123,6 +123,7 @@ export default function HomePage() {
                   <Link
                     key={project.slug}
                     href={project.readmeUrl || `/projects/${project.slug}`}
+                    prefetch={false}
                     data-landing-lift="card"
                     className={`group relative isolate overflow-hidden bg-[#121210] ${position} ${
                       index === 0 ? "min-h-[410px] md:min-h-[560px]" : "min-h-[280px] md:min-h-[279px]"
@@ -250,7 +251,7 @@ export default function HomePage() {
             aria-label="Meet the Embedded Systems @ Purdue team"
           >
             <Image
-              src="/founders.jpeg"
+              src="/site-media/about-founders.webp"
               alt="Embedded Systems @ Purdue community"
               fill
               sizes="100vw"

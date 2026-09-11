@@ -69,23 +69,6 @@ export function Esp32Visual() {
   const [modelLoaded, setModelLoaded] = useState(false)
   const [modelFailed, setModelFailed] = useState(false)
 
-  // Start downloading the GLB while the hero animation is still running. The
-  // actual WebGL scene stays deferred until this section approaches the viewport.
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      fetch(ESP32_MODEL, { cache: "force-cache" })
-        .then((response) => {
-          if (!response.ok) throw new Error("ESP32 preload failed")
-          return response.arrayBuffer()
-        })
-        .catch(() => {
-          // model-viewer will still make its normal request when the section mounts.
-        })
-    }, 250)
-
-    return () => window.clearTimeout(timer)
-  }, [])
-
   useEffect(() => {
     const viewer = viewerRef.current
     if (!viewer) return
@@ -108,16 +91,18 @@ export function Esp32Visual() {
     return () => observer.disconnect()
   }, [])
 
-  // Warm the runtime immediately, but keep the custom element outside React's
-  // rendered tree to avoid Safari custom-element hydration/ref races.
+  // Load the runtime near the section so parsing it does not interrupt the PCB
+  // animation. Keep the custom element outside React to avoid hydration races.
   useEffect(() => {
+    if (!shouldMountModel) return
+
     const markReady = () => {
       const ModelViewer = customElements.get(
         "model-viewer"
       ) as ModelViewerConstructor | undefined
       if (!ModelViewer) return false
 
-      ModelViewer.minimumRenderScale = 1
+      ModelViewer.minimumRenderScale = 0.5
       setRuntimeReady(true)
       return true
     }
@@ -155,7 +140,7 @@ export function Esp32Visual() {
       script.onload = null
       script.onerror = null
     }
-  }, [])
+  }, [shouldMountModel])
 
   useEffect(() => {
     if (!runtimeReady || !shouldMountModel || modelFailed) return

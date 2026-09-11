@@ -5,54 +5,6 @@ const landingStyles = `
   outline-offset: 3px;
 }
 
-@keyframes landing-vertical-tail-grow {
-  from {
-    transform: scaleY(0);
-  }
-  to {
-    transform: scaleY(1);
-  }
-}
-
-[data-landing-shell] > section:first-of-type::before,
-[data-landing-shell] > section:first-of-type::after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  left: 0;
-  right: 0;
-  height: max(0px, calc((100svh - clamp(600px, 78svh, 760px)) / 2 + 3px));
-  pointer-events: none;
-  opacity: 0.68;
-  background-image:
-    linear-gradient(to right, transparent calc(20% - 0.7px), rgba(218,160,0,.58) calc(20% - 0.7px), rgba(244,198,77,.88) 20%, rgba(218,160,0,.58) calc(20% + 0.7px), transparent calc(20% + 0.7px)),
-    linear-gradient(to right, transparent calc(40% - 0.7px), rgba(218,160,0,.58) calc(40% - 0.7px), rgba(244,198,77,.88) 40%, rgba(218,160,0,.58) calc(40% + 0.7px), transparent calc(40% + 0.7px)),
-    linear-gradient(to right, transparent calc(60% - 0.7px), rgba(218,160,0,.58) calc(60% - 0.7px), rgba(244,198,77,.88) 60%, rgba(218,160,0,.58) calc(60% + 0.7px), transparent calc(60% + 0.7px)),
-    linear-gradient(to right, transparent calc(80% - 0.7px), rgba(218,160,0,.58) calc(80% - 0.7px), rgba(244,198,77,.88) 80%, rgba(218,160,0,.58) calc(80% + 0.7px), transparent calc(80% + 0.7px));
-  filter: drop-shadow(0 0 5px rgba(218,160,0,.42)) drop-shadow(0 0 14px rgba(218,160,0,.12));
-  animation: landing-vertical-tail-grow .78s cubic-bezier(.22,1,.36,1) 1.05s both;
-  transition: opacity 420ms ease-out;
-}
-
-[data-landing-shell] > section:first-of-type::before {
-  top: 0;
-  transform-origin: bottom;
-  -webkit-mask-image: linear-gradient(to top, black 42%, rgba(0,0,0,.72) 72%, transparent 100%);
-  mask-image: linear-gradient(to top, black 42%, rgba(0,0,0,.72) 72%, transparent 100%);
-}
-
-[data-landing-shell] > section:first-of-type::after {
-  bottom: 0;
-  transform-origin: top;
-  -webkit-mask-image: linear-gradient(to bottom, black 42%, rgba(0,0,0,.72) 72%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 42%, rgba(0,0,0,.72) 72%, transparent 100%);
-}
-
-[data-landing-shell][style*="--landing-content-opacity: 1"] > section:first-of-type::before,
-[data-landing-shell][style*="--landing-content-opacity: 1"] > section:first-of-type::after {
-  opacity: 0;
-}
-
 #hero-intro [data-hero-intro-grid] > div:first-child p {
   display: none;
 }

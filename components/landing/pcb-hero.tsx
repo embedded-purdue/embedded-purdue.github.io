@@ -685,7 +685,7 @@ export function PcbHero() {
       return
     }
 
-    const context = canvas.getContext("2d", { alpha: true })
+    const context = canvas.getContext("2d", { alpha: false })
     if (!context) return
 
     const lightPoolSprite = createLightPoolSprite()
@@ -803,6 +803,14 @@ export function PcbHero() {
     }
 
     const finishHandoff = () => {
+      if (complete) {
+        hero.dataset.pcbState = "settled"
+        try {
+          window.sessionStorage.setItem("esap-landing-animation-seen", "1")
+        } catch {
+          // The animation still works when storage is unavailable.
+        }
+      }
       restoreScroll()
       setSettled(true)
     }
@@ -856,7 +864,8 @@ export function PcbHero() {
     const resize = () => {
       const rect = hero.getBoundingClientRect()
       cssWidth = Math.max(1, rect.width)
-      cssHeight = Math.max(1, window.innerHeight)
+      // Match the canvas's stable viewport height, including mobile browser chrome.
+      cssHeight = Math.max(1, canvas.getBoundingClientRect().height)
 
       const heroHeight = Math.max(600, Math.min(cssHeight * .78, 760))
       scaleX = cssWidth / VW
@@ -865,7 +874,7 @@ export function PcbHero() {
 
       const nativeDpr = window.devicePixelRatio || 1
       const pixelBudgetDpr = Math.sqrt(2_600_000 / (cssWidth * cssHeight))
-      dpr = Math.min(nativeDpr, 1.35, Math.max(1.1, pixelBudgetDpr))
+      dpr = Math.min(nativeDpr, 1.35, pixelBudgetDpr)
       canvas.width = Math.round(cssWidth * dpr)
       canvas.height = Math.round(cssHeight * dpr)
       context.imageSmoothingEnabled = true
@@ -893,6 +902,37 @@ export function PcbHero() {
       context.fillStyle = gradient
       context.fillRect(0, 0, VW, VH)
       context.restore()
+    }
+
+    // The edge extensions share both the PCB clock and its coordinate transform.
+    // CSS-delayed tails used to run before the logo was ready and drift away from
+    // the ports during the focus movement.
+    const drawPortTails = (time: number) => {
+      const opacity = .68 * (1 - smoothstep((time - pageStart) / (animationEnd - pageStart)))
+      if (opacity <= 0) return
+
+      groups.forEach((group) => {
+        if (group.spec.side !== "top" && group.spec.side !== "bottom") return
+        const top = group.spec.side === "top"
+        const edgeY = top ? -renderOffsetY / scaleY - 12 : VH + renderOffsetY / scaleY + 12
+
+        group.branches.forEach((branch) => {
+          const progress = smoothstep((time - branch.start) / .78)
+          if (progress <= 0) return
+          const [x, y] = branch.port
+          const endY = y + (edgeY - y) * progress
+          const gradient = context.createLinearGradient(x, y, x, endY)
+          gradient.addColorStop(0, `rgba(244,198,77,${opacity})`)
+          gradient.addColorStop(.55, `rgba(218,160,0,${opacity * .58})`)
+          gradient.addColorStop(1, "rgba(218,160,0,0)")
+          context.beginPath()
+          context.moveTo(x, y)
+          context.lineTo(x, endY)
+          context.strokeStyle = gradient
+          context.lineWidth = 1.4
+          context.stroke()
+        })
+      })
     }
 
     const drawPorts = (time: number) => {
@@ -948,8 +988,6 @@ export function PcbHero() {
       if (progress <= 0) return
 
       const trace = tracePrepared(route, progress)
-      const pulseLength = Math.min(.24, 96 / Math.max(route.total, 1))
-      const pulseTrace = tracePreparedRange(route, Math.max(0, progress - pulseLength), progress)
       const activation = smoothstep(Math.min(1, progress * route.total / 42))
 
       context.save()
@@ -958,6 +996,8 @@ export function PcbHero() {
       context.restore()
 
       if (active) {
+        const pulseLength = Math.min(.24, 96 / Math.max(route.total, 1))
+        const pulseTrace = tracePreparedRange(route, Math.max(0, progress - pulseLength), progress)
         context.save()
         context.globalCompositeOperation = "lighter"
         context.globalAlpha = .024 * activation
@@ -990,12 +1030,6 @@ export function PcbHero() {
 
         const active = raw > 0 && raw < 1
         const trace = tracePrepared(wire.route, progress)
-        const pulseLength = Math.min(.22, 82 / Math.max(wire.route.total, 1))
-        const pulseTrace = tracePreparedRange(
-          wire.route,
-          Math.max(0, progress - pulseLength),
-          progress
-        )
         const activation = smoothstep(Math.min(1, progress * wire.route.total / 34))
         const completionPulse = raw >= 1 ? 1 - smoothstep((raw - 1) / .18) : 0
         const launchPulse = raw > 0 && raw < .14 ? 1 - smoothstep(raw / .14) : 0
@@ -1006,6 +1040,10 @@ export function PcbHero() {
         context.restore()
 
         if (active) {
+          const pulseLength = Math.min(.22, 82 / Math.max(wire.route.total, 1))
+          const pulseTrace = tracePreparedRange(
+            wire.route, Math.max(0, progress - pulseLength), progress
+          )
           context.save()
           context.globalCompositeOperation = "lighter"
           context.globalAlpha = .06 * activation
@@ -1061,6 +1099,7 @@ export function PcbHero() {
 
     const drawLogoFormation = (time: number) => {
       if (!logoImage || !formationContext) return
+      if (groups.every((group) => time <= group.logoStart)) return
 
       if (!formationSettled) {
         formationContext.setTransform(1, 0, 0, 1, 0, 0)
@@ -1182,6 +1221,7 @@ export function PcbHero() {
       context.scale(sceneScale, sceneScale)
       context.translate(-VW / 2, -VH / 2)
 
+      drawPortTails(time)
       drawAmbient(time)
       drawAuxiliaryNetwork(time)
       drawNetwork(time)
@@ -1245,14 +1285,6 @@ export function PcbHero() {
         pageStart = lockStart + .50
         animationEnd = lockStart + .82
 
-        if (!skipAnimation) {
-          try {
-            window.sessionStorage.setItem("esap-landing-animation-seen", "1")
-          } catch {
-            // The animation still works when storage is unavailable.
-          }
-        }
-
         const image = new Image()
         logoImage = image
         image.onload = () => {
@@ -1294,6 +1326,7 @@ export function PcbHero() {
 
     return () => {
       cancelled = true
+      delete hero.dataset.pcbState
       cancelAnimationFrame(frame)
       restoreScroll()
       removeScrollGuards()
