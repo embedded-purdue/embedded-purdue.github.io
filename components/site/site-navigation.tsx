@@ -137,10 +137,7 @@ export function SiteNavigation() {
           </div>
         </div>
 
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute bottom-[-1px] left-0 h-px w-20 bg-[linear-gradient(90deg,#8b6a13,#f2c34f_68%,rgba(242,195,79,.25))] shadow-[0_0_8px_rgba(218,160,0,.18)]"
-        />
+
       </nav>
     </>
   )
