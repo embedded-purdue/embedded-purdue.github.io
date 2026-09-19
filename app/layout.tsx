@@ -35,6 +35,269 @@ export const metadata: Metadata = {
   generator: "esap-web",
 };
 
+const landingFrameScript = `
+(function () {
+  var root = document.documentElement;
+  var posterKey = "esap-landing-final-poster-v16";
+  var seenKey = "esap-landing-animation-seen";
+  var currentShell = null;
+  var captureToken = 0;
+  var isLandingReload = false;
+  var isRestoredLandingTab = false;
+
+  try {
+    if (window.location.pathname === "/") {
+      var navEntries = performance.getEntriesByType
+        ? performance.getEntriesByType("navigation")
+        : [];
+      if (navEntries && navEntries.length) {
+        var navEntry = navEntries[0];
+        isLandingReload = navEntry.type === "reload";
+
+        if (
+          navEntry.type === "back_forward" &&
+          typeof navEntry.notRestoredReasons !== "undefined"
+        ) {
+          var notRestored = navEntry.notRestoredReasons;
+          if (notRestored === null) {
+            isRestoredLandingTab = true;
+          } else if (notRestored && Array.isArray(notRestored.reasons)) {
+            isRestoredLandingTab = notRestored.reasons.some(function (reason) {
+              return reason && reason.reason === "session-restored";
+            });
+          }
+        }
+      } else if (performance.navigation) {
+        isLandingReload = performance.navigation.type === 1;
+      }
+    }
+  } catch (e) {}
+
+  if (isRestoredLandingTab) {
+    // Undo-close-tab/session restoration carries sessionStorage forward. Treat
+    // that as a fresh viewing session so the cinematic runs again instead of
+    // immediately showing the cached settled poster.
+    try {
+      sessionStorage.removeItem(posterKey);
+      sessionStorage.removeItem(seenKey);
+    } catch (e) {}
+    root.removeAttribute("data-esap-return-poster");
+    root.style.removeProperty("--esap-return-poster");
+  }
+
+  if (isLandingReload) {
+    // Safari can briefly paint a restored scroll position before the landing page
+    // is reset to its intended reload position. Disable restoration before body
+    // paint, pin the reload to the top, then hand control back after pageshow.
+    try { history.scrollRestoration = "manual"; } catch (e) {}
+    try { window.scrollTo(0, 0); } catch (e) {}
+
+    window.addEventListener("pageshow", function () {
+      try { window.scrollTo(0, 0); } catch (e) {}
+      requestAnimationFrame(function () {
+        try { window.scrollTo(0, 0); } catch (e) {}
+        try { history.scrollRestoration = "auto"; } catch (e) {}
+      });
+    }, { once: true });
+  }
+
+  function readPoster() {
+    try { return sessionStorage.getItem(posterKey); } catch (e) { return null; }
+  }
+
+  function activatePoster(poster) {
+    if (!poster) return false;
+    root.style.setProperty("--esap-return-poster", 'url("' + poster + '")');
+    root.setAttribute("data-esap-return-poster", "1");
+    try { sessionStorage.setItem(seenKey, "1"); } catch (e) {}
+    return true;
+  }
+
+  var bootPoster = readPoster();
+  if (bootPoster && window.location.pathname === "/") {
+    activatePoster(bootPoster);
+  } else if (!bootPoster) {
+    // A "seen" flag without the current poster cannot provide a stable first paint.
+    // Replay the animation once and create the current poster instead.
+    try {
+      sessionStorage.removeItem(seenKey);
+      sessionStorage.removeItem("esap-landing-final-frame");
+      sessionStorage.removeItem("esap-landing-final-frame-v2");
+      sessionStorage.removeItem("esap-landing-final-poster-v2");
+      sessionStorage.removeItem("esap-landing-final-poster-v3");
+      sessionStorage.removeItem("esap-landing-final-poster-v4");
+      sessionStorage.removeItem("esap-landing-final-poster-v5");
+      sessionStorage.removeItem("esap-landing-final-poster-v6");
+      sessionStorage.removeItem("esap-landing-final-poster-v7");
+      sessionStorage.removeItem("esap-landing-final-poster-v8");
+      sessionStorage.removeItem("esap-landing-final-poster-v9");
+      sessionStorage.removeItem("esap-landing-final-poster-v10");
+      sessionStorage.removeItem("esap-landing-final-poster-v11");
+      sessionStorage.removeItem("esap-landing-final-poster-v12");
+      sessionStorage.removeItem("esap-landing-final-poster-v13");
+      sessionStorage.removeItem("esap-landing-final-poster-v14");
+      sessionStorage.removeItem("esap-landing-final-poster-v15");
+      sessionStorage.removeItem("esap-landing-reload-scroll-y");
+    } catch (e) {}
+  }
+
+  var stopCapture = null;
+  function capturePoster(shell, token) {
+    var hero = shell.querySelector("section:first-of-type");
+    if (!hero) return;
+    var timer = 0;
+    var observer = new MutationObserver(check);
+    observer.observe(hero, { attributes: true, attributeFilter: ["data-pcb-state"] });
+    stopCapture = function () {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
+
+    function check() {
+      if (hero.getAttribute("data-pcb-state") !== "settled") return;
+      observer.disconnect();
+      // Let the compact-height handoff finish before encoding the cached image.
+      timer = setTimeout(capture, 900);
+    }
+
+    function capture() {
+      if (token !== captureToken || !shell.isConnected) return;
+      var canvas = hero.querySelector("canvas");
+      if (!canvas || canvas.width < 2 || canvas.height < 2) return;
+      try {
+        // Save only the PCB scene, excluding viewport padding. Returns can then
+        // use the same responsive scene height as the live canvas after a resize.
+        var cssHeight = canvas.getBoundingClientRect().height;
+        var sceneHeight = Math.max(600, Math.min(cssHeight * .78, 760));
+        if (cssHeight < sceneHeight) return;
+        var ratio = canvas.height / cssHeight;
+        var poster = document.createElement("canvas");
+        poster.width = Math.min(1280, canvas.width);
+        poster.height = Math.max(1, Math.round(sceneHeight * ratio * poster.width / canvas.width));
+        var context = poster.getContext("2d", { alpha: false });
+        if (!context) return;
+        context.fillStyle = "#000000";
+        context.fillRect(0, 0, poster.width, poster.height);
+        context.drawImage(canvas, 0, (cssHeight - sceneHeight) / 2 * ratio,
+          canvas.width, sceneHeight * ratio, 0, 0, poster.width, poster.height);
+        var frame = poster.toDataURL("image/jpeg", 0.86);
+        if (!frame || frame === "data:,") return;
+        sessionStorage.setItem(posterKey, frame);
+        sessionStorage.setItem(seenKey, "1");
+      } catch (e) {}
+    }
+
+    check();
+  }
+
+  function syncLandingShell() {
+    var shell = document.querySelector("[data-landing-shell]");
+    if (shell === currentShell) return;
+
+    currentShell = shell;
+    captureToken += 1;
+    if (stopCapture) stopCapture();
+    stopCapture = null;
+    if (!shell) {
+      root.removeAttribute("data-esap-return-poster");
+      root.style.removeProperty("--esap-return-poster");
+      return;
+    }
+
+    var token = captureToken;
+    var poster = readPoster();
+    if (poster) {
+      activatePoster(poster);
+    } else {
+      root.removeAttribute("data-esap-return-poster");
+      root.style.removeProperty("--esap-return-poster");
+      capturePoster(shell, token);
+    }
+  }
+
+  function start() {
+    if (isLandingReload) {
+      try { window.scrollTo(0, 0); } catch (e) {}
+    }
+
+    syncLandingShell();
+    var observer = new MutationObserver(syncLandingShell);
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  } else {
+    start();
+  }
+})();
+`;
+
+const landingFrameStyle = `
+/* Cached returns are a single static final state. No image -> canvas handoff. */
+html[data-esap-return-poster="1"] [data-landing-shell] {
+  --landing-nav-opacity: 1 !important;
+  --landing-content-opacity: 1 !important;
+}
+
+html[data-esap-return-poster="1"] [data-landing-shell] > section:first-of-type {
+  height: min(66svh, 600px) !important;
+  min-height: 500px !important;
+  transition: none !important;
+}
+
+html[data-esap-return-poster="1"] [data-landing-shell] > section:first-of-type canvas {
+  visibility: hidden !important;
+}
+
+html[data-esap-return-poster="1"] [data-landing-shell] > section:first-of-type::before {
+  display: none !important;
+}
+
+html[data-esap-return-poster="1"] [data-landing-shell] > section:first-of-type::after {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  z-index: 3 !important;
+  left: 0 !important;
+  right: auto !important;
+  top: calc(50% + 34px) !important;
+  bottom: auto !important;
+  width: 100% !important;
+  height: clamp(600px, 78svh, 760px) !important;
+  transform: translateY(-50%) !important;
+  transform-origin: center !important;
+  background-color: #000 !important;
+  background-image: var(--esap-return-poster) !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% 100% !important;
+  filter: none !important;
+  animation: none !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+html[data-esap-return-poster="1"] #hero-intro {
+  border-color: rgba(255,255,255,.08) !important;
+  background: #0b0b0a !important;
+  transition: none !important;
+}
+
+html[data-esap-return-poster="1"] #hero-intro > div:first-child {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+html[data-esap-return-poster="1"] #hero-intro [data-hero-intro-grid] {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
@@ -42,6 +305,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`dark ${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: landingFrameStyle }} />
+        <script dangerouslySetInnerHTML={{ __html: landingFrameScript }} />
+      </head>
       <body className="min-h-screen font-sans antialiased bg-background text-foreground">
         <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
         <Analytics />

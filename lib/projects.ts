@@ -366,8 +366,24 @@ export async function getProjectMedia(
 
   // dedupe + sort for stability
   const uniq = (arr: string[]) => Array.from(new Set(arr));
+  const sortedImages = uniq(images).sort();
+  const optimizedImages = await Promise.all(
+    sortedImages.map(async (url, index) => {
+      const optimizedName = index === 0 ? `${slug}.webp` : `${slug}-${index + 1}.webp`;
+      const optimizedPath = path.join(
+        process.cwd(),
+        "public",
+        "site-media",
+        "projects",
+        optimizedName
+      );
+      const optimizedStat = await safeStat(optimizedPath);
+      return optimizedStat?.isFile() ? `/site-media/projects/${optimizedName}` : url;
+    })
+  );
+
   return {
-    images: uniq(images).sort(),
+    images: optimizedImages,
     videos: uniq(videos).sort(),
     docs: uniq(docs).sort(),
     files: filesOut,

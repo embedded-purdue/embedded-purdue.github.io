@@ -1,435 +1,439 @@
-// app/projects/_ProjectsGridClient.tsx
-"use client";
+"use client"
 
-import Link from "next/link";
-import { useMemo, useCallback, useState, useRef, useEffect } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, ChevronDown, X } from "lucide-react";
-import { allStatuses, collectTechs, collectSemesters } from "./_data";
-import type { Project as DataProject } from "./_data";
+import type { ChangeEvent } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import Link from "next/link"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { ArrowUpRight, ChevronDown, Search, X } from "lucide-react"
 
-// Locally we allow description/image to be optional since sanitizeProjects()
-// in page.tsx strips non-serializable fields; intersect with Omit to relax those.
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { resolveProjectImagePath } from "@/lib/project-media-path"
+import { allStatuses, collectSemesters, collectTechs } from "./_data"
+import type { Project as DataProject } from "./_data"
+
 type Project = Omit<DataProject, "description" | "image" | "icon"> & {
-  description?: string;  // may be absent after sanitization
-  image?: string;        // may be filename or absolute
-};
-
-/** Normalize project image to a public URL under `/projects/<slug>/...` */
-function resolveProjectImage(p: Project) {
-  const raw = p.image || "";
-  if (!raw) return "/projects/logo.png";
-  if (/^https?:\/\//i.test(raw)) return raw;
-
-  // normalize to /projects/<slug>/<file>
-  let path = raw.replace(/^\/+/, "");
-  if (path.startsWith("projects/")) path = path.slice("projects/".length);
-  if (path.startsWith(`${p.slug}/`)) return `/projects/${path}`;
-  return `/projects/${p.slug}/${path}`;
+  description?: string
+  image?: string
 }
 
-// Status priority: Active first, then Planned, then Completed
-const STATUS_ORDER: Record<string, number> = { Active: 0, Planned: 1, Completed: 2 };
+const STATUS_ORDER: Record<string, number> = { Active: 0, Planned: 1, Completed: 2 }
 
-/** Decide where the card should link */
-function resolveProjectHref(p: Project): { href: string; external: boolean } {
-  const url = p.readmeUrl?.trim();
+const TRIGGER_CLS =
+  "group flex h-11 w-full items-center gap-2 border-0 border-b border-white/[0.16] bg-transparent px-0 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-[#b5afa4] outline-none transition-colors hover:border-[#daa000]/45 hover:text-[#e6e0d5] focus-visible:border-[#daa000]/70 data-[state=open]:border-[#daa000] data-[state=open]:text-[#f2c34f] xl:w-44"
+const TRIGGER_LABEL_CLS = "min-w-0 flex-1 truncate text-left"
+const MENU_CLS =
+  "min-w-[var(--radix-dropdown-menu-trigger-width)] rounded-none border-white/[0.16] bg-[#10100e] p-1 text-[#c7c1b7] shadow-[0_16px_40px_rgba(0,0,0,.4)] motion-reduce:animate-none"
+const MENU_ITEM_CLS =
+  "min-h-11 cursor-pointer rounded-none py-2.5 text-sm focus:bg-[#daa000]/[0.1] focus:text-[#f2c34f] data-[state=checked]:text-[#f2c34f]"
 
-  // External link
-  if (url && /^https?:\/\//i.test(url)) {
-    return { href: url, external: true };
-  }
-
-  // Bad internal file path (not served by Next)
-  if (url && url.startsWith("/content/")) {
-    return { href: `/projects/${p.slug}`, external: false };
-  }
-
-  // Valid internal route under /projects/*
-  if (url && url.startsWith("/projects/")) {
-    return { href: url, external: false };
-  }
-
-  // Fallback: route to the rendered project page
-  return { href: `/projects/${p.slug}`, external: false };
+function resolveProjectHref(project: Project): { href: string; external: boolean } {
+  const url = project.readmeUrl?.trim()
+  if (url && /^https?:\/\//i.test(url)) return { href: url, external: true }
+  if (url && url.startsWith("/content/")) return { href: `/projects/${project.slug}`, external: false }
+  if (url && url.startsWith("/projects/")) return { href: url, external: false }
+  return { href: `/projects/${project.slug}`, external: false }
 }
 
-/** Encode a string[] as a comma-separated URL param value */
-function encodeTechs(techs: string[]): string {
-  return techs.join(",");
+function encodeTechs(techs: string[]) {
+  return techs.join(",")
 }
 
-/** Decode a comma-separated URL param value back into a string[] */
-function decodeTechs(raw: string): string[] {
-  return raw ? raw.split(",").filter(Boolean) : [];
+function decodeTechs(raw: string) {
+  return raw ? raw.split(",").filter(Boolean) : []
 }
 
-/** Dropdown that renders a list of checkboxes — closes on outside click */
+function statusClass(status: string) {
+  if (status === "Active") return "border-[#daa000]/50 bg-[#171409]/95 text-[#edc458]"
+  if (status === "Planned") return "border-[#7b87a3]/45 bg-[#0c0c0b]/95 text-[#bbc4d8]"
+  return "border-white/[0.2] bg-[#0c0c0b]/90 text-[#b2aca2]"
+}
+
+function ProjectCover({ source, title }: { source: string; title: string }) {
+  const [failedSource, setFailedSource] = useState<string | null>(null)
+  const isPlaceholder = source === "/projects/logo.png" || source === failedSource
+
+  return isPlaceholder ? (
+    <div className="absolute inset-0 grid place-items-center bg-[linear-gradient(rgba(218,160,0,.055)_1px,transparent_1px),linear-gradient(90deg,rgba(218,160,0,.055)_1px,transparent_1px)] bg-[size:32px_32px]">
+      <img src="/logo.svg" alt="" className="h-auto w-40 max-w-[48%] opacity-65" loading="lazy" decoding="async" />
+    </div>
+  ) : (
+    <img
+      src={source}
+      alt={`${title} project`}
+      className="absolute inset-0 h-full w-full object-cover opacity-[0.86] transition-opacity duration-300 ease-out group-hover:opacity-100"
+      loading="lazy"
+      decoding="async"
+      onError={() => setFailedSource(source)}
+    />
+  )
+}
+
 function TechCheckboxDropdown({
   allTechs,
   selectedTechs,
   onChange,
 }: {
-  allTechs: string[];
-  selectedTechs: string[];
-  onChange: (next: string[]) => void;
+  allTechs: string[]
+  selectedTechs: string[]
+  onChange: (next: string[]) => void
 }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  // Close when clicking outside the dropdown
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   function toggle(tech: string) {
-    const next = selectedTechs.includes(tech)
-      ? selectedTechs.filter((t) => t !== tech)
-      : [...selectedTechs, tech];
-    onChange(next);
+    onChange(
+      selectedTechs.includes(tech)
+        ? selectedTechs.filter((selected) => selected !== tech)
+        : [...selectedTechs, tech]
+    )
   }
 
   const label =
     selectedTechs.length === 0
       ? "All technologies"
       : selectedTechs.length === 1
-      ? selectedTechs[0]
-      : `${selectedTechs.length} technologies`;
+        ? selectedTechs[0]
+        : `${selectedTechs.length} technologies`
 
   return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className={TRIGGER_CLS}
-      >
-        <span className={TRIGGER_LABEL_CLS}>{label}</span>
-        <ChevronDown className={`h-3.5 w-3.5 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-
-      {open && (
-        <div className="absolute left-0 top-full z-50 mt-1 w-56 rounded-md border bg-popover shadow-md">
-          {/* Clear selection */}
-          {selectedTechs.length > 0 && (
-            <button
-              onClick={() => onChange([])}
-              className="flex w-full items-center gap-2 border-b px-3 py-2 text-xs text-muted-foreground hover:bg-primary/15 hover:text-foreground"
-            >
-              <X className="h-3 w-3" /> Clear selection
-            </button>
-          )}
-          <ul className="max-h-64 overflow-y-auto py-1">
-            {allTechs.map((tech) => (
-              <li key={tech}>
-                <label className="flex cursor-pointer items-center gap-2.5 px-3 py-1.5 text-sm hover:bg-primary/15">
-                  <input
-                    type="checkbox"
-                    checked={selectedTechs.includes(tech)}
-                    onChange={() => toggle(tech)}
-                    className="h-3.5 w-3.5 accent-primary"
-                  />
-                  {tech}
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button type="button" className={TRIGGER_CLS} aria-label={`Filter technologies: ${label}`}>
+          <span className={TRIGGER_LABEL_CLS}>{label}</span>
+          <ChevronDown className="h-3.5 w-3.5 shrink-0 transition-transform group-data-[state=open]:rotate-180" aria-hidden="true" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" collisionPadding={16} className={`${MENU_CLS} w-64 max-h-80`}>
+        {selectedTechs.length > 0 && (
+          <DropdownMenuItem onSelect={() => onChange([])} className={`${MENU_ITEM_CLS} border-b border-white/[0.1]`}>
+            <X className="h-3 w-3" aria-hidden="true" />
+            Clear selection
+          </DropdownMenuItem>
+        )}
+        {allTechs.map((tech) => (
+          <DropdownMenuCheckboxItem
+            key={tech}
+            checked={selectedTechs.includes(tech)}
+            onCheckedChange={() => toggle(tech)}
+            onSelect={(event) => event.preventDefault()}
+            className={MENU_ITEM_CLS}
+          >
+            {tech}
+          </DropdownMenuCheckboxItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
 }
 
-// Shared classes for all dropdown trigger buttons — keeps status, tech, and semester visually identical
-const TRIGGER_CLS =
-  "flex items-center gap-2 rounded-md border bg-background px-3 py-2 text-sm shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-ring w-full sm:w-40";
-
-// Shared label span inside every trigger — truncates long values with ellipsis
-const TRIGGER_LABEL_CLS = "flex-1 text-left truncate overflow-hidden";
-
-/** Generic single-select dropdown that mirrors the look of TechCheckboxDropdown */
 function SelectDropdown({
   value,
   options,
   placeholder,
   onChange,
 }: {
-  value: string;
-  options: string[];
-  placeholder: string;
-  onChange: (value: string) => void;
+  value: string
+  options: string[]
+  placeholder: string
+  onChange: (value: string) => void
 }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  // Close when clicking outside the dropdown
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const label = value === "all" ? placeholder : value;
+  const label = value === "all" ? placeholder : value
 
   return (
-    <div ref={ref} className="relative">
-      <button onClick={() => setOpen((o) => !o)} className={TRIGGER_CLS}>
-        <span className={TRIGGER_LABEL_CLS}>{label}</span>
-        <ChevronDown className={`h-3.5 w-3.5 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-
-      {open && (
-        <div className="absolute left-0 top-full z-50 mt-1 min-w-full rounded-md border bg-popover shadow-md">
-          <ul className="py-1">
-            <li>
-              <button
-                onClick={() => { onChange("all"); setOpen(false); }}
-                className={`w-full px-3 py-1.5 text-left text-sm hover:bg-primary/15 ${value === "all" ? "font-medium" : ""}`}
-              >
-                {placeholder}
-              </button>
-            </li>
-            {options.map((opt) => (
-              <li key={opt}>
-                <button
-                  onClick={() => { onChange(opt); setOpen(false); }}
-                  className={`w-full px-3 py-1.5 text-left text-sm hover:bg-primary/15 ${value === opt ? "font-medium" : ""}`}
-                >
-                  {opt}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button type="button" className={TRIGGER_CLS} aria-label={`${placeholder}: ${label}`}>
+          <span className={TRIGGER_LABEL_CLS}>{label}</span>
+          <ChevronDown className="h-3.5 w-3.5 shrink-0 transition-transform group-data-[state=open]:rotate-180" aria-hidden="true" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" collisionPadding={16} className={MENU_CLS}>
+        <DropdownMenuRadioGroup value={value} onValueChange={onChange}>
+          <DropdownMenuRadioItem value="all" className={MENU_ITEM_CLS}>{placeholder}</DropdownMenuRadioItem>
+          {options.map((option) => (
+            <DropdownMenuRadioItem key={option} value={option} className={MENU_ITEM_CLS}>{option}</DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
 }
 
 export default function ProjectsGridClient({ projects }: { projects: Project[] }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const sp = useSearchParams();
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
-  const selectedStatus = sp.get("status") ?? "all";
-  // techs is now a string[] decoded from a comma-separated URL param
-  const selectedTechs = useMemo(() => decodeTechs(sp.get("techs") ?? ""), [sp]);
-  const selectedSemester = sp.get("semester") ?? "all";
-  const query = sp.get("q") ?? "";
+  const selectedStatus = searchParams.get("status") ?? "all"
+  const selectedTechs = useMemo(() => decodeTechs(searchParams.get("techs") ?? ""), [searchParams])
+  const selectedSemester = searchParams.get("semester") ?? "all"
+  const urlQuery = searchParams.get("q") ?? ""
+  const [query, setQuery] = useState(urlQuery)
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Pull tech and semester options from _data helpers rather than deriving them here
-  const allTechs = useMemo(() => collectTechs(projects), [projects]);
-  const allSemesters = useMemo(() => collectSemesters(projects), [projects]);
+  useEffect(() => {
+    setQuery(urlQuery)
+  }, [urlQuery])
+
+  useEffect(
+    () => () => {
+      if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
+    },
+    []
+  )
+
+  const allTechs = useMemo(() => collectTechs(projects), [projects])
+  const allSemesters = useMemo(() => collectSemesters(projects), [projects])
 
   const filtered = useMemo(() => {
-    const q = query.toLowerCase();
-    const results = projects.filter((p) => {
-      const sOK = selectedStatus === "all" || p.status === selectedStatus;
-      // Project must include ALL of the selected techs (AND logic)
-      const tOK =
-        selectedTechs.length === 0 ||
-        selectedTechs.every((t) => p.technologies.includes(t));
-      const semOK = selectedSemester === "all" || p.semester === selectedSemester;
-      const qOK =
-        !q ||
-        p.title.toLowerCase().includes(q) ||
-        p.description?.toLowerCase().includes(q) ||
-        p.technologies.some((t) => t.toLowerCase().includes(q));
-      return sOK && tOK && semOK && qOK;
-    });
+    const normalizedQuery = query.toLowerCase()
+    const results = projects.filter((project) => {
+      const statusMatches = selectedStatus === "all" || project.status === selectedStatus
+      const techMatches =
+        selectedTechs.length === 0 || selectedTechs.every((tech) => project.technologies.includes(tech))
+      const semesterMatches = selectedSemester === "all" || project.semester === selectedSemester
+      const queryMatches =
+        !normalizedQuery ||
+        project.title.toLowerCase().includes(normalizedQuery) ||
+        project.description?.toLowerCase().includes(normalizedQuery) ||
+        project.technologies.some((tech) => tech.toLowerCase().includes(normalizedQuery))
 
-    // When no filters are active, sort Active first, then Planned, then Completed,
-    // with alphabetical ordering within each group.
-    // When filters are active, just sort alphabetically.
+      return statusMatches && techMatches && semesterMatches && queryMatches
+    })
+
     const noFilters =
-      selectedStatus === "all" && selectedTechs.length === 0 && selectedSemester === "all" && !q;
+      selectedStatus === "all" &&
+      selectedTechs.length === 0 &&
+      selectedSemester === "all" &&
+      !normalizedQuery
+
     return results.sort((a, b) => {
       if (noFilters) {
-        const statusDiff =
-          (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
-        if (statusDiff !== 0) return statusDiff;
+        const statusDifference = (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99)
+        if (statusDifference !== 0) return statusDifference
       }
-      return a.title.localeCompare(b.title);
-    });
-  }, [projects, selectedStatus, selectedTechs, selectedSemester, query]);
+      return a.title.localeCompare(b.title)
+    })
+  }, [projects, query, selectedSemester, selectedStatus, selectedTechs])
 
-  /** Build a URL with updated params, leaving others intact */
   const hrefWith = useCallback(
-    (s: string, techs: string[], sem: string, q: string) => {
-      const qs = new URLSearchParams();
-      if (s !== "all") qs.set("status", s);
-      if (techs.length > 0) qs.set("techs", encodeTechs(techs));
-      if (sem !== "all") qs.set("semester", sem);
-      if (q) qs.set("q", q);
-      const str = qs.toString();
-      return str ? `${pathname}?${str}` : pathname;
+    (status: string, techs: string[], semester: string, search: string) => {
+      const params = new URLSearchParams()
+      if (status !== "all") params.set("status", status)
+      if (techs.length) params.set("techs", encodeTechs(techs))
+      if (semester !== "all") params.set("semester", semester)
+      if (search) params.set("q", search)
+      const serialized = params.toString()
+      return serialized ? `${pathname}?${serialized}` : pathname
     },
     [pathname]
-  );
+  )
 
-  /** Soft-navigate: update URL params without a full page reload */
   const navigate = useCallback(
-    (s: string, techs: string[], sem: string, q: string) => {
-      router.push(hrefWith(s, techs, sem, q), { scroll: false });
+    (status: string, techs: string[], semester: string, search: string) => {
+      if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
+      router.push(hrefWith(status, techs, semester, search), { scroll: false })
     },
-    [router, hrefWith]
-  );
+    [hrefWith, router]
+  )
 
-  // For dropdowns — soft-navigate on change via router.push
   function handleSelect(param: "status" | "semester", value: string) {
-    const next = { status: selectedStatus, semester: selectedSemester };
-    next[param] = value;
-    navigate(next.status, selectedTechs, next.semester, query);
+    if (param === "status") navigate(value, selectedTechs, selectedSemester, query)
+    else navigate(selectedStatus, selectedTechs, value, query)
   }
 
-  // Tech checkboxes — toggle individual techs in the URL param
-  function handleTechChange(next: string[]) {
-    navigate(selectedStatus, next, selectedSemester, query);
+  function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
+    const nextQuery = event.target.value
+    setQuery(nextQuery)
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
+    searchTimerRef.current = setTimeout(() => {
+      router.replace(hrefWith(selectedStatus, selectedTechs, selectedSemester, nextQuery), { scroll: false })
+    }, 220)
   }
 
-  // Live search — update URL (and therefore results) on every keystroke
-  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
-    navigate(selectedStatus, selectedTechs, selectedSemester, e.target.value);
-  }
-
-  // Derived outside filtered so the UI (results count, Clear all) can use it too
   const hasFilters =
-    selectedStatus !== "all" || selectedTechs.length > 0 || selectedSemester !== "all" || !!query;
+    selectedStatus !== "all" || selectedTechs.length > 0 || selectedSemester !== "all" || Boolean(query)
+
+  function clearFilters() {
+    setQuery("")
+    navigate("all", [], "all", "")
+  }
 
   return (
     <>
-      {/* Search + Filters */}
-      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-        {/* Search — controlled by URL param, updates on every keystroke */}
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-          <input
-            value={query}
-            onChange={handleSearchChange}
-            placeholder="Search projects…"
-            className="w-full rounded-md border bg-background py-2 pl-9 pr-4 text-sm shadow-sm outline-none ring-offset-background transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 placeholder:text-muted-foreground"
-          />
+      <div className="border-b border-white/[0.08] px-5 py-8 sm:px-8 sm:py-9 lg:px-12 lg:py-10 xl:px-16">
+        <div className="flex flex-col gap-5 xl:flex-row xl:items-end">
+          <div className="relative min-w-0 flex-1">
+            <Search className="pointer-events-none absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6e6961]" aria-hidden="true" />
+            <input
+              value={query}
+              onChange={handleSearchChange}
+              aria-label="Search projects"
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="Search projects, systems, technologies…"
+              className="h-11 w-full border-0 border-b border-white/[0.16] bg-transparent py-2 pl-7 pr-4 text-sm text-[#e5dfd4] outline-none transition-colors placeholder:text-[#948d82] focus:border-[#daa000]/70"
+            />
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3 xl:flex xl:gap-6">
+            <SelectDropdown
+              value={selectedStatus}
+              options={[...allStatuses]}
+              placeholder="All statuses"
+              onChange={(value) => handleSelect("status", value)}
+            />
+            <TechCheckboxDropdown
+              allTechs={allTechs}
+              selectedTechs={selectedTechs}
+              onChange={(techs) => navigate(selectedStatus, techs, selectedSemester, query)}
+            />
+            <SelectDropdown
+              value={selectedSemester}
+              options={allSemesters}
+              placeholder="All semesters"
+              onChange={(value) => handleSelect("semester", value)}
+            />
+          </div>
         </div>
 
-        {/* Status */}
-        <SelectDropdown
-          value={selectedStatus}
-          options={[...allStatuses]}
-          placeholder="All statuses"
-          onChange={(v) => handleSelect("status", v)}
-        />
-
-        {/* Tech — checkbox dropdown for multi-select */}
-        <TechCheckboxDropdown
-          allTechs={allTechs}
-          selectedTechs={selectedTechs}
-          onChange={handleTechChange}
-        />
-
-        {/* Semester */}
-        <SelectDropdown
-          value={selectedSemester}
-          options={allSemesters}
-          placeholder="All semesters"
-          onChange={(v) => handleSelect("semester", v)}
-        />
-
-        {/* Clear */}
-        {hasFilters && (
-          <Link
-            href="/projects"
-            className="whitespace-nowrap text-sm text-muted-foreground underline-offset-4 hover:underline"
-          >
-            Clear all
-          </Link>
-        )}
+        <div className="mt-5 flex min-h-5 flex-wrap items-center justify-between gap-3 font-mono text-[0.625rem] uppercase tracking-[0.13em]">
+          <span role="status" className="text-[#969087]">
+            {filtered.length} project{filtered.length === 1 ? "" : "s"}{hasFilters ? " matching filters" : " in archive"}
+          </span>
+          {hasFilters && (
+            <button type="button" onClick={clearFilters} className="inline-flex min-h-8 items-center gap-2 uppercase tracking-[0.13em] text-[#b6afa3] transition-colors hover:text-[#f2c34f]">
+              <X className="h-3 w-3" aria-hidden="true" />
+              Clear all
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Results count */}
-      <p className="mb-4 text-sm text-muted-foreground">
-        {filtered.length} project{filtered.length !== 1 ? "s" : ""}
-        {hasFilters ? " match your filters" : ""}
-      </p>
+      {!filtered.length ? (
+        <div className="px-5 py-20 text-center sm:px-8 lg:px-12 lg:py-24">
+          <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#666159]">No matching systems</p>
+          <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing fits those filters.</h2>
+          <button type="button" onClick={clearFilters} className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm text-[#d8aa27] transition-colors hover:text-[#f2c34f]">
+            Reset project archive
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </button>
+        </div>
+      ) : (
+        <div className="grid gap-px bg-white/[0.08] md:grid-cols-2 xl:grid-cols-12">
+          {filtered.map((project, index) => {
+            const image = resolveProjectImagePath(project.slug, project.image)
+            const { href, external } = resolveProjectHref(project)
+            const solo = filtered.length === 1
+            const featured = index === 0 && filtered.length > 1
+            const emphasized = solo || featured
+            const last = index === filtered.length - 1
+            const remainder = filtered.length > 2 ? (filtered.length - 2) % 3 : 0
+            const inLastRow = remainder > 0 && index >= filtered.length - remainder
+            const wideAtDesktop = emphasized || (inLastRow && remainder === 1)
+            const tabletSpan = emphasized || (last && filtered.length % 2 === 0) ? "md:col-span-2" : ""
+            const desktopSpan = solo || (inLastRow && remainder === 1)
+              ? "xl:col-span-12"
+              : featured
+                ? "xl:col-span-8"
+                : inLastRow ? "xl:col-span-6" : "xl:col-span-4"
+            const spanClass = `${tabletSpan} ${desktopSpan}`
 
-      {/* Grid */}
-      <section>
-        {!filtered.length && (
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>No projects match</CardTitle>
-              <CardDescription>
-                Try different filters or{" "}
-                <Link href="/projects" className="underline">clear all filters</Link>.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        )}
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((p) => {
-            const img = resolveProjectImage(p);
-            const { href, external } = resolveProjectHref(p);
-
-            const CardInner = (
-              <Card className="h-full overflow-hidden transition-all hover:shadow-md">
-                <img
-                  src={img || "/images/fallback.jpg"}
-                  alt={`${p.title} cover`}
-                  className="h-40 w-full object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null; // prevents infinite loop
-                    e.currentTarget.src = "/projects/logo.png";
-                  }}
-                />
-                <CardHeader>
-                  <div className="mb-2 flex items-center justify-between">
-                    <Badge variant={p.status === "Active" ? "default" : p.status === "Completed" ? "secondary" : "outline"}>
-                      {p.status}
-                    </Badge>
-                    {p.semester && <span className="rounded-full border px-2 py-0.5 text-xs">{p.semester}</span>}
+            const inner = (
+              <article
+                className={`group h-full min-h-[440px] bg-[#0c0c0b] transition-colors hover:bg-[#11110f] ${
+                  wideAtDesktop ? "flex flex-col xl:grid xl:grid-cols-[1.14fr_.86fr]" : "flex flex-col"
+                }`}
+              >
+                <div
+                  className={`relative shrink-0 overflow-hidden bg-black ${
+                    wideAtDesktop
+                      ? "h-[250px] border-b border-white/[0.08] sm:h-[320px] xl:h-auto xl:min-h-[440px] xl:border-b-0 xl:border-r"
+                      : "h-[210px] border-b border-white/[0.08]"
+                  }`}
+                >
+                  <ProjectCover source={image} title={project.title} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
+                  <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 p-4">
+                    <span className={`border px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.12em] ${statusClass(project.status)}`}>
+                      {project.status}
+                    </span>
+                    {project.semester && (
+                      <span className="bg-black/85 px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#b6afa3]">
+                        {project.semester}
+                      </span>
+                    )}
                   </div>
-                  <CardTitle className="leading-tight">{p.title}</CardTitle>
-                  {p.description && (
-                    <CardDescription className="text-base">{p.description}</CardDescription>
+                  <ArrowUpRight className="absolute bottom-4 right-4 h-5 w-5 text-[#c4bfb5] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#f2c34f]" aria-hidden="true" />
+                </div>
+
+                <div className={`flex flex-1 flex-col px-5 py-6 sm:px-7 sm:py-7 ${emphasized ? "xl:px-9 xl:py-9" : ""}`}>
+                  <p className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-[#969087]">Project / {project.slug}</p>
+                  <h2
+                    className={`mt-2.5 font-medium leading-[1.02] tracking-[-0.05em] text-[#e9e4da] ${
+                      emphasized ? "text-[clamp(1.9rem,3vw,2.7rem)]" : "text-[1.65rem]"
+                    }`}
+                  >
+                    {project.title}
+                  </h2>
+                  {project.description && (
+                    <p className={`mt-4 text-sm leading-6 text-[#a29b90] ${emphasized ? "line-clamp-5" : "line-clamp-3"}`}>
+                      {project.description}
+                    </p>
                   )}
-                </CardHeader>
-                {!!p.technologies.length && (
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {p.technologies.map((t) => (
-                        <Badge key={`${p.slug}-${t}`} variant="outline" className="text-xs">
-                          {t}
-                        </Badge>
-                      ))}
+
+                  {!!project.technologies.length && (
+                    <div className="mt-auto pt-6">
+                      <div className="flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.1] pt-4">
+                        {project.technologies.slice(0, emphasized ? 7 : 5).map((technology) => (
+                          <span key={`${project.slug}-${technology}`} className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#969087]">
+                            {technology}
+                          </span>
+                        ))}
+                        {project.technologies.length > (emphasized ? 7 : 5) && (
+                          <span className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#969087]">
+                            +{project.technologies.length - (emphasized ? 7 : 5)}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </CardContent>
-                )}
-              </Card>
-            );
+                  )}
+                </div>
+              </article>
+            )
 
             return external ? (
-              <a key={p.slug} href={href} className="no-underline" target="_blank" rel="noopener noreferrer">
-                {CardInner}
+              <a
+                key={project.slug}
+                href={href}
+                aria-label={`View ${project.title}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-site-lift="card"
+                className={`${spanClass} block h-full no-underline`}
+              >
+                {inner}
               </a>
             ) : (
-              <Link key={p.slug} href={href} className="no-underline">
-                {CardInner}
+              <Link
+                key={project.slug}
+                href={href}
+                aria-label={`View ${project.title}`}
+                prefetch={false}
+                data-site-lift="card"
+                className={`${spanClass} block h-full no-underline`}
+              >
+                {inner}
               </Link>
-            );
+            )
           })}
         </div>
-      </section>
+      )}
     </>
-  );
+  )
 }
