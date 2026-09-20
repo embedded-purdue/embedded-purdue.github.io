@@ -10,6 +10,8 @@ export type WorkshopMeta = {
   location?: string
   summary?: string
   tags?: string[]
+  cover?: string
+  image?: string
 }
 type Meta = {
   title: string;
@@ -40,6 +42,8 @@ export function getAllWorkshops(): WorkshopMeta[] {
       location: (data.location as string) ?? undefined,
       summary: (data.summary as string) ?? "",
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
+      cover: typeof data.cover === "string" ? data.cover : undefined,
+      image: typeof data.image === "string" ? data.image : undefined,
     }
   })
   return list.sort((a, b) => (a.date && b.date ? (a.date < b.date ? 1 : -1) : 0))

@@ -1,6 +1,7 @@
 ---
 title: "Google AIY Embedded Computer Vision Workshop"
 slug: "vision-kit-workshop"
+cover: "/site-media/workshops/vision-kit.webp"
 date: "2026-02-16T18:30:00-05:00"
 location: "BHEE 117"
 summary: "Build a smart camera with the Google AIY Vision Kit and deploy your own custom AI model that runs completely offline"

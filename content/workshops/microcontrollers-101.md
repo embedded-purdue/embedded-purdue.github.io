@@ -1,6 +1,7 @@
 ---
 title: "Microcontrollers 101"
 slug: "microcontrollers-101"
+cover: "/site-media/workshops/esp32.webp"
 date: "2025-11-18T18:00:00-04:00"
 location: "BHEE 117"
 summary: "Introduction to microcontrollers! By the end of this workshop, you should hopefully have a fully working Chrome Dino Run game running on your own liquid crystal display with audio support."
