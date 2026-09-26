@@ -318,7 +318,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
       {!filtered.length ? (
         <div className="px-5 py-20 text-center sm:px-8 lg:px-12 lg:py-24">
           <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#666159]">No matching systems</p>
-          <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing fits those filters.</h2>
+          <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing fits those filters</h2>
           <button type="button" onClick={clearFilters} className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm text-[#d8aa27] transition-colors hover:text-[#f2c34f]">
             Reset project archive
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />

@@ -31,6 +31,11 @@ jobs:
         run: echo "NEXT_PUBLIC_REPO_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
 
       - run: npm run build   # Next will export to ./out because output: "export" is set
+        env:
+          # Web3Forms access key for the /contact form. Add it under
+          # Settings → Secrets and variables → Actions → Variables.
+          # (Web3Forms keys are public by design, so a repo variable is fine.)
+          NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ vars.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

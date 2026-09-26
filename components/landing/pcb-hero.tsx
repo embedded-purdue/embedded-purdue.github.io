@@ -868,8 +868,11 @@ export function PcbHero() {
       cssHeight = Math.max(1, canvas.getBoundingClientRect().height)
 
       const heroHeight = Math.max(600, Math.min(cssHeight * .78, 760))
-      scaleX = cssWidth / VW
-      scaleY = heroHeight / VH
+      // Scale the scene uniformly (cover) so the logo and traces keep their
+      // aspect ratio at any window width instead of stretching along one axis.
+      const scale = Math.max(cssWidth / VW, heroHeight / VH)
+      scaleX = scale
+      scaleY = scale
       renderOffsetY = (cssHeight - heroHeight) / 2
 
       const nativeDpr = window.devicePixelRatio || 1
@@ -1389,7 +1392,7 @@ export function PcbHero() {
 
           <div className="flex items-center border-b border-white/[0.08] px-5 py-7 sm:px-8 lg:border-b-0 lg:border-r lg:px-10 xl:px-12">
             <h1 className="max-w-3xl text-balance text-[clamp(2rem,4.4vh,3.45rem)] font-medium leading-[0.94] tracking-[-0.05em] text-[#f3efe6]">
-              Build embedded systems that work in the real world.
+              Build embedded systems that push hardware forward
             </h1>
           </div>
 
