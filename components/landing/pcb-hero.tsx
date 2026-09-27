@@ -176,10 +176,6 @@ function inverseSmoothstep(value: number) {
   return (low + high) / 2
 }
 
-function easeOutCubic(value: number) {
-  const x = clamp01(value)
-  return 1 - Math.pow(1 - x, 3)
-}
 
 function prepareRoute(points: Route): PreparedRoute {
   const segments: number[] = []

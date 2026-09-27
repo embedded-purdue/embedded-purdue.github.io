@@ -19,7 +19,7 @@ export default function Markdown({
   className?: string
   imageBase?: string
 }) {
-  const schema: any = {
+  const schema = {
     ...defaultSchema,
     tagNames: [...(defaultSchema.tagNames || []), "section", "iframe"],
     attributes: {
@@ -75,9 +75,10 @@ export default function Markdown({
 
           pre({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) {
             const codeChild = React.Children.toArray(children).find(
-              (child: any) => child?.type === "code"
-            ) as any
-            const lang = codeChild?.props?.className
+              (child): child is React.ReactElement<{ className?: string }> =>
+                React.isValidElement<{ className?: string }>(child) && child.type === "code"
+            )
+            const lang = codeChild?.props.className
               ? /language-(\w+)/.exec(codeChild.props.className)?.[1]
               : null
 
@@ -217,11 +218,12 @@ export default function Markdown({
             const childArray = React.Children.toArray(children)
 
             if (childArray.length === 1) {
-              const child = childArray[0] as any
+              const child = childArray[0]
               if (
-                child?.props?.className?.includes("not-prose") ||
-                child?.props?.className?.includes("relative my-8") ||
-                child?.type === "pre"
+                React.isValidElement<{ className?: string }>(child) &&
+                (child.props.className?.includes("not-prose") ||
+                  child.props.className?.includes("relative my-8") ||
+                  child.type === "pre")
               ) {
                 return <>{children}</>
               }

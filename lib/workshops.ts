@@ -13,18 +13,6 @@ export type WorkshopMeta = {
   cover?: string
   image?: string
 }
-type Meta = {
-  title: string;
-  summary?: string;
-  cover?: string;
-  image?: string;
-  slug: string;
-};
-
-type WorkshopEntry = {
-  meta: Meta;
-  content: string;
-};
 const WORKSHOPS_DIR = path.join(process.cwd(), "content", "workshops")
 
 export function getAllWorkshops(): WorkshopMeta[] {

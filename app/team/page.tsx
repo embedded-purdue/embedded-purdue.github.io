@@ -1,32 +1,26 @@
-import Image, { type StaticImageData } from "next/image"
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowUpRight, Github, Linkedin, Mail, Shield, Users } from "lucide-react"
 
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteNavigation } from "@/components/site/site-navigation"
-
-import armanImg from "../../public/team/arman.jpg"
-import asthaImg from "../../public/team/astha.jpg"
-import patrickImg from "../../public/team/patrick.jpg"
-import gautamImg from "../../public/team/gautam.jpg"
-import mahdiImg from "../../public/team/mahdi.jpg"
+import teamEntries from "@/content/team.json"
 
 type Member = {
   name: string
   role: string
+  level?: "exec" | "pm" | "admin" | "member"
   email?: string
   linkedin?: string
   github?: string
-  image?: StaticImageData
+  image?: string
+  order?: number
+  active?: boolean
 }
 
-const executives: Member[] = [
-  { name: "Arman Islam", role: "President", linkedin: "https://www.linkedin.com/in/thomascon/", image: armanImg },
-  { name: "Astha Patel", role: "Vice President", linkedin: "https://www.linkedin.com/in/astha-p/", image: asthaImg },
-  { name: "Patrick Jordan", role: "Treasurer", image: patrickImg },
-  { name: "Gautam Aravindan", role: "Development Engineer", linkedin: "https://www.linkedin.com/in/gautamaravindan/", image: gautamImg },
-  { name: "Mahdi El Husseini", role: "Executive Engineer", linkedin: "https://www.linkedin.com/in/mahdi-el-husseini/", image: mahdiImg },
-]
+const executives: Member[] = (teamEntries as Member[])
+  .filter((member) => member.active !== false && member.level === "exec")
+  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || a.name.localeCompare(b.name))
 
 const pendingRoles = [
   {
@@ -56,10 +50,9 @@ function MemberPortrait({ member, index }: { member: Member; index: number }) {
           <Image
             src={member.image}
             alt={member.name}
-            width={member.image.width}
-            height={member.image.height}
+            fill
             sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 20vw"
-            className={`block h-auto max-h-full w-full object-contain ${member.image.width < 200 ? "max-w-[190px]" : ""}`}
+            className="object-contain"
           />
         )}
       </div>
