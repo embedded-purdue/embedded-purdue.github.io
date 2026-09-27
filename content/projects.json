@@ -201,7 +201,7 @@
   {
     "slug": "paws",
     "title": "Paws",
-    "description": "Creating a quadriped robot dog",
+    "description": "Creating a quadruped robot dog",
     "technologies": [
       "ESP32"
     ],
