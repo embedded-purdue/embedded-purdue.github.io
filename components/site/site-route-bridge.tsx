@@ -29,12 +29,12 @@ function resolveBridge(pathname: string): Bridge | null {
     return { eyebrow: "Next / Workshops", title: "Learn the tools behind the builds.", href: "/workshops" }
   }
   if (route === "/workshops") {
-    return { eyebrow: "Next / Team", title: "Meet the people behind the work.", href: "/team" }
-  }
-  if (route === "/team") {
     return { eyebrow: "Next / Sponsors", title: "Help put better tools in their hands.", href: "/sponsors" }
   }
   if (route === "/sponsors") {
+    return { eyebrow: "Next / Contact", title: "Start a partnership conversation.", href: "/contact" }
+  }
+  if (route === "/contact") {
     return { eyebrow: "Loop / About", title: "Return to the ES@P system.", href: "/about" }
   }
 

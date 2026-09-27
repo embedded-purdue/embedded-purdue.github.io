@@ -131,10 +131,10 @@ export default function SponsorsPage() {
                     <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[#625e57]">Sponsor ES@P / build Purdue engineers</p>
                     <h1 className="mt-4 text-[clamp(3.7rem,7vw,7.3rem)] font-medium leading-[0.82] tracking-[-0.07em]">
                       Back the
-                      <span className="block text-[#d8aa27]">people who build.</span>
+                      <span className="block text-[#d8aa27]">people who build</span>
                     </h1>
                     <p className="mt-7 max-w-2xl text-base leading-7 text-[#8d887f]">
-                      Partners put better tools, harder problems, and stronger technical connections in front of students who are already designing and shipping real systems.
+                      Partners give students better equipment and harder problems to work on, plus direct contact with engineers who do this professionally. These students are already designing and shipping working systems.
                     </p>
                   </div>
                 </div>
@@ -158,7 +158,7 @@ export default function SponsorsPage() {
                   <div className="flex items-end justify-between gap-6">
                     <div>
                       <p className="font-mono text-[0.5rem] uppercase tracking-[0.15em] text-[#756f67]">Partnership principle</p>
-                      <p className="mt-1 text-lg font-medium tracking-[-0.035em] text-[#e0dbd1]">Access should create technical value.</p>
+                      <p className="mt-1 text-lg font-medium tracking-[-0.035em] text-[#e0dbd1]">Every partnership should be worth the students' time.</p>
                     </div>
                     <span className="font-mono text-[0.5rem] uppercase tracking-[0.14em] text-[#8d7328]">IND / 01</span>
                   </div>
@@ -180,10 +180,10 @@ export default function SponsorsPage() {
                     01 / Partnership model
                   </div>
                   <h2 className="mt-4 text-[clamp(2.7rem,4.4vw,4.6rem)] font-medium leading-[0.89] tracking-[-0.06em]">
-                    More useful than a logo on a page.
+                    More useful than a logo on a page
                   </h2>
                   <p className="mt-5 max-w-sm text-sm leading-6 text-[#817c74]">
-                    The strongest partnerships give students resources, technical exposure, and direct contact with people building real products.
+                    Good partnerships give students resources, technical exposure, and direct contact with engineers shipping products in industry.
                   </p>
                 </div>
               </div>
@@ -225,7 +225,7 @@ export default function SponsorsPage() {
                     <div>
                       <p className="font-mono text-[0.54rem] uppercase tracking-[0.15em] text-[#8d7328]">Opening partner slot</p>
                       <p className="mt-2 max-w-xl text-lg leading-7 tracking-[-0.025em] text-[#aaa49a]">
-                        We are actively seeking inaugural partners who want direct access to Purdue students building embedded systems.
+                        We're looking for our first partners — companies that want direct access to Purdue students building embedded systems.
                       </p>
                     </div>
                     <a
@@ -268,7 +268,7 @@ export default function SponsorsPage() {
             <div className="flex flex-col gap-6 border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:flex-row lg:items-end lg:justify-between lg:px-12 lg:py-14 xl:px-16">
               <div>
                 <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#777169]">03 / Sponsorship tiers</p>
-                <h2 className="mt-3 text-[clamp(2.6rem,4.6vw,4.9rem)] font-medium leading-[0.9] tracking-[-0.06em]">Choose the level of access.</h2>
+                <h2 className="mt-3 text-[clamp(2.6rem,4.6vw,4.9rem)] font-medium leading-[0.9] tracking-[-0.06em]">Choose the level of access</h2>
               </div>
               <p className="max-w-md text-sm leading-6 text-[#817c73]">Four starting points, from visible support to deeper recruiting and project collaboration.</p>
             </div>
@@ -303,10 +303,10 @@ export default function SponsorsPage() {
               <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:col-span-8 lg:border-b-0 lg:border-r lg:px-12 lg:py-14 xl:px-16">
                 <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#6b665f]">04 / Contact</p>
                 <h2 className="mt-3 max-w-4xl text-[clamp(2.8rem,5.2vw,5.6rem)] font-medium leading-[0.86] tracking-[-0.065em]">
-                  Build a partnership around real engineering.
+                  Build a partnership around the engineering
                 </h2>
                 <p className="mt-7 max-w-2xl text-base leading-7 text-[#8d887f]">
-                  Tell us what your team cares about—recruiting, technical education, project collaboration, hardware support—and we’ll find the highest-value way to work together.
+                  Tell us what your team cares about—recruiting, technical education, project collaboration, hardware support—and we’ll find the best way to work together.
                 </p>
               </div>
 

@@ -8,8 +8,8 @@ const explore = [
   ["About", "/about"],
   ["Projects", "/projects"],
   ["Workshops", "/workshops"],
-  ["Team", "/team"],
   ["Sponsors", "/sponsors"],
+  ["Contact", "/contact"],
 ] as const
 
 const resources = [

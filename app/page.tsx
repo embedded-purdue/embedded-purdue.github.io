@@ -30,7 +30,7 @@ const workAreas = [
   },
   {
     title: "Real-time firmware",
-    detail: "Drivers, peripherals, RTOS work, wireless links, and control code on real microcontrollers.",
+    detail: "Drivers, peripherals, RTOS work, wireless links, and control code running on hardware.",
     stack: "STM32 · ESP32 · C/C++ · RTOS",
     projects: "slayterHiL · Smart Watch · MicroPiano",
   },
@@ -163,10 +163,10 @@ export default function HomePage() {
             <div className="border-b border-white/[0.08] px-5 py-8 sm:px-8 lg:row-span-2 lg:border-b-0 lg:border-r lg:px-10 lg:py-10 xl:px-12">
               <SignalLabel>Work areas</SignalLabel>
               <h2 className="mt-4 max-w-sm text-[clamp(2rem,3vw,3.2rem)] font-medium leading-[0.96] tracking-[-0.05em]">
-                From board bring-up to full systems.
+                From board bring-up to full systems
               </h2>
               <p className="mt-4 max-w-sm text-sm leading-6 text-[#827e76]">
-                These are the recurring technical problems represented across current and recent projects.
+                The problems that keep coming up across our projects.
               </p>
             </div>
 
@@ -199,7 +199,7 @@ export default function HomePage() {
               <div className="w-full max-w-2xl">
                 <SignalLabel>Workshops</SignalLabel>
                 <h2 className="mt-4 max-w-lg text-[clamp(2.45rem,4vw,4.15rem)] font-medium leading-[0.93] tracking-[-0.05em]">
-                  Learn on real hardware.
+                  Learn by building hardware
                 </h2>
                 <p className="mt-4 max-w-lg text-sm leading-6 text-[#969188] sm:text-base sm:leading-7">
                   Technical sessions move from fundamentals to working systems.
@@ -245,7 +245,7 @@ export default function HomePage() {
 
         <section className="relative border-b border-white/[0.08] bg-[#0a0a09]">
           <Link
-            href="/team"
+            href="/about#team"
             data-landing-lift="card"
             className="group relative block min-h-[370px] w-full overflow-hidden"
             aria-label="Meet the Embedded Systems @ Purdue team"
@@ -265,7 +265,7 @@ export default function HomePage() {
               <div className="max-w-2xl">
                 <SignalLabel>Community</SignalLabel>
                 <h2 className="mt-4 text-balance text-[clamp(2.65rem,4.8vw,4.7rem)] font-medium leading-[0.91] tracking-[-0.055em]">
-                  Meet the people building it.
+                  Meet the people building it
                 </h2>
               </div>
             </div>
@@ -312,10 +312,10 @@ export default function HomePage() {
               <div className="relative max-w-2xl">
                 <SignalLabel>Join</SignalLabel>
                 <h2 className="mt-4 text-[clamp(2.6rem,4.4vw,4.4rem)] font-medium leading-[0.92] tracking-[-0.055em]">
-                  Build something real.
+                  Build something with us
                 </h2>
                 <p className="mt-4 max-w-xl text-sm leading-6 text-[#918c84] sm:text-base sm:leading-7">
-                  Join the Discord for project discussion, workshop updates, and the fastest path into current work.
+                  Join the Discord for project discussion, workshop updates, and the quickest way to get involved.
                 </p>
 
                 <div className="mt-7 flex flex-wrap gap-3">
