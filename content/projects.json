@@ -233,34 +233,5 @@
     ],
     "semester": "Spring 2025",
     "readmeUrl": "/projects/mssd"
-  },
-  {
-    "slug": "paws",
-    "title": "Paws",
-    "description": "Working on an 8-DOF quadruped robot dog using an esp-32 and a reinforcement locomotion RL policy.",
-    "technologies": [
-      "ESP32"
-    ],
-    "status": "Active",
-    "icon": "cpu",
-    "pm": "Aarav Jain",
-    "pms": [
-      "Aarav Jain"
-    ],
-    "semester": "Fall 26",
-    "readmeUrl": "/projects/paws"
-  },
-  {
-    "slug": "hesitation",
-    "title": "Hesitation",
-    "description": "Hesitation",
-    "technologies": [],
-    "status": "Active",
-    "icon": "bot",
-    "pm": "Arman Islam",
-    "pms": [
-      "Arman Islam"
-    ],
-    "readmeUrl": "/projects/hesitation"
   }
 ]
