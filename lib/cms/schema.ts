@@ -15,6 +15,7 @@ export const projectSchema = z.object({
   icon: projectIconSchema.optional(),
   image: z.string().trim().optional().or(z.literal("")),
   pm: z.string().trim().optional().or(z.literal("")),
+  pms: z.array(z.string().trim().min(1)).default([]),
   semester: z.string().trim().optional().or(z.literal("")),
   readmeUrl: z.string().trim().optional().or(z.literal("")),
 });

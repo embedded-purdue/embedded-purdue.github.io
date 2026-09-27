@@ -88,7 +88,7 @@ export default async function ProjectDetailPage({
   const heroImage = listedImage ?? media.images[0] ?? null
   const telemetry = [
     { label: "State", value: fallback?.status ?? "Documented", detail: fallback?.semester ?? "project record", accent: true },
-    { label: "Lead", value: fallback?.pm?.replace(/^PMs?:\s*/i, "") ?? "TBD", detail: "project manager" },
+    { label: "Lead", value: fallback?.pms?.length ? fallback.pms.join(", ") : fallback?.pm?.replace(/^PMs?:\s*/i, "") ?? "TBD", detail: "project manager" },
     { label: "Media", value: mediaCount, detail: "artifacts indexed" },
     { label: "Stack", value: fallback?.technologies.length ?? 0, detail: "technologies" },
   ] as const

@@ -23,6 +23,7 @@ function sanitizeProjects(): SafeProject[] {
     status: project.status,
     technologies: Array.isArray(project.technologies) ? project.technologies : [],
     pm: project.pm,
+    pms: project.pms,
     semester: project.semester,
     readmeUrl: project.readmeUrl,
   }))

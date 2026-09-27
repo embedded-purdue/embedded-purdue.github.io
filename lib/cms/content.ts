@@ -13,9 +13,19 @@ async function readJsonFile<T>(relativePath: string, fallback: T): Promise<T> {
   }
 }
 
+function splitProjectManagers(value: string | undefined) {
+  return (value || "").replace(/^PMs?:\s*/i, "").split(/[,\n]+/).map((entry) => entry.trim()).filter(Boolean);
+}
+
+function normalizeProject(entry: unknown): ProjectContent {
+  const parsed = projectSchema.parse(entry);
+  const pms = parsed.pms.length ? parsed.pms : splitProjectManagers(parsed.pm);
+  return { ...parsed, pms, pm: pms.join(", ") };
+}
+
 export async function readProjectsContent(): Promise<ProjectContent[]> {
   const raw = await readJsonFile<unknown[]>(PROJECTS_PATH, []);
-  return raw.map((entry) => projectSchema.parse(entry));
+  return raw.map(normalizeProject);
 }
 
 export async function readTeamContent(): Promise<TeamMemberContent[]> {
@@ -70,7 +80,7 @@ function stringifyWorkshop(workshop: WorkshopContent) {
 
 export function buildCmsFiles(payload: CmsPublishPayload): Array<{ path: string; content: string; encoding?: "utf-8" | "base64" }> {
   const files: Array<{ path: string; content: string; encoding?: "utf-8" | "base64" }> = [
-    { path: PROJECTS_PATH, content: `${JSON.stringify(payload.projects.map((entry) => projectSchema.parse(entry)), null, 2)}\n`, encoding: "utf-8" },
+    { path: PROJECTS_PATH, content: `${JSON.stringify(payload.projects.map(normalizeProject), null, 2)}\n`, encoding: "utf-8" },
     { path: TEAM_PATH, content: `${JSON.stringify(payload.team.map((entry) => teamMemberSchema.parse(entry)), null, 2)}\n`, encoding: "utf-8" },
   ];
   for (const workshop of payload.workshops.map((entry) => workshopSchema.parse(entry))) {

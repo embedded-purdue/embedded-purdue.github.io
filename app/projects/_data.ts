@@ -35,6 +35,7 @@ export type Project = {
   icon?: LucideIcon;
   image?: string;
   pm?: string;
+  pms?: string[];
   semester?: string;
   readmeUrl?: string;
 };
@@ -63,11 +64,20 @@ const projectIcons: Record<ProjectIconKey, LucideIcon> = {
 
 type ProjectEntry = Omit<Project, "icon" | "iconKey"> & { icon?: ProjectIconKey };
 
-export const projects: Project[] = (projectEntries as ProjectEntry[]).map((project) => ({
-  ...project,
-  iconKey: project.icon,
-  icon: project.icon ? projectIcons[project.icon] : undefined,
-}));
+function splitProjectManagers(value: string | undefined) {
+  return (value || "").replace(/^PMs?:\s*/i, "").split(/[,\n]+/).map((entry) => entry.trim()).filter(Boolean);
+}
+
+export const projects: Project[] = (projectEntries as ProjectEntry[]).map((project) => {
+  const pms = project.pms?.length ? project.pms : splitProjectManagers(project.pm);
+  return {
+    ...project,
+    pms,
+    pm: project.pm || pms.join(", "),
+    iconKey: project.icon,
+    icon: project.icon ? projectIcons[project.icon] : undefined,
+  };
+});
 
 export const allStatuses: Array<Project["status"]> = ["Active", "Planned", "Completed"];
 
