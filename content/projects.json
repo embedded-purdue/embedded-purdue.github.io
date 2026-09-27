@@ -13,7 +13,10 @@
     "status": "Completed",
     "icon": "wifi",
     "image": "/projects/logo.png",
-    "pm": "PM: Connor Powell",
+    "pm": "Connor Powell",
+    "pms": [
+      "Connor Powell"
+    ],
     "semester": "Fall 2025",
     "readmeUrl": "/projects/berryweather"
   },
@@ -30,7 +33,10 @@
     "status": "Active",
     "icon": "zap",
     "image": "/site-media/projects/harmonicore.webp",
-    "pm": "PM: Varun Vaidyanathan",
+    "pm": "Varun Vaidyanathan",
+    "pms": [
+      "Varun Vaidyanathan"
+    ],
     "semester": "Fall 2025",
     "readmeUrl": "/projects/harmonicore"
   },
@@ -47,7 +53,10 @@
     "status": "Active",
     "icon": "cpu",
     "image": "/site-media/projects/slayterhil.webp",
-    "pm": "PM: Alex Aylward",
+    "pm": "Alex Aylward",
+    "pms": [
+      "Alex Aylward"
+    ],
     "semester": "Fall 2025",
     "readmeUrl": "/projects/slayterhil"
   },
@@ -64,7 +73,10 @@
     "status": "Active",
     "icon": "car",
     "image": "/site-media/projects/bb8.webp",
-    "pm": "PM: Tom Concannon",
+    "pm": "Tom Concannon",
+    "pms": [
+      "Tom Concannon"
+    ],
     "semester": "Fall 2025",
     "readmeUrl": "/projects/bb8"
   },
@@ -82,7 +94,10 @@
     "status": "Active",
     "icon": "zap",
     "image": "/projects/logo.png",
-    "pm": "PM: Felix Liu",
+    "pm": "Felix Liu",
+    "pms": [
+      "Felix Liu"
+    ],
     "semester": "Fall 2025",
     "readmeUrl": "/projects/micropiano"
   },
@@ -99,7 +114,13 @@
     "status": "Active",
     "icon": "camera",
     "image": "/site-media/projects/eyecue.webp",
-    "pm": "PMs: Katherine M, Garima T, Aarushi D, Shruthi A",
+    "pm": "Katherine M, Garima T, Aarushi D, Shruthi A",
+    "pms": [
+      "Katherine M",
+      "Garima T",
+      "Aarushi D",
+      "Shruthi A"
+    ],
     "semester": "Fall 2025",
     "readmeUrl": "/projects/eyecue"
   },
@@ -117,7 +138,10 @@
     "status": "Completed",
     "icon": "cpu",
     "image": "/site-media/projects/digital-ops.webp",
-    "pm": "PM: Trevor Antle",
+    "pm": "Trevor Antle",
+    "pms": [
+      "Trevor Antle"
+    ],
     "semester": "Fall 2025",
     "readmeUrl": "/projects/digital-ops"
   },
@@ -137,7 +161,10 @@
     "status": "Completed",
     "icon": "watch",
     "image": "/projects/logo.png",
-    "pm": "PM: Patrick Shea",
+    "pm": "Patrick Shea",
+    "pms": [
+      "Patrick Shea"
+    ],
     "semester": "Fall 2025",
     "readmeUrl": "/projects/smart-watch"
   },
@@ -155,7 +182,10 @@
     "status": "Completed",
     "icon": "wifi",
     "image": "/site-media/projects/gest.webp",
-    "pm": "PM: Jain Iftesam",
+    "pm": "Jain Iftesam",
+    "pms": [
+      "Jain Iftesam"
+    ],
     "semester": "Spring 2025",
     "readmeUrl": "/projects/gest"
   },
@@ -173,7 +203,10 @@
     "status": "Completed",
     "icon": "wifi",
     "image": "/site-media/projects/purdudraw.webp",
-    "pm": "PM: Connor Powell",
+    "pm": "Connor Powell",
+    "pms": [
+      "Connor Powell"
+    ],
     "semester": "Spring 2025",
     "readmeUrl": "/projects/purdudraw"
   },
@@ -194,21 +227,40 @@
     "status": "Completed",
     "icon": "wifi",
     "image": "/site-media/projects/mssd.webp",
-    "pm": "PM: Tom Concannon",
+    "pm": "Tom Concannon",
+    "pms": [
+      "Tom Concannon"
+    ],
     "semester": "Spring 2025",
     "readmeUrl": "/projects/mssd"
   },
   {
     "slug": "paws",
     "title": "Paws",
-    "description": "Creating a quadruped robot dog",
+    "description": "Working on an 8-DOF quadruped robot dog using an esp-32 and a reinforcement locomotion RL policy.",
     "technologies": [
       "ESP32"
     ],
     "status": "Active",
     "icon": "cpu",
     "pm": "Aarav Jain",
+    "pms": [
+      "Aarav Jain"
+    ],
     "semester": "Fall 26",
     "readmeUrl": "/projects/paws"
+  },
+  {
+    "slug": "hesitation",
+    "title": "Hesitation",
+    "description": "Hesitation",
+    "technologies": [],
+    "status": "Active",
+    "icon": "bot",
+    "pm": "Arman Islam",
+    "pms": [
+      "Arman Islam"
+    ],
+    "readmeUrl": "/projects/hesitation"
   }
 ]
