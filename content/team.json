@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Arman Islam",
+    "role": "President",
+    "level": "exec",
+    "linkedin": "https://www.linkedin.com/in/thomascon/",
+    "image": "/team/arman.jpg",
+    "order": 10,
+    "active": true
+  },
+  {
+    "name": "Astha Patel",
+    "role": "Vice President",
+    "level": "exec",
+    "linkedin": "https://www.linkedin.com/in/astha-p/",
+    "image": "/team/astha.jpg",
+    "order": 20,
+    "active": true
+  },
+  {
+    "name": "Patrick Jordan",
+    "role": "Treasurer",
+    "level": "exec",
+    "image": "/team/patrick.jpg",
+    "order": 30,
+    "active": true
+  },
+  {
+    "name": "Gautam Aravindan",
+    "role": "Development Engineer",
+    "level": "exec",
+    "linkedin": "https://www.linkedin.com/in/gautamaravindan/",
+    "image": "/team/gautam.jpg",
+    "order": 40,
+    "active": true
+  },
+  {
+    "name": "Mahdi El Husseini",
+    "role": "Executive Engineer",
+    "level": "exec",
+    "linkedin": "https://www.linkedin.com/in/mahdi-el-husseini/",
+    "image": "/team/mahdi.jpg",
+    "order": 50,
+    "active": true
+  }
+]
