@@ -1,3 +1,5 @@
+import fs from "fs"
+import path from "path"
 import ical from "node-ical"
 import type { VEvent } from "node-ical"
 
@@ -8,6 +10,7 @@ import type { WorkshopMeta } from "@/lib/workshops"
 
 const FEED_URL = `https://calendar.google.com/calendar/ical/${encodeURIComponent(CALENDAR_ID)}/public/basic.ics`
 const FEED_CACHE_MS = 5 * 60_000
+const FEED_SNAPSHOT = path.join(process.cwd(), ".next", "cache", "calendar-feed.ics")
 const DAY = 86_400_000
 const KINDS: EventKind[] = ["workshop", "build", "club", "career"]
 const INTERNAL_TITLE = /\b(admin|pm|officer|exec|board) meeting\b/i
@@ -20,7 +23,12 @@ type Occurrence = {
 
 let lastFeed: { text: string; fetchedAt: number } | undefined
 
-// Google answers 429 when the feed is fetched too often, which dev reloads do easily.
+function readSnapshot() {
+  return fs.existsSync(FEED_SNAPSHOT) ? fs.readFileSync(FEED_SNAPSHOT, "utf8") : undefined
+}
+
+// Google answers 429 when the feed is fetched too often, which dev reloads do easily,
+// so the last good copy is kept in memory and in .next/cache.
 async function readFeed() {
   if (lastFeed && Date.now() - lastFeed.fetchedAt < FEED_CACHE_MS) return lastFeed.text
 
@@ -29,16 +37,24 @@ async function readFeed() {
     const response = await fetch(FEED_URL).catch(() => null)
     if (response?.ok) {
       lastFeed = { text: await response.text(), fetchedAt: Date.now() }
+      fs.mkdirSync(path.dirname(FEED_SNAPSHOT), { recursive: true })
+      fs.writeFileSync(FEED_SNAPSHOT, lastFeed.text)
       return lastFeed.text
     }
 
     const retryable = !response || response.status === 429 || response.status >= 500
-    if (!retryable || attempt >= attempts) {
-      if (!lastFeed) throw new Error(`Google Calendar feed ${response ? `responded ${response.status}` : "could not be reached"}`)
-      lastFeed.fetchedAt = Date.now()
-      return lastFeed.text
+    if (retryable && attempt < attempts) {
+      await new Promise((resolve) => setTimeout(resolve, attempt * 5000))
+      continue
     }
-    await new Promise((resolve) => setTimeout(resolve, attempt * 5000))
+
+    const problem = `Google Calendar feed ${response ? `responded ${response.status}` : "could not be reached"}`
+    const saved = lastFeed?.text || readSnapshot()
+    if (!saved && process.env.NODE_ENV === "production") throw new Error(problem)
+
+    console.warn(`${problem}, ${saved ? "using the last saved copy" : "showing no events"}`)
+    lastFeed = { text: saved ?? "", fetchedAt: Date.now() }
+    return lastFeed.text
   }
 }
 
