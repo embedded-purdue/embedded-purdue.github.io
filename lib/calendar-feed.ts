@@ -7,6 +7,7 @@ import { getAllWorkshops } from "@/lib/workshops"
 import type { WorkshopMeta } from "@/lib/workshops"
 
 const FEED_URL = `https://calendar.google.com/calendar/ical/${encodeURIComponent(CALENDAR_ID)}/public/basic.ics`
+const FEED_CACHE_MS = 5 * 60_000
 const DAY = 86_400_000
 const KINDS: EventKind[] = ["workshop", "build", "club", "career"]
 const INTERNAL_TITLE = /\b(admin|pm|officer|exec|board) meeting\b/i
@@ -15,6 +16,30 @@ type Occurrence = {
   source: Omit<VEvent, "recurrences">
   start: Date
   end: Date
+}
+
+let lastFeed: { text: string; fetchedAt: number } | undefined
+
+// Google answers 429 when the feed is fetched too often, which dev reloads do easily.
+async function readFeed() {
+  if (lastFeed && Date.now() - lastFeed.fetchedAt < FEED_CACHE_MS) return lastFeed.text
+
+  const attempts = process.env.NODE_ENV === "production" ? 3 : 1
+  for (let attempt = 1; ; attempt++) {
+    const response = await fetch(FEED_URL).catch(() => null)
+    if (response?.ok) {
+      lastFeed = { text: await response.text(), fetchedAt: Date.now() }
+      return lastFeed.text
+    }
+
+    const retryable = !response || response.status === 429 || response.status >= 500
+    if (!retryable || attempt >= attempts) {
+      if (!lastFeed) throw new Error(`Google Calendar feed ${response ? `responded ${response.status}` : "could not be reached"}`)
+      lastFeed.fetchedAt = Date.now()
+      return lastFeed.text
+    }
+    await new Promise((resolve) => setTimeout(resolve, attempt * 5000))
+  }
 }
 
 function text(value: unknown) {
@@ -99,10 +124,7 @@ function allDaySpan(start: Date, end: Date) {
 }
 
 export async function getCalendarEvents(): Promise<CalendarEvent[]> {
-  const response = await fetch(FEED_URL)
-  if (!response.ok) throw new Error(`Google Calendar feed responded ${response.status}`)
-
-  const feed = ical.sync.parseICS(await response.text())
+  const feed = ical.sync.parseICS(await readFeed())
   const workshops = getAllWorkshops()
   const now = Date.now()
   const from = new Date(now - 730 * DAY)

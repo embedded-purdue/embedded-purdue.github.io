@@ -301,6 +301,13 @@ export default function AboutPage() {
                     Explore projects
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                   </Link>
+                  <Link
+                    href="/calendar"
+                    className="group inline-flex h-11 items-center gap-3 border border-white/[0.12] px-5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#c7c0b5] transition-colors hover:border-[#daa000]/45 hover:text-[#f2c34f]"
+                  >
+                    View calendar
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                  </Link>
                 </div>
               </div>
 
