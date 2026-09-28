@@ -12,6 +12,7 @@ const navigation = [
   { name: "About", href: "/about" },
   { name: "Projects", href: "/projects" },
   { name: "Workshops", href: "/workshops" },
+  { name: "Calendar", href: "/calendar" },
   { name: "Team", href: "/team" },
   { name: "Sponsors", href: "/sponsors" },
 ]
@@ -41,7 +42,7 @@ export function LandingNavigation() {
       } z-50 w-full`}
     >
       <div className="relative mx-auto flex h-[68px] w-full items-center justify-between px-5 sm:px-8 lg:w-[calc(100%_-_48px)] lg:border-x lg:border-white/[0.05] lg:px-8 xl:px-10 2xl:w-[calc(100%_-_80px)] 2xl:px-12">
-        <Link href="/" className="flex items-center gap-4" aria-label="Embedded Systems @ Purdue home">
+        <Link href="/" className="flex shrink-0 items-center gap-4" aria-label="Embedded Systems @ Purdue home">
           <Image
             src="/logo.svg"
             alt="Embedded Systems @ Purdue"
@@ -50,12 +51,12 @@ export function LandingNavigation() {
             className="h-auto w-[72px] object-contain"
             priority
           />
-          <span className="hidden border-l border-white/[0.09] pl-4 font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#9b968d] sm:block">
+          <span className="hidden whitespace-nowrap border-l border-white/[0.09] pl-4 font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#9b968d] sm:block">
             Embedded Systems @ Purdue
           </span>
         </Link>
 
-        <div className="hidden items-center gap-7 md:flex lg:gap-9">
+        <div className="hidden shrink-0 items-center gap-6 lg:flex xl:gap-9">
           {navigation.map((item) => {
             const active = pathname === item.href
             return (
@@ -83,7 +84,7 @@ export function LandingNavigation() {
           </Link>
         </div>
 
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <button

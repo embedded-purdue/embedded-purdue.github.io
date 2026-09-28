@@ -180,10 +180,6 @@ function NextUpPanel({ next, following, now }: { next?: CalendarEvent; following
           <h2 className="max-w-sm text-[clamp(1.75rem,2.6vw,2.4rem)] font-medium leading-[0.95] tracking-[-0.05em]">
             Nothing on the calendar yet.
           </h2>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-[#8d887f]">
-            New sessions show up here as soon as they’re added to the club calendar. Subscribe to get them in your own calendar
-            automatically.
-          </p>
         </div>
       )}
 
