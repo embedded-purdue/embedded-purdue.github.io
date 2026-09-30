@@ -52,7 +52,7 @@ const WIDE_RAIL = "mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80
 
 function SignalLabel({ children }: { children: ReactNode }) {
   return (
-    <div className="flex items-center gap-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#aaa398]">
+    <div className="flex items-center gap-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#c4bfb7]">
       <span className="h-1.5 w-1.5 rounded-full bg-[#f4c64d] shadow-[0_0_8px_rgba(244,198,77,0.38)]" />
       <span>{children}</span>
     </div>
@@ -134,7 +134,7 @@ export default function HomePage() {
                       alt={project.title}
                       fill
                       sizes={index === 0 ? "(max-width: 768px) 100vw, 58vw" : "(max-width: 768px) 100vw, 42vw"}
-                      className="object-cover opacity-[0.7] grayscale-[16%] transition duration-700 ease-out group-hover:scale-[1.016] group-hover:opacity-[0.86] group-hover:grayscale-0"
+                      className="object-cover opacity-[0.82] grayscale-0 transition duration-700 ease-out group-hover:scale-[1.016] group-hover:opacity-[0.95] group-hover:grayscale-0"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/92 via-black/10 to-black/16 transition-colors duration-500 group-hover:from-black/86" />
 
@@ -165,7 +165,7 @@ export default function HomePage() {
               <h2 className="mt-4 max-w-sm text-[clamp(2rem,3vw,3.2rem)] font-medium leading-[0.96] tracking-[-0.05em]">
                 From board bring-up to full systems
               </h2>
-              <p className="mt-4 max-w-sm text-sm leading-6 text-[#827e76]">
+              <p className="mt-4 max-w-sm text-sm leading-6 text-[#a8a59f]">
                 The problems that keep coming up across our projects.
               </p>
             </div>
@@ -179,11 +179,11 @@ export default function HomePage() {
               >
                 <div className="flex items-start justify-between gap-5">
                   <h3 className="text-xl font-medium tracking-[-0.035em] sm:text-2xl">{area.title}</h3>
-                  <span className="pt-1 font-mono text-[0.5rem] tracking-[0.14em] text-[#5f5a51]">0{index + 1}</span>
+                  <span className="pt-1 font-mono text-[0.5rem] tracking-[0.14em] text-[#8f8c85]">0{index + 1}</span>
                 </div>
-                <p className="mt-3 max-w-xl text-sm leading-6 text-[#928d84]">{area.detail}</p>
+                <p className="mt-3 max-w-xl text-sm leading-6 text-[#b3afa9]">{area.detail}</p>
                 <p className="mt-4 font-mono text-[0.54rem] uppercase tracking-[0.13em] text-[#c7a84d]">{area.stack}</p>
-                <p className="mt-2 text-xs leading-5 text-[#625f59]">Seen in: {area.projects}</p>
+                <p className="mt-2 text-xs leading-5 text-[#918f8b]">Seen in: {area.projects}</p>
               </div>
             ))}
           </div>
@@ -201,7 +201,7 @@ export default function HomePage() {
                 <h2 className="mt-4 max-w-lg text-[clamp(2.45rem,4vw,4.15rem)] font-medium leading-[0.93] tracking-[-0.05em]">
                   Learn by building hardware
                 </h2>
-                <p className="mt-4 max-w-lg text-sm leading-6 text-[#969188] sm:text-base sm:leading-7">
+                <p className="mt-4 max-w-lg text-sm leading-6 text-[#b6b2ac] sm:text-base sm:leading-7">
                   Technical sessions move from fundamentals to working systems.
                 </p>
 
@@ -218,13 +218,13 @@ export default function HomePage() {
                         <p className="truncate text-sm font-medium tracking-[-0.01em] text-[#ded8cd] transition-colors group-hover:text-[#f3efe6] sm:text-base">
                           {workshop.title}
                         </p>
-                        <p className="mt-1 font-mono text-[0.55rem] uppercase tracking-[0.14em] text-[#6f6b64]">
+                        <p className="mt-1 font-mono text-[0.55rem] uppercase tracking-[0.14em] text-[#9a9792]">
                           {formatWorkshopDate(workshop.date)}
                           {workshop.location ? ` · ${workshop.location}` : ""}
                         </p>
                       </div>
                       <ArrowUpRight
-                        className="h-4 w-4 text-[#777169] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#f2c34f]"
+                        className="h-4 w-4 text-[#a09c96] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#f2c34f]"
                         aria-hidden="true"
                       />
                     </Link>
@@ -233,7 +233,7 @@ export default function HomePage() {
 
                 <Link
                   href="/workshops"
-                  className="group mt-5 inline-flex items-center gap-2 font-mono text-[0.63rem] uppercase tracking-[0.16em] text-[#bdb6aa] transition-colors hover:text-[#f2c34f]"
+                  className="group mt-5 inline-flex items-center gap-2 font-mono text-[0.63rem] uppercase tracking-[0.16em] text-[#d1ccc4] transition-colors hover:text-[#f2c34f]"
                 >
                   All workshops
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
@@ -255,7 +255,7 @@ export default function HomePage() {
               alt="Embedded Systems @ Purdue community"
               fill
               sizes="100vw"
-              className="object-cover object-center opacity-[0.52] grayscale-[10%] transition duration-700 group-hover:scale-[1.012] group-hover:opacity-[0.64] group-hover:grayscale-0"
+              className="object-cover object-center opacity-[0.64] grayscale-0 transition duration-700 group-hover:scale-[1.012] group-hover:opacity-[0.76] group-hover:grayscale-0"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a09] via-[#0a0a09]/68 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a09]/82 via-transparent to-[#0a0a09]/14" />
@@ -288,9 +288,9 @@ export default function HomePage() {
                   >
                     <div>
                       <p className="text-base font-medium">Calendar</p>
-                      <p className="mt-1 text-sm text-[#77726a]">Stay current with meetings, workshops, and club activity.</p>
+                      <p className="mt-1 text-sm text-[#a09c97]">Stay current with meetings, workshops, and club activity.</p>
                     </div>
-                    <ArrowUpRight className="h-4 w-4 text-[#777169] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#f2c34f]" aria-hidden="true" />
+                    <ArrowUpRight className="h-4 w-4 text-[#a09c96] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#f2c34f]" aria-hidden="true" />
                   </a>
 
                   <a
@@ -299,9 +299,9 @@ export default function HomePage() {
                   >
                     <div>
                       <p className="text-base font-medium">embedded@purdue.edu</p>
-                      <p className="mt-1 text-sm text-[#77726a]">Questions, collaboration, or general contact.</p>
+                      <p className="mt-1 text-sm text-[#a09c97]">Questions, collaboration, or general contact.</p>
                     </div>
-                    <ArrowUpRight className="h-4 w-4 text-[#777169] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#f2c34f]" aria-hidden="true" />
+                    <ArrowUpRight className="h-4 w-4 text-[#a09c96] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#f2c34f]" aria-hidden="true" />
                   </a>
                 </div>
               </div>
@@ -314,7 +314,7 @@ export default function HomePage() {
                 <h2 className="mt-4 text-[clamp(2.6rem,4.4vw,4.4rem)] font-medium leading-[0.92] tracking-[-0.055em]">
                   Build something with us
                 </h2>
-                <p className="mt-4 max-w-xl text-sm leading-6 text-[#918c84] sm:text-base sm:leading-7">
+                <p className="mt-4 max-w-xl text-sm leading-6 text-[#b2aea9] sm:text-base sm:leading-7">
                   Join the Discord for project discussion, workshop updates, and the quickest way to get involved.
                 </p>
 
@@ -332,7 +332,7 @@ export default function HomePage() {
                   <Link
                     href="/projects"
                     data-landing-lift="button"
-                    className="inline-flex items-center gap-3 border border-white/[0.12] px-5 py-3.5 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.15em] text-[#c9c3b8] transition-colors hover:border-white/[0.24] hover:text-white"
+                    className="inline-flex items-center gap-3 border border-white/[0.12] px-5 py-3.5 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.15em] text-[#d9d5cd] transition-colors hover:border-white/[0.24] hover:text-white"
                   >
                     Browse projects
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />

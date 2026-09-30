@@ -11,9 +11,9 @@ const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ?? ""
 type Status = "idle" | "submitting" | "success" | "error"
 
 const inputClass =
-  "h-12 w-full border border-white/[0.12] bg-black/40 px-4 text-sm text-[#f0ece2] outline-none transition-colors placeholder:text-[#6f6a62] focus:border-[#daa000]/55 focus:bg-black/60"
+  "h-12 w-full border border-white/[0.12] bg-black/40 px-4 text-sm text-[#f0ece2] outline-none transition-colors placeholder:text-[#9a9791] focus:border-[#daa000]/55 focus:bg-black/60"
 
-const labelClass = "font-mono text-[0.58rem] uppercase tracking-[0.16em] text-[#89857d]"
+const labelClass = "font-mono text-[0.58rem] uppercase tracking-[0.16em] text-[#acaaa4]"
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle")
@@ -61,7 +61,7 @@ export function ContactForm() {
       <div className="flex min-h-[420px] flex-col items-start justify-center gap-4">
         <CheckCircle2 className="h-8 w-8 text-[#daa000]" aria-hidden="true" />
         <h3 className="text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc]">Message sent</h3>
-        <p className="max-w-md text-sm leading-6 text-[#817c74]">
+        <p className="max-w-md text-sm leading-6 text-[#a7a39e]">
           Thanks for reaching out. The ES@P team will get back to you at the email you provided. For anything urgent,
           you can also reach us directly at{" "}
           <a href="mailto:embedded@purdue.edu" className="text-[#f2c34f] transition-colors hover:text-[#daa000]">
@@ -72,7 +72,7 @@ export function ContactForm() {
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-2 inline-flex h-10 items-center gap-2 border border-white/[0.12] px-4 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[#c7c0b5] transition-colors hover:border-[#daa000]/45 hover:text-[#f2c34f]"
+          className="mt-2 inline-flex h-10 items-center gap-2 border border-white/[0.12] px-4 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[#d8d3cb] transition-colors hover:border-[#daa000]/45 hover:text-[#f2c34f]"
         >
           Send another message
         </button>
@@ -118,7 +118,7 @@ export function ContactForm() {
             <option value="Workshop or speaker collaboration">Workshop / speaker collaboration</option>
             <option value="General partnership inquiry">General partnership inquiry</option>
           </select>
-          <ArrowUpRight className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 rotate-90 text-[#6f6a62]" aria-hidden="true" />
+          <ArrowUpRight className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 rotate-90 text-[#9a9791]" aria-hidden="true" />
         </div>
       </div>
 
@@ -156,7 +156,7 @@ export function ContactForm() {
         )}
       </button>
 
-      <p className="font-mono text-[0.54rem] uppercase tracking-[0.14em] text-[#5f5b55]">
+      <p className="font-mono text-[0.54rem] uppercase tracking-[0.14em] text-[#8f8c88]">
         Goes straight to embedded@purdue.edu
       </p>
     </form>

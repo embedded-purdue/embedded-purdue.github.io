@@ -58,7 +58,7 @@
 
   /* Muted neutrals */
   --muted: oklch(0.22 0.008 85);
-  --muted-foreground: oklch(0.70 0.005 85);
+  --muted-foreground: oklch(0.77 0.005 85);
 
   /* Secondary */
   --secondary: oklch(0.28 0.010 85);

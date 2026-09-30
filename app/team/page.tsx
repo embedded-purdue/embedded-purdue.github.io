@@ -16,8 +16,8 @@ export default function TeamRedirectPage() {
   return (
     <div className="grid min-h-screen place-items-center bg-[#0c0c0b] px-6 text-center text-[#f3efe6]">
       <div>
-        <p className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#aaa398]">Redirecting</p>
-        <p className="mt-3 text-lg text-[#c4beb4]">
+        <p className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#c4bfb7]">Redirecting</p>
+        <p className="mt-3 text-lg text-[#d6d2ca]">
           The team now lives on the{" "}
           <Link href="/about#team" className="text-[#f2c34f] underline underline-offset-4">
             About page
