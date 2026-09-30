@@ -105,8 +105,9 @@ const chairsAndPMs: Member[] = [
   { name: "Bosco Lee", role: "PM • ModularMIDI", photo: "/team/bosco_lee_modularmidi.webp" },
   { name: "Patton Lee", role: "PM • BB-8", photo: "/team/patton_lee_bb8.webp" },
   { name: "William Ramsey", role: "PM • Field Vision", photo: "/team/william_ramsey_fieldvision.webp" },
-  { name: "Arvindh Krishna", role: "PM • Field Vision", photo: "/team/arvindh_krishna_fieldvision.webp" },
+  { name: "Arvindh Krishna", role: ["PM • Field Vision", "Outreach Committee"], photo: "/team/arvindh_krishna_fieldvision.webp" },
   { name: "Preston Mo", role: "PM • TARS", photo: "/team/preston_mo_tars.webp" },
+  { name: "Ekansh Agrawal", role: "PM • TARS", photo: "/team/ekansh_agrawal_tars.webp" },
 ]
 
 const mission = [
