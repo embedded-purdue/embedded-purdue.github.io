@@ -271,7 +271,7 @@ html[data-esap-return-poster="1"] [data-landing-shell] > section:first-of-type::
   background-image: var(--esap-return-poster) !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
-  background-size: 100% 100% !important;
+  background-size: contain !important;
   filter: none !important;
   animation: none !important;
   -webkit-mask-image: none !important;
