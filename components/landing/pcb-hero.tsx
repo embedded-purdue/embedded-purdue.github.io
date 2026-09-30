@@ -717,6 +717,7 @@ export function PcbHero() {
     let cssHeight = 1
     let scaleX = 1
     let scaleY = 1
+    let renderOffsetX = 0
     let renderOffsetY = 0
     let logoImage: HTMLImageElement | null = null
     let groups: GroupRuntime[] = []
@@ -863,13 +864,21 @@ export function PcbHero() {
       // Match the canvas's stable viewport height, including mobile browser chrome.
       cssHeight = Math.max(1, canvas.getBoundingClientRect().height)
 
-      const heroHeight = Math.max(600, Math.min(cssHeight * .78, 760))
-      // Scale the scene uniformly (cover) so the logo and traces keep their
-      // aspect ratio at any window width instead of stretching along one axis.
-      const scale = Math.max(cssWidth / VW, heroHeight / VH)
+      // Size the scene so the logo fits the browser width with a little
+      // horizontal breathing room, keeping its aspect ratio. Reserving margin
+      // (like the vertical scale below) keeps the leading/trailing dots from
+      // being clipped at the edges. When the viewport is too short to fit the
+      // logo at that width, fall back to a height-driven scale so it is never
+      // clipped top or bottom.
+      const widthScale = (cssWidth * .88) / LOGO.width
+      const heightScale = (cssHeight * .82) / LOGO.height
+      const scale = Math.min(widthScale, heightScale)
       scaleX = scale
       scaleY = scale
-      renderOffsetY = (cssHeight - heroHeight) / 2
+      // The logo sits at the center of the VW×VH scene, so centering the scene
+      // in the canvas centers the logo both horizontally and vertically.
+      renderOffsetX = (cssWidth - VW * scale) / 2
+      renderOffsetY = (cssHeight - VH * scale) / 2
 
       const nativeDpr = window.devicePixelRatio || 1
       const pixelBudgetDpr = Math.sqrt(2_600_000 / (cssWidth * cssHeight))
@@ -1209,7 +1218,7 @@ export function PcbHero() {
       context.clearRect(0, 0, cssWidth, cssHeight)
 
       context.save()
-      context.translate(0, renderOffsetY)
+      context.translate(renderOffsetX, renderOffsetY)
       context.scale(scaleX, scaleY)
 
       const focusIn = smoothstep((time - .78) / .52)
