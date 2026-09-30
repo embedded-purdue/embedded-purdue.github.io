@@ -55,12 +55,12 @@ export function SiteRouteBridge() {
         className="group mx-auto grid w-full grid-cols-[1fr_auto] items-center gap-6 px-5 py-8 no-underline sm:px-8 lg:w-[calc(100%_-_48px)] lg:border-x lg:border-white/[0.05] lg:px-10 lg:py-9 xl:px-12 2xl:w-[calc(100%_-_80px)]"
       >
         <div className="min-w-0">
-          <p className="font-mono text-[0.53rem] uppercase tracking-[0.17em] text-[#756f67]">{bridge.eyebrow}</p>
+          <p className="font-mono text-[0.53rem] uppercase tracking-[0.17em] text-[#9e9a95]">{bridge.eyebrow}</p>
           <p className="mt-2 text-[clamp(1.6rem,2.8vw,2.8rem)] font-medium leading-[0.95] tracking-[-0.05em] text-[#dcd6cc] transition-colors group-hover:text-[#f2c34f]">
             {bridge.title}
           </p>
         </div>
-        <span className="grid h-11 w-11 place-items-center border border-white/[0.1] text-[#968f84] transition-all duration-300 group-hover:border-[#daa000]/45 group-hover:text-[#f2c34f]">
+        <span className="grid h-11 w-11 place-items-center border border-white/[0.1] text-[#b6b1a9] transition-all duration-300 group-hover:border-[#daa000]/45 group-hover:text-[#f2c34f]">
           <BackIcon
             className={`h-4 w-4 transition-transform duration-300 ${
               bridge.direction === "back" ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"

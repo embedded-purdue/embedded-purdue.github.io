@@ -37,7 +37,7 @@ export function SiteTelemetry({ items, variant = "grid" }: SiteTelemetryProps) {
               rail ? "min-h-[118px] py-5 lg:min-h-[132px] lg:px-8 lg:py-6" : "min-h-[144px] py-6 lg:min-h-0 lg:px-7 lg:py-7"
             } ${railBorder}`}
           >
-            <span className="font-mono text-[0.53rem] uppercase tracking-[0.16em] text-[#625e57]">{item.label}</span>
+            <span className="font-mono text-[0.53rem] uppercase tracking-[0.16em] text-[#918e89]">{item.label}</span>
             <div className={`${rail ? "mt-3 flex items-end justify-between gap-3" : "mt-5"} min-w-0`}>
               <span
                 className={`block break-words font-medium leading-none ${
@@ -54,7 +54,7 @@ export function SiteTelemetry({ items, variant = "grid" }: SiteTelemetryProps) {
               </span>
               {item.detail && (
                 <span
-                  className={`block font-mono text-[0.49rem] uppercase tracking-[0.13em] text-[#5d5952] ${
+                  className={`block font-mono text-[0.49rem] uppercase tracking-[0.13em] text-[#8e8b86] ${
                     rail ? "max-w-[120px] pb-0.5 text-right" : "mt-2"
                   }`}
                 >

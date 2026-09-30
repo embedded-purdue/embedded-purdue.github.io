@@ -50,22 +50,22 @@ export default function WorkshopsPage() {
               <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:col-span-7 lg:min-h-[480px] lg:border-b-0 lg:border-r lg:px-12 lg:py-14 xl:px-16">
                 <div className="flex h-full flex-col justify-between gap-12">
                   <div className="flex items-center justify-between gap-5">
-                    <div className="flex items-center gap-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#aaa398]">
+                    <div className="flex items-center gap-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#c4bfb7]">
                       <span className="h-1.5 w-1.5 rounded-full bg-[#f4c64d] shadow-[0_0_8px_rgba(244,198,77,0.38)]" />
                       Workshop archive
                     </div>
-                    <span className="hidden font-mono text-[0.52rem] uppercase tracking-[0.16em] text-[#4f4b45] sm:block">
+                    <span className="hidden font-mono text-[0.52rem] uppercase tracking-[0.16em] text-[#84817d] sm:block">
                       Learn / build / debug
                     </span>
                   </div>
 
                   <div>
-                    <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[#625e57]">Technical sessions / hands-on systems</p>
+                    <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[#918e89]">Technical sessions / hands-on systems</p>
                     <h1 className="mt-4 text-[clamp(3.55rem,6.7vw,7rem)] font-medium leading-[0.82] tracking-[-0.07em]">
                       Learn the tools
                       <span className="block text-[#d8aa27]">by using them</span>
                     </h1>
-                    <p className="mt-7 max-w-2xl text-base leading-7 text-[#8d887f]">
+                    <p className="mt-7 max-w-2xl text-base leading-7 text-[#afaca5]">
                       Embedded fundamentals, board design, firmware, debugging, and the practical workflows that turn theory into working hardware.
                     </p>
                   </div>
@@ -78,17 +78,17 @@ export default function WorkshopsPage() {
                   alt="ESP32 development board used in ES@P workshops"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
-                  className="object-cover opacity-[0.74]"
+                  className="object-cover opacity-[0.86]"
                   priority
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.18),transparent_34%,rgba(0,0,0,.84))]" />
                 <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/82 px-4 py-3">
-                  <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#8d887f]">Bench / hands-on</p>
+                  <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#afaca5]">Bench / hands-on</p>
                 </div>
                 <div className="absolute inset-x-0 bottom-0 border-t border-white/[0.1] bg-black/86 px-5 py-4 sm:px-7">
                   <div className="flex items-end justify-between gap-6">
                     <div>
-                      <p className="font-mono text-[0.5rem] uppercase tracking-[0.15em] text-[#756f67]">Workshop principle</p>
+                      <p className="font-mono text-[0.5rem] uppercase tracking-[0.15em] text-[#9e9a95]">Workshop principle</p>
                       <p className="mt-1 text-lg font-medium tracking-[-0.035em] text-[#e0dbd1]">Touch the hardware. Read the signals.</p>
                     </div>
                     <span className="font-mono text-[0.5rem] uppercase tracking-[0.14em] text-[#8d7328]">LAB / 01</span>

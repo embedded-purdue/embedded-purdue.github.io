@@ -221,7 +221,12 @@ export async function getProjectMedia(
     }
     return acc;
   }
-  const files = await walk(base);
+  // The primary page files (index/README) are rendered as the page body itself,
+  // so exclude them from the "artifacts" media list.
+  const primaryPageFiles = new Set(["index.md", "index.mdx", "README.md", "README.mdx"]);
+  const files = (await walk(base)).filter(
+    (abs) => !(path.dirname(abs) === base && primaryPageFiles.has(path.basename(abs)))
+  );
   const images: string[] = [];
   const videos: string[] = [];
   const docs: string[] = [];

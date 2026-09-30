@@ -106,28 +106,28 @@ export default async function ProjectDetailPage({
                   <div className="flex items-center justify-between gap-5">
                     <Link
                       href="/projects"
-                      className="inline-flex w-fit items-center gap-2 font-mono text-[0.58rem] uppercase tracking-[0.16em] text-[#888279] transition-colors hover:text-[#f2c34f]"
+                      className="inline-flex w-fit items-center gap-2 font-mono text-[0.58rem] uppercase tracking-[0.16em] text-[#aca8a1] transition-colors hover:text-[#f2c34f]"
                     >
                       <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
                       Project archive
                     </Link>
-                    <span className="hidden font-mono text-[0.5rem] uppercase tracking-[0.15em] text-[#4f4b45] sm:block">
+                    <span className="hidden font-mono text-[0.5rem] uppercase tracking-[0.15em] text-[#84817d] sm:block">
                       Project record / {slug}
                     </span>
                   </div>
 
                   <div>
-                    <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[#625e57]">Project / {slug}</p>
+                    <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[#918e89]">Project / {slug}</p>
                     <h1 className="mt-4 max-w-5xl text-[clamp(3.35rem,6.4vw,6.7rem)] font-medium leading-[0.84] tracking-[-0.07em] text-[#f2eee5]">
                       {title}
                     </h1>
                     {summary && (
-                      <p className="mt-6 max-w-3xl text-[clamp(1rem,1.3vw,1.18rem)] leading-8 text-[#918b82]">{summary}</p>
+                      <p className="mt-6 max-w-3xl text-[clamp(1rem,1.3vw,1.18rem)] leading-8 text-[#b2aea8]">{summary}</p>
                     )}
                     {!!fallback?.technologies.length && (
                       <div className="mt-6 flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.07] pt-5">
                         {fallback.technologies.slice(0, 7).map((technology) => (
-                          <span key={technology} className="font-mono text-[0.51rem] uppercase tracking-[0.12em] text-[#716c65]">
+                          <span key={technology} className="font-mono text-[0.51rem] uppercase tracking-[0.12em] text-[#9c9893]">
                             {technology}
                           </span>
                         ))}
@@ -145,14 +145,14 @@ export default async function ProjectDetailPage({
                       alt={`${title} project`}
                       fill
                       sizes="(max-width: 1024px) 100vw, 42vw"
-                      className="object-cover opacity-[0.72]"
+                      className="object-cover opacity-[0.84]"
                       priority
                     />
                   ) : (
                     <img
                       src={heroImage}
                       alt={`${title} project`}
-                      className="h-full w-full object-cover opacity-[0.72]"
+                      className="h-full w-full object-cover opacity-[0.84]"
                       decoding="async"
                     />
                   )
@@ -166,12 +166,12 @@ export default async function ProjectDetailPage({
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/86 via-transparent to-black/22" />
                 <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/84 px-4 py-3">
-                  <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#8d887f]">System / {fallback?.status ?? "documented"}</p>
+                  <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#afaca5]">System / {fallback?.status ?? "documented"}</p>
                 </div>
                 <div className="absolute inset-x-0 bottom-0 border-t border-white/[0.1] bg-black/86 px-5 py-4 sm:px-7">
                   <div className="flex items-end justify-between gap-5">
                     <div>
-                      <p className="font-mono text-[0.49rem] uppercase tracking-[0.15em] text-[#756f67]">Project surface</p>
+                      <p className="font-mono text-[0.49rem] uppercase tracking-[0.15em] text-[#9e9a95]">Project surface</p>
                       <p className="mt-1 max-w-sm text-lg font-medium tracking-[-0.035em] text-[#dfd9cf]">
                         Build notes, artifacts, and the system behind the result.
                       </p>
@@ -192,7 +192,7 @@ export default async function ProjectDetailPage({
               <aside className="border-b border-white/[0.08] px-5 py-9 sm:px-8 sm:py-10 lg:col-span-3 lg:border-b-0 lg:border-r lg:px-10 lg:py-14">
                 <div className="lg:sticky lg:top-[108px]">
                   <p className="font-mono text-[0.57rem] uppercase tracking-[0.17em] text-[#796f59]">01 / Project notes</p>
-                  <p className="mt-3 max-w-xs text-sm leading-6 text-[#6f6a63]">
+                  <p className="mt-3 max-w-xs text-sm leading-6 text-[#9a9792]">
                     Design notes, implementation details, build logs, and technical context from the project team.
                   </p>
                 </div>
@@ -207,8 +207,8 @@ export default async function ProjectDetailPage({
                   </article>
                 ) : (
                   <article className="border-y border-white/[0.08] py-8">
-                    <p className="font-mono text-[0.56rem] uppercase tracking-[0.15em] text-[#6f6a62]">Documentation pending</p>
-                    <p className="mt-2 text-lg text-[#9b958c]">This project page is currently being worked on.</p>
+                    <p className="font-mono text-[0.56rem] uppercase tracking-[0.15em] text-[#9a9791]">Documentation pending</p>
+                    <p className="mt-2 text-lg text-[#b9b5ae]">This project page is currently being worked on.</p>
                   </article>
                 )}
               </div>
@@ -226,7 +226,7 @@ export default async function ProjectDetailPage({
                 {extraPages.map((page, index) => (
                   <article key={`${page.file}-${index}`} className="grid lg:grid-cols-12">
                     <div className="border-b border-white/[0.08] px-5 py-9 sm:px-8 sm:py-10 lg:col-span-3 lg:border-b-0 lg:border-r lg:px-10 lg:py-12">
-                      <span className="font-mono text-[0.54rem] uppercase tracking-[0.15em] text-[#625e58]">D-{String(index + 1).padStart(2, "0")}</span>
+                      <span className="font-mono text-[0.54rem] uppercase tracking-[0.15em] text-[#918e8a]">D-{String(index + 1).padStart(2, "0")}</span>
                       <h2 className="mt-3 text-2xl font-medium tracking-[-0.04em] text-[#e5dfd5]">{page.title}</h2>
                     </div>
                     <div data-site-markdown className="px-5 py-11 sm:px-8 sm:py-12 lg:col-span-9 lg:px-12 lg:py-16 xl:px-16">
@@ -251,10 +251,10 @@ export default async function ProjectDetailPage({
                 {postsClean.map((post, index) => (
                   <article key={post.slug} id={`post-${post.slug}`} className="grid lg:grid-cols-12">
                     <div className="px-5 py-9 sm:px-8 sm:py-10 lg:col-span-3 lg:border-r lg:border-white/[0.08] lg:px-10 lg:py-12">
-                      <span className="font-mono text-[0.54rem] uppercase tracking-[0.15em] text-[#625e58]">L-{String(index + 1).padStart(2, "0")}</span>
+                      <span className="font-mono text-[0.54rem] uppercase tracking-[0.15em] text-[#918e8a]">L-{String(index + 1).padStart(2, "0")}</span>
                       <h3 className="mt-3 text-2xl font-medium tracking-[-0.04em] text-[#e5dfd5]">{post.title}</h3>
                       {post.date && (
-                        <p className="mt-3 font-mono text-[0.52rem] uppercase tracking-[0.13em] text-[#67625b]">
+                        <p className="mt-3 font-mono text-[0.52rem] uppercase tracking-[0.13em] text-[#95918c]">
                           {new Date(post.date).toLocaleDateString()}
                         </p>
                       )}
@@ -279,7 +279,7 @@ export default async function ProjectDetailPage({
                   <p className="font-mono text-[0.57rem] uppercase tracking-[0.17em] text-[#796f59]">04 / Media</p>
                   <h2 className="mt-2 text-[clamp(2.4rem,3.8vw,4rem)] font-medium tracking-[-0.055em] text-[#e8e2d8]">Project artifacts</h2>
                 </div>
-                <span className="font-mono text-[0.54rem] uppercase tracking-[0.14em] text-[#5f5a53]">{mediaCount} items</span>
+                <span className="font-mono text-[0.54rem] uppercase tracking-[0.14em] text-[#8f8c87]">{mediaCount} items</span>
               </div>
 
               {!!media.images.length && (
@@ -302,7 +302,7 @@ export default async function ProjectDetailPage({
                       <img
                         src={src}
                         alt="Project image"
-                        className="h-full w-full object-cover opacity-[0.78] transition-opacity duration-300 group-hover:opacity-100"
+                        className="h-full w-full object-cover opacity-[0.9] transition-opacity duration-300 group-hover:opacity-100"
                         loading="lazy"
                         decoding="async"
                       />
@@ -347,7 +347,7 @@ export default async function ProjectDetailPage({
                           <iframe src={`${src}#view=FitH`} title={`Document ${index + 1}`} className="h-[680px] w-full" loading="lazy" />
                         ) : (
                           <div className="flex items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-12">
-                            <span className="truncate text-sm text-[#8d887f]">{src}</span>
+                            <span className="truncate text-sm text-[#afaca5]">{src}</span>
                             <a href={src} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 font-mono text-[0.56rem] uppercase tracking-[0.14em] text-[#b18b25] hover:text-[#f2c34f]">
                               Open <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                             </a>
@@ -373,7 +373,7 @@ export default async function ProjectDetailPage({
                       const body = rows.slice(1)
                       return (
                         <div className="overflow-x-auto">
-                          <table className="min-w-full text-sm text-[#9a958c]">
+                          <table className="min-w-full text-sm text-[#b8b5ae]">
                             <thead className="bg-white/[0.025]">
                               <tr>
                                 {header.map((heading, headingIndex) => (
@@ -402,7 +402,7 @@ export default async function ProjectDetailPage({
                     return (
                       <div key={`${file.url}-${index}`} className="bg-black">
                         <div className="flex items-center justify-between gap-3 border-b border-white/[0.08] px-5 py-4 sm:px-8 lg:px-12">
-                          <div className="truncate font-mono text-[0.56rem] uppercase tracking-[0.13em] text-[#837d74]">{file.name}</div>
+                          <div className="truncate font-mono text-[0.56rem] uppercase tracking-[0.13em] text-[#a8a49e]">{file.name}</div>
                           <a href={file.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 font-mono text-[0.54rem] uppercase tracking-[0.13em] text-[#b18b25] hover:text-[#f2c34f]">
                             Open <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
                           </a>
@@ -411,7 +411,7 @@ export default async function ProjectDetailPage({
                         {file.kind === "html" ? (
                           <iframe src={file.url} title={file.name} className="h-[560px] w-full bg-white" loading="lazy" />
                         ) : file.kind === "code" && file.content ? (
-                          <pre className="overflow-x-auto bg-[#090908] p-5 text-xs leading-relaxed text-[#aaa49a] sm:p-8">{file.content}</pre>
+                          <pre className="overflow-x-auto bg-[#090908] p-5 text-xs leading-relaxed text-[#c4bfb8] sm:p-8">{file.content}</pre>
                         ) : file.kind === "data" && file.ext === ".csv" ? (
                           <div className="p-5 sm:p-8">{renderCsv()}</div>
                         ) : null}

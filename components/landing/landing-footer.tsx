@@ -26,17 +26,17 @@ export function LandingFooter() {
             <Link href="/" className="inline-flex items-center gap-4" aria-label="Embedded Systems @ Purdue home">
               <Image src="/logo.svg" alt="Embedded Systems @ Purdue" width={96} height={31} className="h-auto w-24" />
             </Link>
-            <p className="mt-4 max-w-md text-sm leading-6 text-[#817d75]">
+            <p className="mt-4 max-w-md text-sm leading-6 text-[#a7a49e]">
               Hardware, firmware, and systems built by students.
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-12 sm:gap-16">
             <div>
-              <p className="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[#5f5c56]">Explore</p>
+              <p className="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[#8f8d89]">Explore</p>
               <div className="mt-4 flex flex-col gap-2.5">
                 {explore.map(([label, href]) => (
-                  <Link key={href} href={href} className="w-fit text-sm text-[#aaa59c] transition-colors hover:text-[#f2c34f]">
+                  <Link key={href} href={href} className="w-fit text-sm text-[#c4c0ba] transition-colors hover:text-[#f2c34f]">
                     {label}
                   </Link>
                 ))}
@@ -44,7 +44,7 @@ export function LandingFooter() {
             </div>
 
             <div>
-              <p className="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[#5f5c56]">Connect</p>
+              <p className="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[#8f8d89]">Connect</p>
               <div className="mt-4 flex flex-col gap-2.5">
                 {connect.map(([label, href]) => {
                   const external = href.startsWith("http")
@@ -54,7 +54,7 @@ export function LandingFooter() {
                       href={href}
                       target={external ? "_blank" : undefined}
                       rel={external ? "noopener noreferrer" : undefined}
-                      className="group flex w-fit items-center gap-2 text-sm text-[#aaa59c] transition-colors hover:text-[#f2c34f]"
+                      className="group flex w-fit items-center gap-2 text-sm text-[#c4c0ba] transition-colors hover:text-[#f2c34f]"
                     >
                       {label}
                       {external && (
@@ -71,7 +71,7 @@ export function LandingFooter() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-white/[0.07] pt-5 font-mono text-[0.56rem] uppercase tracking-[0.15em] text-[#55524d] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-2 border-t border-white/[0.07] pt-5 font-mono text-[0.56rem] uppercase tracking-[0.15em] text-[#888682] sm:flex-row sm:items-center sm:justify-between">
           <span>Embedded Systems @ Purdue</span>
           <span>West Lafayette, Indiana · {new Date().getFullYear()}</span>
         </div>

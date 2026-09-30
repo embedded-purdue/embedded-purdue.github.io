@@ -11,11 +11,11 @@ export function SiteResourceShell({ children, label }: { children: ReactNode; la
       <SiteNavigation />
       <div className="border-b border-white/[0.08] bg-black">
         <div className={`${WIDE_RAIL} flex min-h-12 items-center justify-between gap-4 px-5 sm:px-8 lg:border-x lg:border-white/[0.06] lg:px-12 xl:px-16`}>
-          <div className="flex items-center gap-3 font-mono text-[0.56rem] uppercase tracking-[0.17em] text-[#8f887f]">
+          <div className="flex items-center gap-3 font-mono text-[0.56rem] uppercase tracking-[0.17em] text-[#b1aca5]">
             <span className="h-1.5 w-1.5 rounded-full bg-[#daa000] shadow-[0_0_8px_rgba(218,160,0,.3)]" />
             {label}
           </div>
-          <span className="hidden font-mono text-[0.52rem] uppercase tracking-[0.15em] text-[#55514b] sm:block">
+          <span className="hidden font-mono text-[0.52rem] uppercase tracking-[0.15em] text-[#888581] sm:block">
             Internal ES@P tooling
           </span>
         </div>
