@@ -81,7 +81,7 @@ export const projects: Project[] = [
     technologies: ["NVIDIA Jetson", "Computer Vision", "Machine Learning", "ROS", "Embedded C/C++", "CAD"],
     status: "Active",
     icon: Bot,
-    image: "/projects/wall-e/wall-e-1.jpg",
+    image: "/projects/wall-e/wall-e.png",
     pm: "PM: Thai Tran",
     semester: "Fall 2026",
     readmeUrl: "/projects/wall-e",
