@@ -23,7 +23,6 @@ export function TeamPortrait({
     <div className="relative flex aspect-[2/3] items-center justify-center overflow-hidden bg-[#151513]">
       {showPlaceholder ? (
         <div className="grid h-full w-full place-items-center bg-[linear-gradient(rgba(218,160,0,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(218,160,0,.06)_1px,transparent_1px)] bg-[size:24px_24px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.svg" alt="" className="w-20 max-w-[45%] opacity-35" loading="lazy" decoding="async" />
         </div>
       ) : image ? (
@@ -36,7 +35,6 @@ export function TeamPortrait({
           className={`block h-auto max-h-full w-full object-contain ${image.width < 200 ? "max-w-[190px]" : ""}`}
         />
       ) : (
-        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={photo}
           alt={name}
