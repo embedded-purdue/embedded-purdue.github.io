@@ -27,6 +27,9 @@ const baseConfig = {
 
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   experimental: { mdxRs: true },
+  outputFileTracingExcludes: {
+    "/api/cms/*": [".next/cache/**/*", "public/**/*", ".git/**/*"],
+  },
 };
 
 if (shouldStaticExport) {
