@@ -1,8 +1,8 @@
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, ArrowUpRight } from "lucide-react"
 
+import { ProjectMediaCarousel } from "@/components/projects/project-media-carousel"
 import Markdown from "@/components/Markdown"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteNavigation } from "@/components/site/site-navigation"
@@ -82,13 +82,13 @@ export default async function ProjectDetailPage({
 
   const media = await getProjectMedia(slug)
   const mediaCount = media.images.length + media.videos.length + media.docs.length + media.files.length
-  const listedImage = fallback?.image && fallback.image !== "/projects/logo.png"
-    ? resolveProjectImagePath(slug, fallback.image)
-    : null
-  const heroImage = listedImage ?? media.images[0] ?? null
+  const listedImages = (fallback?.images?.length ? fallback.images : fallback?.image ? [fallback.image] : [])
+    .filter((image) => image !== "/projects/logo.png")
+    .map((image) => resolveProjectImagePath(slug, image))
+  const carouselImages = Array.from(new Set([...listedImages, ...media.images]))
   const telemetry = [
     { label: "State", value: fallback?.status ?? "Documented", detail: fallback?.semester ?? "project record", accent: true },
-    { label: "Lead", value: fallback?.pm?.replace(/^PMs?:\s*/i, "") ?? "TBD", detail: "project manager" },
+    { label: "Lead", value: fallback?.pms?.length ? fallback.pms.join(", ") : fallback?.pm?.replace(/^PMs?:\s*/i, "") ?? "TBD", detail: "project manager" },
     { label: "Media", value: mediaCount, detail: "artifacts indexed" },
     { label: "Stack", value: fallback?.technologies.length ?? 0, detail: "technologies" },
   ] as const
@@ -138,47 +138,12 @@ export default async function ProjectDetailPage({
               </div>
 
               <div className="relative min-h-[350px] overflow-hidden bg-[#080807] lg:col-span-5 lg:min-h-[470px]">
-                {heroImage ? (
-                  heroImage.startsWith("/") ? (
-                    <Image
-                      src={heroImage}
-                      alt={`${title} project`}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 42vw"
-                      className="object-cover opacity-[0.84]"
-                      priority
-                    />
-                  ) : (
-                    <img
-                      src={heroImage}
-                      alt={`${title} project`}
-                      className="h-full w-full object-cover opacity-[0.84]"
-                      decoding="async"
-                    />
-                  )
-                ) : (
-                  <div className="absolute inset-0 bg-[linear-gradient(rgba(218,160,0,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(218,160,0,.045)_1px,transparent_1px)] bg-[size:36px_36px]">
-                    <div className="absolute left-[12%] top-[22%] h-px w-[58%] bg-[#8b6a13]/55" />
-                    <div className="absolute left-[31%] top-[22%] h-[46%] w-px bg-[#8b6a13]/40" />
-                    <div className="absolute bottom-[31%] left-[31%] h-px w-[51%] bg-[#8b6a13]/45" />
-                    <span className="absolute bottom-[30%] left-[80%] h-2 w-2 -translate-y-[3px] rounded-full border border-[#c79821]/65" />
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/86 via-transparent to-black/22" />
-                <div className="absolute left-0 top-0 border-b border-r border-white/[0.09] bg-black/84 px-4 py-3">
-                  <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#afaca5]">System / {fallback?.status ?? "documented"}</p>
-                </div>
-                <div className="absolute inset-x-0 bottom-0 border-t border-white/[0.1] bg-black/86 px-5 py-4 sm:px-7">
-                  <div className="flex items-end justify-between gap-5">
-                    <div>
-                      <p className="font-mono text-[0.49rem] uppercase tracking-[0.15em] text-[#9e9a95]">Project surface</p>
-                      <p className="mt-1 max-w-sm text-lg font-medium tracking-[-0.035em] text-[#dfd9cf]">
-                        Build notes, artifacts, and the system behind the result.
-                      </p>
-                    </div>
-                    <span className="font-mono text-[0.49rem] uppercase tracking-[0.14em] text-[#8d7328]">SYS / {slug.slice(0, 3)}</span>
-                  </div>
-                </div>
+                <ProjectMediaCarousel
+                  title={title}
+                  slug={slug}
+                  status={fallback?.status ?? "documented"}
+                  images={carouselImages}
+                />
               </div>
             </div>
 

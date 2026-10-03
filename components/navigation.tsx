@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu, Home, Users, FolderOpen, Mail, UserSquare2 } from "lucide-react"
-import { DiscordIcon } from "@/components/icons/discord-icon"
 import Image from "next/image"
 import { FaDiscord } from "react-icons/fa";
 

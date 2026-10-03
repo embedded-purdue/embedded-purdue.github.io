@@ -1,4 +1,4 @@
-import Image, { type StaticImageData } from "next/image"
+import Image from "next/image"
 import Link from "next/link"
 import {
   ArrowRight,
@@ -19,96 +19,12 @@ import {
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteNavigation } from "@/components/site/site-navigation"
 import { TeamPortrait } from "@/components/site/team-portrait"
-
-import armanImg from "../../public/team/arman.jpg"
-import asthaImg from "../../public/team/astha.jpg"
-import patrickImg from "../../public/team/patrick.jpg"
-import gautamImg from "../../public/team/gautam.jpg"
-import mahdiImg from "../../public/team/mahdi.jpg"
-import gillianImg from "../../public/team/gillian.jpg"
-// Previous-cycle PM headshots — re-enable alongside the matching roster entry below.
-// import haydenImg from "../../public/team/hayden.jpg"
-// import sabastianImg from "../../public/team/sabastian.jpg"
-// import aarushiImg from "../../public/team/aarushi.jpg"
-// import garimaImg from "../../public/team/garima.jpg"
-// import katherineImg from "../../public/team/katherine.jpg"
-// import shruthiImg from "../../public/team/shruthi.jpg"
-// import samuelImg from "../../public/team/samuel.jpg"
-// import nealImg from "../../public/team/neal.jpg"
-// import alexImg from "../../public/team/alex.jpg"
-// import alexanderImg from "../../public/team/alexander.jpg"
-// import nikhilImg from "../../public/team/nikhil.jpg"
+import { readTeamContent } from "@/lib/cms/content"
+import type { TeamMemberContent } from "@/lib/cms/schema"
 
 const WIDE_RAIL = "site-rail mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
 
-type Member = {
-  name: string
-  /** One role, or several (e.g. an exec who is also a PM) rendered on their own lines. */
-  role: string | string[]
-  email?: string
-  linkedin?: string
-  github?: string
-  image?: StaticImageData
-  /** Public path (e.g. "/team/name.jpg") for photos not statically imported. */
-  photo?: string
-}
-
-const executives: Member[] = [
-  { name: "Arman Islam", role: ["President", "PM • Hesitation"], linkedin: "https://www.linkedin.com/in/thomascon/", image: armanImg },
-  { name: "Astha Patel", role: "Vice President", linkedin: "https://www.linkedin.com/in/astha-p/", image: asthaImg },
-  { name: "Patrick Jordan", role: ["Treasurer", "PM • BoilerSLAM"], image: patrickImg },
-  { name: "Gautam Aravindan", role: "Development Engineer", linkedin: "https://www.linkedin.com/in/gautamaravindan/", image: gautamImg },
-  { name: "Mahdi El Husseini", role: "Executive Engineer", linkedin: "https://www.linkedin.com/in/mahdi-el-husseini/", image: mahdiImg },
-]
-
-// Chairs and Project Managers share one section on the page.
-const chairsAndPMs: Member[] = [
-  { name: "Gillian Hanley", role: ["Web Director", "PM • VibeClone"], linkedin: "https://www.linkedin.com/in/gillian-hanley-a77024242/", image: gillianImg },
-  // Fall 2026 committees
-  { name: "Reid Cahalan", role: "Marketing Committee", photo: "/team/reid_cahalan_marketing.webp" },
-  { name: "Madhura Kawar", role: "Photography Committee", photo: "/team/madhura_kawar_photography.webp" },
-  { name: "Anay Patel", role: "Outreach Committee", photo: "/team/Anay_patel_outreach.webp" },
-  { name: "Sarvesh Iyer", role: "Outreach Committee", photo: "/team/sarvesh_iyer_outreach.webp" },
-  { name: "Vlad Bondar", role: "Events Committee", photo: "/team/vlad_bondar_events.webp" },
-  { name: "Srujhan Kandula", role: "Finance Committee", photo: "/team/srujhan_kandula_finance.webp" },
-  // Previous-cycle PMs — hidden until the full updated roster is provided. Re-enable
-  // an entry (and its import above) to bring the person back onto the page.
-  // { name: "Hayden Logan", role: "PM • BB-8", linkedin: "https://linkedin.com/in/hayden-logan-2a539a261", image: haydenImg },
-  // { name: "Sabastian Hamilton", role: "PM • Embedded Tetris", linkedin: "https://www.linkedin.com/in/sabastianhamilton", image: sabastianImg },
-  // { name: "Aarushi Deshwal", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/aarushi-deshwal-42450b328/", image: aarushiImg },
-  // { name: "Garima Thapliyal", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/garimat9606", image: garimaImg },
-  // { name: "Katherine Ma", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/katheriinema/", image: katherineImg },
-  // { name: "Shruthi Arunkumar", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/shruthi-arunkumar", image: shruthiImg },
-  // { name: "Sam Morales", role: "PM • HarmoniCore", linkedin: "https://www.linkedin.com/in/samorales03/", image: samuelImg },
-  // { name: "Neal Singh", role: "PM • Holo-Adapt", linkedin: "https://www.linkedin.com/in/neal-ssingh", image: nealImg },
-  // { name: "Alex Forrest", role: "PM • MicroPiano", linkedin: "https://www.linkedin.com/in/alex-forrest-ee/", image: alexImg },
-  // { name: "Alexander Rizzi", role: "PM • MicroPiano", linkedin: "https://www.linkedin.com/in/alexander-rizzi/", image: alexanderImg },
-  // { name: "Nikhil Chaudhary", role: "PM • SlayterHIL", linkedin: "https://www.linkedin.com/in/nikhilmchaudhary/", image: nikhilImg },
-  // Fall 2026 project managers. Headshots follow the first_last_projectname.webp convention.
-  // Still awaiting photos: aarav_jain_paws, clayton_hughes_irltspice, micah_samuel_irltspice,
-  // bosco_lee_modularmidi (these render as placeholders until added).
-  { name: "Aarav Jain", role: "PM • PAWS", photo: "/team/aarav_jain_paws.webp" },
-  { name: "Elias Braun", role: "PM • Carbon Sink", photo: "/team/elias_braun_carbonsink.webp" },
-  { name: "Abhiraj Singh Jaswal", role: "PM • CAISSA", photo: "/team/abhiraj_jaswal_cassia.webp" },
-  { name: "Aadithya Vasudevan", role: "PM • CAISSA", photo: "/team/aadithya_vasudevan_cassia.webp" },
-  { name: "Ishika Pandurangam", role: ["PM • CAISSA", "Outreach Committee"], photo: "/team/ishika_pandurangam_cassia.webp" },
-  { name: "Thai Tran", role: "PM • WALL-E", photo: "/team/thai_tran_walle.webp" },
-  { name: "Evin Lodder", role: "PM • SlayterHiL", photo: "/team/evin_lodder_slayterhil.webp" },
-  { name: "Parker Hitchcock", role: "PM • IRLTSPICE", photo: "/team/parker_hitchcock_irltspice.webp" },
-  { name: "Zachary DeNeve", role: "PM • IRLTSPICE", photo: "/team/zachary_deNeve_irltspice.webp" },
-  { name: "Clayton Hughes", role: "PM • IRLTSPICE", photo: "/team/clayton_hughes_irltspice.webp" },
-  { name: "Craig Eagleburger", role: "PM • IRLTSPICE", photo: "/team/craig_eagleburger_irltspice.webp" },
-  { name: "Micah Samuel", role: "PM • IRLTSPICE", photo: "/team/micah_samuel_irltspice.webp" },
-  { name: "Yao Yang", role: "PM • IntelliThings", photo: "/team/yao_yang_intellithings.webp" },
-  { name: "Rakshita Gupta", role: "PM • IntelliThings", photo: "/team/rakshita_gupta_intellithings.webp" },
-  { name: "Matthew Shams", role: "PM • BoilerSLAM", photo: "/team/matthew_shams_boilerslam.webp" },
-  { name: "Bosco Lee", role: "PM • ModularMIDI", photo: "/team/bosco_lee_modularmidi.webp" },
-  { name: "Patton Lee", role: "PM • BB-8", photo: "/team/patton_lee_bb8.webp" },
-  { name: "William Ramsey", role: "PM • Field Vision", photo: "/team/william_ramsey_fieldvision.webp" },
-  { name: "Arvindh Krishna", role: ["PM • Field Vision", "Outreach Committee"], photo: "/team/arvindh_krishna_fieldvision.webp" },
-  { name: "Preston Mo", role: "PM • TARS", photo: "/team/preston_mo_tars.webp" },
-  { name: "Ekansh Agrawal", role: "PM • TARS", photo: "/team/ekansh_agrawal_tars.webp" },
-]
+type Member = TeamMemberContent
 
 const mission = [
   {
@@ -186,10 +102,10 @@ function MemberPortrait({ member, index, prefix = "E" }: { member: Member; index
 
   return (
     <article className="min-w-0">
-      <TeamPortrait image={member.image} photo={member.photo} name={member.name} />
+      <TeamPortrait photo={member.image} name={member.name} />
       <div className="border-t border-white/[0.1] pt-5">
-        {(Array.isArray(member.role) ? member.role : [member.role]).map((r) => (
-          <p key={r} className="font-mono text-[0.62rem] uppercase leading-5 tracking-[0.12em] text-[#c39b36]">{r}</p>
+        {member.roles.map((role) => (
+          <p key={role} className="font-mono text-[0.62rem] uppercase leading-5 tracking-[0.12em] text-[#c39b36]">{role}</p>
         ))}
         <h3 className="mt-2 text-[clamp(1.15rem,1.7vw,1.65rem)] font-medium leading-tight tracking-[-0.035em] text-[#eee8de]">{member.name}</h3>
         <div className="mt-4 flex min-h-10 items-center justify-between gap-2">
@@ -205,7 +121,10 @@ function MemberPortrait({ member, index, prefix = "E" }: { member: Member; index
   )
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const team = (await readTeamContent()).filter((member) => member.active);
+  const executives = team.filter((member) => member.section === "exec");
+  const chairsAndPMs = team.filter((member) => member.section !== "exec");
   return (
     <div className="min-h-screen bg-[#0c0c0b] text-[#f3efe6]">
       <SiteNavigation />

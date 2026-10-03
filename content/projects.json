@@ -1,0 +1,305 @@
+[
+  {
+    "slug": "berryweather",
+    "title": "BerryWeather (IoT Weather Station)",
+    "description": "Sensor-equipped wireless weather station on Pi/MCU with power-conscious design.",
+    "technologies": [
+      "Raspberry Pi OS",
+      "Sensors",
+      "Embedded C",
+      "Schematic/PCB",
+      "Power"
+    ],
+    "status": "Completed",
+    "icon": "wifi",
+    "image": "/projects/logo.png",
+    "images": [
+      "/projects/logo.png"
+    ],
+    "pm": "Connor Powell",
+    "pms": [
+      "Connor Powell"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/berryweather"
+  },
+  {
+    "slug": "harmonicore",
+    "title": "HarmoniCore (FPGA DSP Autotune)",
+    "description": "FPGA-based DSP core that autotunes your voice in real time.",
+    "technologies": [
+      "FPGA/HDL",
+      "DSP (Python)",
+      "PCB/Bringup",
+      "Audio"
+    ],
+    "status": "Active",
+    "icon": "zap",
+    "image": "/site-media/projects/harmonicore.webp",
+    "images": [
+      "/site-media/projects/harmonicore.webp"
+    ],
+    "pm": "Varun Vaidyanathan",
+    "pms": [
+      "Varun Vaidyanathan"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/harmonicore"
+  },
+  {
+    "slug": "slayterhil",
+    "title": "slayterHiL (Hardware-in-the-Loop)",
+    "description": "Make the drone think it’s flying—break it in software before it breaks itself.",
+    "technologies": [
+      "RTOS (C)",
+      "C++ Systems",
+      "Board Bringup",
+      "Wi-Fi/BLE"
+    ],
+    "status": "Active",
+    "icon": "cpu",
+    "image": "/site-media/projects/slayterhil.webp",
+    "images": [
+      "/site-media/projects/slayterhil.webp"
+    ],
+    "pm": "Alex Aylward",
+    "pms": [
+      "Alex Aylward"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/slayterhil"
+  },
+  {
+    "slug": "bb8",
+    "title": "BB-8 (Mobile Robot)",
+    "description": "“Circle guy” from Star Wars—vision + wireless + motor/PID control.",
+    "technologies": [
+      "Computer Vision",
+      "Wireless",
+      "Motor Control",
+      "PID"
+    ],
+    "status": "Active",
+    "icon": "car",
+    "image": "/site-media/projects/bb8.webp",
+    "images": [
+      "/site-media/projects/bb8.webp"
+    ],
+    "pm": "Tom Concannon",
+    "pms": [
+      "Tom Concannon"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/bb8"
+  },
+  {
+    "slug": "micropiano",
+    "title": "MicroPiano",
+    "description": "Mini piano using hall sensors and an STM32; analog front-end + KiCad.",
+    "technologies": [
+      "STM32 (C)",
+      "Peripherals",
+      "Analog",
+      "KiCad",
+      "CAD"
+    ],
+    "status": "Active",
+    "icon": "zap",
+    "image": "/projects/logo.png",
+    "images": [
+      "/projects/logo.png"
+    ],
+    "pm": "Felix Liu",
+    "pms": [
+      "Felix Liu"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/micropiano"
+  },
+  {
+    "slug": "eyecue",
+    "title": "EyeCue (Hands-Free Pointer)",
+    "description": "Blink/eyebrow/gaze-driven cursor using CV on Pi; accessibility oriented.",
+    "technologies": [
+      "Computer Vision",
+      "Raspberry Pi OS",
+      "Python/C",
+      "Mech/CAD"
+    ],
+    "status": "Active",
+    "icon": "camera",
+    "image": "/site-media/projects/eyecue.webp",
+    "images": [
+      "/site-media/projects/eyecue.webp"
+    ],
+    "pm": "Katherine M, Garima T, Aarushi D, Shruthi A",
+    "pms": [
+      "Katherine M",
+      "Garima T",
+      "Aarushi D",
+      "Shruthi A"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/eyecue"
+  },
+  {
+    "slug": "digital-ops",
+    "title": "Digital Operations",
+    "description": "Club website + workflow automation for media intake and requests.",
+    "technologies": [
+      "TypeScript",
+      "Astro/Next",
+      "Tailwind",
+      "APIs",
+      "Automation"
+    ],
+    "status": "Completed",
+    "icon": "cpu",
+    "image": "/site-media/projects/digital-ops.webp",
+    "images": [
+      "/site-media/projects/digital-ops.webp"
+    ],
+    "pm": "Trevor Antle",
+    "pms": [
+      "Trevor Antle"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/digital-ops"
+  },
+  {
+    "slug": "smart-watch",
+    "title": "Smart Watch",
+    "description": "A smart watch for the people! Build your own wearable with ESP32, sensors, and custom firmware.",
+    "technologies": [
+      "ESP32",
+      "PCB Design",
+      "Data Storage",
+      "Sensors",
+      "Wireless",
+      "App Design",
+      "Watch Mechanics"
+    ],
+    "status": "Completed",
+    "icon": "watch",
+    "image": "/projects/logo.png",
+    "images": [
+      "/projects/logo.png"
+    ],
+    "pm": "Patrick Shea",
+    "pms": [
+      "Patrick Shea"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/smart-watch"
+  },
+  {
+    "slug": "gest",
+    "title": "Gest",
+    "description": "Gest senses your movements and your device responds instantly. That's what it means to #GestUp!",
+    "technologies": [
+      "Wireless",
+      "Microcontroller",
+      "Sensors",
+      "IMU",
+      "App Design"
+    ],
+    "status": "Completed",
+    "icon": "wifi",
+    "image": "/site-media/projects/gest.webp",
+    "images": [
+      "/site-media/projects/gest.webp"
+    ],
+    "pm": "Jain Iftesam",
+    "pms": [
+      "Jain Iftesam"
+    ],
+    "semester": "Spring 2025",
+    "readmeUrl": "/projects/gest"
+  },
+  {
+    "slug": "purdudraw",
+    "title": "PurduDraw",
+    "description": "A modern embedded take on a classic mechanical drawing toy—accurate, fully functioning drawing robot.",
+    "technologies": [
+      "Wireless",
+      "Microcontroller",
+      "Sensors",
+      "IMU",
+      "App Design"
+    ],
+    "status": "Completed",
+    "icon": "wifi",
+    "image": "/site-media/projects/purdudraw.webp",
+    "images": [
+      "/site-media/projects/purdudraw.webp"
+    ],
+    "pm": "Connor Powell",
+    "pms": [
+      "Connor Powell"
+    ],
+    "semester": "Spring 2025",
+    "readmeUrl": "/projects/purdudraw"
+  },
+  {
+    "slug": "mssd",
+    "title": "MSSD",
+    "description": "Mechanical Seven Segment Display that flips mechanical segments using a notched, servo-driven shaft.",
+    "technologies": [
+      "Wireless",
+      "Microcontroller",
+      "Sensors",
+      "IMU",
+      "App Design",
+      "Stopwatch",
+      "Timer",
+      "Counter"
+    ],
+    "status": "Completed",
+    "icon": "wifi",
+    "image": "/site-media/projects/mssd.webp",
+    "images": [
+      "/site-media/projects/mssd.webp"
+    ],
+    "pm": "Tom Concannon",
+    "pms": [
+      "Tom Concannon"
+    ],
+    "semester": "Spring 2025",
+    "readmeUrl": "/projects/mssd"
+  },
+  {
+    "slug": "paws",
+    "title": "Paws",
+    "description": "Working on an 8-DOF quadruped robot dog using an esp-32 and a reinforcement locomotion RL policy.",
+    "technologies": [
+      "ESP32"
+    ],
+    "status": "Active",
+    "icon": "cpu",
+    "image": "/projects/paws/paws.png",
+    "images": [
+      "/projects/paws/paws.png"
+    ],
+    "pm": "Aarav Jain",
+    "pms": [
+      "Aarav Jain"
+    ],
+    "semester": "Fall 26",
+    "readmeUrl": "/projects/paws"
+  },
+  {
+    "slug": "hesitation",
+    "title": "Hesitation",
+    "description": "Hesitation",
+    "technologies": [],
+    "status": "Active",
+    "icon": "bot",
+    "image": "",
+    "images": [],
+    "pm": "Arman Islam",
+    "pms": [
+      "Arman Islam"
+    ],
+    "readmeUrl": "/projects/hesitation"
+  }
+]

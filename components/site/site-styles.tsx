@@ -274,10 +274,10 @@ body:has([data-site-navigation]) [data-site-markdown] pre {
 [data-site-resource-shell] .bg-card,
 [data-site-resource-shell] .bg-background,
 [data-site-resource-shell] .bg-muted,
-[data-site-resource-shell] .bg-muted\/10,
-[data-site-resource-shell] .bg-muted\/20,
-[data-site-resource-shell] .bg-muted\/30,
-[data-site-resource-shell] .bg-muted\/50,
+[data-site-resource-shell] .bg-muted\\/10,
+[data-site-resource-shell] .bg-muted\\/20,
+[data-site-resource-shell] .bg-muted\\/30,
+[data-site-resource-shell] .bg-muted\\/50,
 [data-site-resource-shell] [class*="bg-muted/"] {
   background: transparent !important;
 }

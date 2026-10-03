@@ -3,18 +3,31 @@ import ical from "node-ical"
 
 const ICS_URL = "https://calendar.google.com/calendar/ical/embedded%40purdue.edu/public/basic.ics"
 
+type CalendarEvent = {
+  type?: string
+  uid?: string
+  summary?: string
+  start?: string | Date
+  end?: string | Date
+  location?: string
+}
+
+function isCalendarEvent(value: unknown): value is CalendarEvent {
+  return typeof value === "object" && value !== null && (value as CalendarEvent).type === "VEVENT"
+}
+
 async function getUpcoming(limit = 8) {
   const data = await ical.async.fromURL(ICS_URL)
   const now = Date.now()
-  const events = Object.values(data)
-    .filter((e: any) => e.type === "VEVENT")
-    .map((e: any) => ({
-      id: e.uid,
-      title: e.summary as string,
-      start: new Date(e.start),
-      end: new Date(e.end),
-      location: e.location as string | undefined,
-      link: `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(String(e.summary))}`,
+  const events = (Object.values(data) as unknown[])
+    .filter(isCalendarEvent)
+    .map((event) => ({
+      id: event.uid || String(event.summary || event.start),
+      title: String(event.summary || "Untitled event"),
+      start: new Date(event.start || 0),
+      end: new Date(event.end || event.start || 0),
+      location: event.location,
+      link: `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(String(event.summary || ""))}`,
     }))
     .filter(e => e.start.getTime() >= now - 60_000)
     .sort((a, b) => a.start.getTime() - b.start.getTime())
