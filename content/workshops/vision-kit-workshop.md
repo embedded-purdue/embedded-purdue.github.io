@@ -1,19 +1,18 @@
 ---
-title: Google AIY Embedded Computer Vision Workshop
-slug: vision-kit-workshop
-date: '2026-02-16T18:30:00-05:00'
-location: BHEE 117
-summary: >-
-  Build a smart camera with the Google AIY Vision Kit and deploy your own custom
-  AI model that runs completely offline
+title: "Google AIY Embedded Computer Vision Workshop"
+slug: "vision-kit-workshop"
+date: "2026-02-16T18:30:00-05:00"
+location: "BHEE 117"
+summary: "Build a smart camera with the Google AIY Vision Kit and deploy your own custom AI model that runs completely offline"
 tags:
-  - computer-vision
-  - raspberry-pi
-  - embedded
-  - ai
-  - beginner
-cover: /site-media/workshops/vision-kit.webp
+  - "computer-vision"
+  - "raspberry-pi"
+  - "embedded"
+  - "ai"
+  - "beginner"
+cover: "/site-media/workshops/vision-kit.webp"
 ---
+
 ![Google AIY Vision Kit](/workshops/vision-kit-assembled.jpg)
 
 ## What You'll Build

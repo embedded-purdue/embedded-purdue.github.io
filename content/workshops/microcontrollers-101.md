@@ -1,20 +1,18 @@
 ---
-title: Microcontrollers 101
-slug: microcontrollers-101
-date: '2025-11-18T18:00:00-04:00'
-location: BHEE 117
-summary: >-
-  Introduction to microcontrollers! By the end of this workshop, you should
-  hopefully have a fully working Chrome Dino Run game running on your own liquid
-  crystal display with audio support.
+title: "Microcontrollers 101"
+slug: "microcontrollers-101"
+date: "2025-11-18T18:00:00-04:00"
+location: "BHEE 117"
+summary: "Introduction to microcontrollers! By the end of this workshop, you should hopefully have a fully working Chrome Dino Run game running on your own liquid crystal display with audio support."
 tags:
-  - c++
-  - c
-  - microcontrollers
-  - beginner
-  - esp32
-cover: /site-media/workshops/esp32.webp
+  - "c++"
+  - "c"
+  - "microcontrollers"
+  - "beginner"
+  - "esp32"
+cover: "/site-media/workshops/esp32.webp"
 ---
+
 ![dino](/workshops/microcontroller-dino.png)
 
 ---
