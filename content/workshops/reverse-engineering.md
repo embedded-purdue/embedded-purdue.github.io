@@ -1,16 +1,15 @@
 ---
-title: Reverse Engineering
-slug: reverse-engineering
-date: '2026-03-11T19:00:00-05:00'
-location: ME G061
-summary: >-
-  This workshop will involve dumping the data stored in an EEPROM and
-  interpretting it to put back together a lost file.
+title: "Reverse Engineering"
+slug: "reverse-engineering"
+date: "2026-03-11T19:00:00-05:00"
+location: "ME G061"
+summary: "This workshop will involve dumping the data stored in an EEPROM and interpretting it to put back together a lost file."
 tags:
-  - c++
-  - esp32
-  - python
+  - "c++"
+  - "esp32"
+  - "python"
 ---
+
 **Level:** Intermediate | **Offered:** Spring 2026 | **Time:** 2 hours
 
 ---

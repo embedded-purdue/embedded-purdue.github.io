@@ -13,6 +13,9 @@
     "status": "Completed",
     "icon": "wifi",
     "image": "/projects/logo.png",
+    "images": [
+      "/projects/logo.png"
+    ],
     "pm": "Connor Powell",
     "pms": [
       "Connor Powell"
@@ -33,6 +36,9 @@
     "status": "Active",
     "icon": "zap",
     "image": "/site-media/projects/harmonicore.webp",
+    "images": [
+      "/site-media/projects/harmonicore.webp"
+    ],
     "pm": "Varun Vaidyanathan",
     "pms": [
       "Varun Vaidyanathan"
@@ -53,6 +59,9 @@
     "status": "Active",
     "icon": "cpu",
     "image": "/site-media/projects/slayterhil.webp",
+    "images": [
+      "/site-media/projects/slayterhil.webp"
+    ],
     "pm": "Alex Aylward",
     "pms": [
       "Alex Aylward"
@@ -73,6 +82,9 @@
     "status": "Active",
     "icon": "car",
     "image": "/site-media/projects/bb8.webp",
+    "images": [
+      "/site-media/projects/bb8.webp"
+    ],
     "pm": "Tom Concannon",
     "pms": [
       "Tom Concannon"
@@ -94,6 +106,9 @@
     "status": "Active",
     "icon": "zap",
     "image": "/projects/logo.png",
+    "images": [
+      "/projects/logo.png"
+    ],
     "pm": "Felix Liu",
     "pms": [
       "Felix Liu"
@@ -114,6 +129,9 @@
     "status": "Active",
     "icon": "camera",
     "image": "/site-media/projects/eyecue.webp",
+    "images": [
+      "/site-media/projects/eyecue.webp"
+    ],
     "pm": "Katherine M, Garima T, Aarushi D, Shruthi A",
     "pms": [
       "Katherine M",
@@ -138,6 +156,9 @@
     "status": "Completed",
     "icon": "cpu",
     "image": "/site-media/projects/digital-ops.webp",
+    "images": [
+      "/site-media/projects/digital-ops.webp"
+    ],
     "pm": "Trevor Antle",
     "pms": [
       "Trevor Antle"
@@ -161,6 +182,9 @@
     "status": "Completed",
     "icon": "watch",
     "image": "/projects/logo.png",
+    "images": [
+      "/projects/logo.png"
+    ],
     "pm": "Patrick Shea",
     "pms": [
       "Patrick Shea"
@@ -182,6 +206,9 @@
     "status": "Completed",
     "icon": "wifi",
     "image": "/site-media/projects/gest.webp",
+    "images": [
+      "/site-media/projects/gest.webp"
+    ],
     "pm": "Jain Iftesam",
     "pms": [
       "Jain Iftesam"
@@ -203,6 +230,9 @@
     "status": "Completed",
     "icon": "wifi",
     "image": "/site-media/projects/purdudraw.webp",
+    "images": [
+      "/site-media/projects/purdudraw.webp"
+    ],
     "pm": "Connor Powell",
     "pms": [
       "Connor Powell"
@@ -227,6 +257,9 @@
     "status": "Completed",
     "icon": "wifi",
     "image": "/site-media/projects/mssd.webp",
+    "images": [
+      "/site-media/projects/mssd.webp"
+    ],
     "pm": "Tom Concannon",
     "pms": [
       "Tom Concannon"
@@ -243,6 +276,10 @@
     ],
     "status": "Active",
     "icon": "cpu",
+    "image": "/projects/paws/paws.png",
+    "images": [
+      "/projects/paws/paws.png"
+    ],
     "pm": "Aarav Jain",
     "pms": [
       "Aarav Jain"
@@ -257,6 +294,8 @@
     "technologies": [],
     "status": "Active",
     "icon": "bot",
+    "image": "",
+    "images": [],
     "pm": "Arman Islam",
     "pms": [
       "Arman Islam"
