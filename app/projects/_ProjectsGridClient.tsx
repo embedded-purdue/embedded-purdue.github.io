@@ -327,7 +327,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
       ) : (
         <div className="grid gap-px bg-white/[0.08] md:grid-cols-2 xl:grid-cols-12">
           {filtered.map((project, index) => {
-            const image = resolveProjectImagePath(project.slug, project.image)
+            const image = resolveProjectImagePath(project.slug, project.images?.[0] || project.image)
             const { href, external } = resolveProjectHref(project)
             const solo = filtered.length === 1
             const featured = index === 0 && filtered.length > 1

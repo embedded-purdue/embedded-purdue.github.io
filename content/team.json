@@ -2,7 +2,12 @@
   {
     "name": "Arman Islam",
     "role": "President",
+    "roles": [
+      "President",
+      "PM • Hesitation"
+    ],
     "level": "exec",
+    "section": "exec",
     "linkedin": "https://www.linkedin.com/in/thomascon/",
     "image": "/team/arman.jpg",
     "order": 10,
@@ -11,7 +16,11 @@
   {
     "name": "Astha Patel",
     "role": "Vice President",
+    "roles": [
+      "Vice President"
+    ],
     "level": "exec",
+    "section": "exec",
     "linkedin": "https://www.linkedin.com/in/astha-p/",
     "image": "/team/astha.jpg",
     "order": 20,
@@ -20,7 +29,12 @@
   {
     "name": "Patrick Jordan",
     "role": "Treasurer",
+    "roles": [
+      "Treasurer",
+      "PM • BoilerSLAM"
+    ],
     "level": "exec",
+    "section": "exec",
     "image": "/team/patrick.jpg",
     "order": 30,
     "active": true
@@ -28,7 +42,11 @@
   {
     "name": "Gautam Aravindan",
     "role": "Development Engineer",
+    "roles": [
+      "Development Engineer"
+    ],
     "level": "exec",
+    "section": "exec",
     "linkedin": "https://www.linkedin.com/in/gautamaravindan/",
     "image": "/team/gautam.jpg",
     "order": 40,
@@ -37,10 +55,354 @@
   {
     "name": "Mahdi El Husseini",
     "role": "Executive Engineer",
+    "roles": [
+      "Executive Engineer"
+    ],
     "level": "exec",
+    "section": "exec",
     "linkedin": "https://www.linkedin.com/in/mahdi-el-husseini/",
     "image": "/team/mahdi.jpg",
     "order": 50,
+    "active": true
+  },
+  {
+    "name": "Gillian Hanley",
+    "role": "Web Director",
+    "roles": [
+      "Web Director",
+      "PM • VibeClone"
+    ],
+    "level": "admin",
+    "section": "committee",
+    "linkedin": "https://www.linkedin.com/in/gillian-hanley-a77024242/",
+    "image": "/team/gillian.jpg",
+    "order": 100,
+    "active": true
+  },
+  {
+    "name": "Reid Cahalan",
+    "role": "Marketing Committee",
+    "roles": [
+      "Marketing Committee"
+    ],
+    "level": "member",
+    "section": "committee",
+    "image": "/team/reid_cahalan_marketing.webp",
+    "order": 110,
+    "active": true
+  },
+  {
+    "name": "Madhura Kawar",
+    "role": "Photography Committee",
+    "roles": [
+      "Photography Committee"
+    ],
+    "level": "member",
+    "section": "committee",
+    "image": "/team/madhura_kawar_photography.webp",
+    "order": 120,
+    "active": true
+  },
+  {
+    "name": "Anay Patel",
+    "role": "Outreach Committee",
+    "roles": [
+      "Outreach Committee"
+    ],
+    "level": "member",
+    "section": "committee",
+    "image": "/team/Anay_patel_outreach.webp",
+    "order": 130,
+    "active": true
+  },
+  {
+    "name": "Sarvesh Iyer",
+    "role": "Outreach Committee",
+    "roles": [
+      "Outreach Committee"
+    ],
+    "level": "member",
+    "section": "committee",
+    "image": "/team/sarvesh_iyer_outreach.webp",
+    "order": 140,
+    "active": true
+  },
+  {
+    "name": "Vlad Bondar",
+    "role": "Events Committee",
+    "roles": [
+      "Events Committee"
+    ],
+    "level": "member",
+    "section": "committee",
+    "image": "/team/vlad_bondar_events.webp",
+    "order": 150,
+    "active": true
+  },
+  {
+    "name": "Srujhan Kandula",
+    "role": "Finance Committee",
+    "roles": [
+      "Finance Committee"
+    ],
+    "level": "member",
+    "section": "committee",
+    "image": "/team/srujhan_kandula_finance.webp",
+    "order": 160,
+    "active": true
+  },
+  {
+    "name": "Aarav Jain",
+    "role": "PM • PAWS",
+    "roles": [
+      "PM • PAWS"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/aarav_jain_paws.webp",
+    "order": 200,
+    "active": true
+  },
+  {
+    "name": "Elias Braun",
+    "role": "PM • Carbon Sink",
+    "roles": [
+      "PM • Carbon Sink"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/elias_braun_carbonsink.webp",
+    "order": 210,
+    "active": true
+  },
+  {
+    "name": "Abhiraj Singh Jaswal",
+    "role": "PM • CAISSA",
+    "roles": [
+      "PM • CAISSA"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/abhiraj_jaswal_cassia.webp",
+    "order": 220,
+    "active": true
+  },
+  {
+    "name": "Aadithya Vasudevan",
+    "role": "PM • CAISSA",
+    "roles": [
+      "PM • CAISSA"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/aadithya_vasudevan_cassia.webp",
+    "order": 230,
+    "active": true
+  },
+  {
+    "name": "Ishika Pandurangam",
+    "role": "PM • CAISSA",
+    "roles": [
+      "PM • CAISSA",
+      "Outreach Committee"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/ishika_pandurangam_cassia.webp",
+    "order": 240,
+    "active": true
+  },
+  {
+    "name": "Thai Tran",
+    "role": "PM • WALL-E",
+    "roles": [
+      "PM • WALL-E"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/thai_tran_walle.webp",
+    "order": 250,
+    "active": true
+  },
+  {
+    "name": "Evin Lodder",
+    "role": "PM • SlayterHiL",
+    "roles": [
+      "PM • SlayterHiL"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/evin_lodder_slayterhil.webp",
+    "order": 260,
+    "active": true
+  },
+  {
+    "name": "Parker Hitchcock",
+    "role": "PM • IRLTSPICE",
+    "roles": [
+      "PM • IRLTSPICE"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/parker_hitchcock_irltspice.webp",
+    "order": 270,
+    "active": true
+  },
+  {
+    "name": "Zachary DeNeve",
+    "role": "PM • IRLTSPICE",
+    "roles": [
+      "PM • IRLTSPICE"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/zachary_deNeve_irltspice.webp",
+    "order": 280,
+    "active": true
+  },
+  {
+    "name": "Clayton Hughes",
+    "role": "PM • IRLTSPICE",
+    "roles": [
+      "PM • IRLTSPICE"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/clayton_hughes_irltspice.webp",
+    "order": 290,
+    "active": true
+  },
+  {
+    "name": "Craig Eagleburger",
+    "role": "PM • IRLTSPICE",
+    "roles": [
+      "PM • IRLTSPICE"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/craig_eagleburger_irltspice.webp",
+    "order": 300,
+    "active": true
+  },
+  {
+    "name": "Micah Samuel",
+    "role": "PM • IRLTSPICE",
+    "roles": [
+      "PM • IRLTSPICE"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/micah_samuel_irltspice.webp",
+    "order": 310,
+    "active": true
+  },
+  {
+    "name": "Yao Yang",
+    "role": "PM • IntelliThings",
+    "roles": [
+      "PM • IntelliThings"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/yao_yang_intellithings.webp",
+    "order": 320,
+    "active": true
+  },
+  {
+    "name": "Rakshita Gupta",
+    "role": "PM • IntelliThings",
+    "roles": [
+      "PM • IntelliThings"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/rakshita_gupta_intellithings.webp",
+    "order": 330,
+    "active": true
+  },
+  {
+    "name": "Matthew Shams",
+    "role": "PM • BoilerSLAM",
+    "roles": [
+      "PM • BoilerSLAM"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/matthew_shams_boilerslam.webp",
+    "order": 340,
+    "active": true
+  },
+  {
+    "name": "Bosco Lee",
+    "role": "PM • ModularMIDI",
+    "roles": [
+      "PM • ModularMIDI"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/bosco_lee_modularmidi.webp",
+    "order": 350,
+    "active": true
+  },
+  {
+    "name": "Patton Lee",
+    "role": "PM • BB-8",
+    "roles": [
+      "PM • BB-8"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/patton_lee_bb8.webp",
+    "order": 360,
+    "active": true
+  },
+  {
+    "name": "William Ramsey",
+    "role": "PM • Field Vision",
+    "roles": [
+      "PM • Field Vision"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/william_ramsey_fieldvision.webp",
+    "order": 370,
+    "active": true
+  },
+  {
+    "name": "Arvindh Krishna",
+    "role": "PM • Field Vision",
+    "roles": [
+      "PM • Field Vision",
+      "Outreach Committee"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/arvindh_krishna_fieldvision.webp",
+    "order": 380,
+    "active": true
+  },
+  {
+    "name": "Preston Mo",
+    "role": "PM • TARS",
+    "roles": [
+      "PM • TARS"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/preston_mo_tars.webp",
+    "order": 390,
+    "active": true
+  },
+  {
+    "name": "Ekansh Agrawal",
+    "role": "PM • TARS",
+    "roles": [
+      "PM • TARS"
+    ],
+    "level": "pm",
+    "section": "pm",
+    "image": "/team/ekansh_agrawal_tars.webp",
+    "order": 400,
     "active": true
   }
 ]

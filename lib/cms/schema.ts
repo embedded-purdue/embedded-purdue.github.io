@@ -1,9 +1,10 @@
 import { z } from "zod";
+import { projectIconKeys } from "@/lib/project-icon-keys";
 
-export const projectIconSchema = z.enum([
-  "cpu", "zap", "wifi", "camera", "car", "watch", "circuit-board", "bot", "radio", "antenna", "gauge", "gamepad", "brain-circuit", "cable", "wrench", "binary", "smartphone", "waves", "settings",
-]);
+export const projectIconSchema = z.enum(projectIconKeys);
 export const projectStatusSchema = z.enum(["Active", "Planned", "Completed"]);
+export const teamSectionSchema = z.enum(["exec", "committee", "pm", "member"]);
+
 export const slugSchema = z.string().trim().min(1).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers, and hyphens only.");
 
 export const projectSchema = z.object({
@@ -14,6 +15,7 @@ export const projectSchema = z.object({
   status: projectStatusSchema,
   icon: projectIconSchema.optional(),
   image: z.string().trim().optional().or(z.literal("")),
+  images: z.array(z.string().trim().min(1)).default([]),
   pm: z.string().trim().optional().or(z.literal("")),
   pms: z.array(z.string().trim().min(1)).default([]),
   semester: z.string().trim().optional().or(z.literal("")),
@@ -22,14 +24,20 @@ export const projectSchema = z.object({
 
 export const teamMemberSchema = z.object({
   name: z.string().trim().min(1),
-  role: z.string().trim().min(1),
+  role: z.string().trim().optional().or(z.literal("")),
+  roles: z.array(z.string().trim().min(1)).default([]),
   level: z.enum(["exec", "pm", "admin", "member"]).default("member"),
+  section: teamSectionSchema.optional(),
   email: z.string().trim().email().optional().or(z.literal("")),
   linkedin: z.string().trim().url().optional().or(z.literal("")),
   github: z.string().trim().url().optional().or(z.literal("")),
   image: z.string().trim().optional().or(z.literal("")),
   order: z.number().int().default(0),
   active: z.boolean().default(true),
+}).transform((entry) => {
+  const roles = entry.roles.length ? entry.roles : entry.role ? [entry.role] : ["Member"];
+  const section = entry.section ?? (entry.level === "exec" ? "exec" : entry.level === "pm" ? "pm" : entry.level === "admin" ? "committee" : "member");
+  return { ...entry, role: entry.role || roles[0], roles, section };
 });
 
 export const workshopSchema = z.object({

@@ -10,20 +10,28 @@ import {
   CircuitBoard,
   Cpu,
   Gauge,
+  Crown,
+  Dog,
+  House,
+  Leaf,
+  Music,
+  Orbit,
   Gamepad2,
+  Radar,
   Radio,
   Settings,
   Smartphone,
   Watch,
   Waves,
   Wifi,
+  Rocket,
+  Sparkles,
   Wrench,
   Zap,
   type LucideIcon,
 } from "lucide-react";
 import projectEntries from "@/content/projects.json";
-
-export type ProjectIconKey = "cpu" | "zap" | "wifi" | "camera" | "car" | "watch" | "circuit-board" | "bot" | "radio" | "antenna" | "gauge" | "gamepad" | "brain-circuit" | "cable" | "wrench" | "binary" | "smartphone" | "waves" | "settings";
+import { type ProjectIconKey } from "@/lib/project-icon-keys";
 
 export type Project = {
   slug: string;
@@ -34,6 +42,7 @@ export type Project = {
   iconKey?: ProjectIconKey;
   icon?: LucideIcon;
   image?: string;
+  images?: string[];
   pm?: string;
   pms?: string[];
   semester?: string;
@@ -60,6 +69,15 @@ const projectIcons: Record<ProjectIconKey, LucideIcon> = {
   smartphone: Smartphone,
   waves: Waves,
   settings: Settings,
+  crown: Crown,
+  dog: Dog,
+  house: House,
+  leaf: Leaf,
+  music: Music,
+  orbit: Orbit,
+  radar: Radar,
+  rocket: Rocket,
+  sparkles: Sparkles,
 };
 
 type ProjectEntry = Omit<Project, "icon" | "iconKey"> & { icon?: ProjectIconKey };
@@ -70,8 +88,11 @@ function splitProjectManagers(value: string | undefined) {
 
 export const projects: Project[] = (projectEntries as ProjectEntry[]).map((project) => {
   const pms = project.pms?.length ? project.pms : splitProjectManagers(project.pm);
+  const images = Array.from(new Set([...(project.images || []), project.image || ""].map((image) => image.trim()).filter(Boolean)));
   return {
     ...project,
+    images,
+    image: project.image || images[0],
     pms,
     pm: project.pm || pms.join(", "),
     iconKey: project.icon,

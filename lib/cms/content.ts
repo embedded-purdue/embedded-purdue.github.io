@@ -20,7 +20,8 @@ function splitProjectManagers(value: string | undefined) {
 function normalizeProject(entry: unknown): ProjectContent {
   const parsed = projectSchema.parse(entry);
   const pms = parsed.pms.length ? parsed.pms : splitProjectManagers(parsed.pm);
-  return { ...parsed, pms, pm: pms.join(", ") };
+  const images = Array.from(new Set([...(parsed.images || []), parsed.image || ""].map((image) => image.trim()).filter(Boolean)));
+  return { ...parsed, images, image: parsed.image || images[0] || "", pms, pm: pms.join(", ") };
 }
 
 export async function readProjectsContent(): Promise<ProjectContent[]> {
