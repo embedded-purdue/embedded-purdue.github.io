@@ -161,7 +161,7 @@ export default function WorkshopsClient({ workshops }: { workshops: Workshop[] }
       {!list.length ? (
         <div className="px-5 py-20 text-center sm:px-8 lg:px-12 lg:py-24">
           <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#666159]">No sessions found</p>
-          <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing matches this view.</h2>
+          <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing matches this view</h2>
           <Link
             href="/workshops"
             scroll={false}

@@ -66,7 +66,7 @@ export default function ProjectsPage() {
                     <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[#625e57]">Build record / student engineering</p>
                     <h1 className="mt-4 text-[clamp(3.7rem,7vw,7.3rem)] font-medium leading-[0.82] tracking-[-0.07em]">
                       Systems
-                      <span className="block text-[#d8aa27]">we build.</span>
+                      <span className="block text-[#d8aa27]">we build</span>
                     </h1>
                     <p className="mt-7 max-w-2xl text-base leading-7 text-[#8d887f]">
                       Custom boards, embedded firmware, robotics, FPGA work, controls, sensing, and the systems required to make them operate together.
