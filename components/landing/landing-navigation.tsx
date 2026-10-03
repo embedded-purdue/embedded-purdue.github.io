@@ -50,7 +50,7 @@ export function LandingNavigation() {
             className="h-auto w-[72px] object-contain"
             priority
           />
-          <span className="hidden border-l border-white/[0.09] pl-4 font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#9b968d] sm:block">
+          <span className="hidden border-l border-white/[0.09] pl-4 font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#b9b6af] sm:block">
             Embedded Systems @ Purdue
           </span>
         </Link>
@@ -63,7 +63,7 @@ export function LandingNavigation() {
                 key={item.name}
                 href={item.href}
                 className={`relative py-2 font-mono text-[0.62rem] uppercase tracking-[0.15em] transition-colors ${
-                  active ? "text-[#f0ece2]" : "text-[#89857d] hover:text-[#f0ece2]"
+                  active ? "text-[#f0ece2]" : "text-[#acaaa4] hover:text-[#f0ece2]"
                 }`}
               >
                 {item.name}
@@ -95,7 +95,7 @@ export function LandingNavigation() {
               </button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[88vw] max-w-[360px] border-l border-white/[0.08] bg-[#0d0d0b] p-0 text-[#f3efe6]">
-              <div className="border-b border-white/[0.08] px-6 py-6 font-mono text-[0.58rem] uppercase tracking-[0.16em] text-[#a8a197]">
+              <div className="border-b border-white/[0.08] px-6 py-6 font-mono text-[0.58rem] uppercase tracking-[0.16em] text-[#c2bdb6]">
                 Embedded Systems @ Purdue
               </div>
               <div className="flex flex-col">

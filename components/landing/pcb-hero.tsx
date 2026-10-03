@@ -1376,11 +1376,11 @@ export function PcbHero() {
                   <span className="absolute h-6 w-6 rounded-full bg-[#daa000]/10 blur-sm" />
                   <span className="relative h-1.5 w-1.5 rounded-full bg-[#f4c64d] shadow-[0_0_10px_rgba(244,198,77,0.55)]" />
                 </span>
-                <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#c7c0b3]">
+                <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#d8d3ca]">
                   Embedded Systems @ Purdue
                 </span>
               </div>
-              <p className="mt-3 font-mono text-[0.57rem] uppercase tracking-[0.16em] text-[#67635c]">
+              <p className="mt-3 font-mono text-[0.57rem] uppercase tracking-[0.16em] text-[#95928d]">
                 Hardware · Firmware · Systems
               </p>
             </div>
@@ -1394,7 +1394,7 @@ export function PcbHero() {
 
           <div className="flex items-center px-5 py-7 sm:px-8 lg:px-10 xl:px-12">
             <div>
-              <p className="max-w-md text-sm leading-6 text-[#9a958b]">
+              <p className="max-w-md text-sm leading-6 text-[#b8b5ae]">
                 Boards, firmware, FPGAs, robotics, and the engineering required to make them work together.
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-4">
@@ -1405,7 +1405,7 @@ export function PcbHero() {
                 </Button>
                 <Link
                   href="/projects"
-                  className="group inline-flex items-center gap-2 font-mono text-[0.64rem] uppercase tracking-[0.16em] text-[#bdb7ab] transition-colors hover:text-[#f2c34f]"
+                  className="group inline-flex items-center gap-2 font-mono text-[0.64rem] uppercase tracking-[0.16em] text-[#d1cdc4] transition-colors hover:text-[#f2c34f]"
                 >
                   Projects
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />

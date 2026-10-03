@@ -18,64 +18,95 @@ import {
 
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteNavigation } from "@/components/site/site-navigation"
+import { TeamPortrait } from "@/components/site/team-portrait"
 
 import armanImg from "../../public/team/arman.jpg"
 import asthaImg from "../../public/team/astha.jpg"
 import patrickImg from "../../public/team/patrick.jpg"
 import gautamImg from "../../public/team/gautam.jpg"
 import mahdiImg from "../../public/team/mahdi.jpg"
-import benjiImg from "../../public/team/benji.jpg"
 import gillianImg from "../../public/team/gillian.jpg"
-import magdalenaImg from "../../public/team/magdalena.jpg"
-import anishImg from "../../public/team/anish.jpg"
-import haydenImg from "../../public/team/hayden.jpg"
-import sabastianImg from "../../public/team/sabastian.jpg"
-import aarushiImg from "../../public/team/aarushi.jpg"
-import garimaImg from "../../public/team/garima.jpg"
-import katherineImg from "../../public/team/katherine.jpg"
-import shruthiImg from "../../public/team/shruthi.jpg"
-import samuelImg from "../../public/team/samuel.jpg"
-import nealImg from "../../public/team/neal.jpg"
-import alexImg from "../../public/team/alex.jpg"
-import alexanderImg from "../../public/team/alexander.jpg"
-import nikhilImg from "../../public/team/nikhil.jpg"
+// Previous-cycle PM headshots — re-enable alongside the matching roster entry below.
+// import haydenImg from "../../public/team/hayden.jpg"
+// import sabastianImg from "../../public/team/sabastian.jpg"
+// import aarushiImg from "../../public/team/aarushi.jpg"
+// import garimaImg from "../../public/team/garima.jpg"
+// import katherineImg from "../../public/team/katherine.jpg"
+// import shruthiImg from "../../public/team/shruthi.jpg"
+// import samuelImg from "../../public/team/samuel.jpg"
+// import nealImg from "../../public/team/neal.jpg"
+// import alexImg from "../../public/team/alex.jpg"
+// import alexanderImg from "../../public/team/alexander.jpg"
+// import nikhilImg from "../../public/team/nikhil.jpg"
 
 const WIDE_RAIL = "site-rail mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
 
 type Member = {
   name: string
-  role: string
+  /** One role, or several (e.g. an exec who is also a PM) rendered on their own lines. */
+  role: string | string[]
   email?: string
   linkedin?: string
   github?: string
   image?: StaticImageData
+  /** Public path (e.g. "/team/name.jpg") for photos not statically imported. */
+  photo?: string
 }
 
 const executives: Member[] = [
-  { name: "Arman Islam", role: "President", linkedin: "https://www.linkedin.com/in/thomascon/", image: armanImg },
+  { name: "Arman Islam", role: ["President", "PM • Hesitation"], linkedin: "https://www.linkedin.com/in/thomascon/", image: armanImg },
   { name: "Astha Patel", role: "Vice President", linkedin: "https://www.linkedin.com/in/astha-p/", image: asthaImg },
-  { name: "Patrick Jordan", role: "Treasurer", image: patrickImg },
+  { name: "Patrick Jordan", role: ["Treasurer", "PM • BoilerSLAM"], image: patrickImg },
   { name: "Gautam Aravindan", role: "Development Engineer", linkedin: "https://www.linkedin.com/in/gautamaravindan/", image: gautamImg },
   { name: "Mahdi El Husseini", role: "Executive Engineer", linkedin: "https://www.linkedin.com/in/mahdi-el-husseini/", image: mahdiImg },
 ]
 
 // Chairs and Project Managers share one section on the page.
 const chairsAndPMs: Member[] = [
-  { name: "Benji Emini", role: "Workshops Director", linkedin: "https://www.linkedin.com/in/benjamin-emini/", image: benjiImg },
-  { name: "Gillian Hanley", role: "Web Director", linkedin: "https://www.linkedin.com/in/gillian-hanley-a77024242/", image: gillianImg },
-  { name: "Magdalena Gonzalez Navarrine", role: "Events Director", image: magdalenaImg },
-  { name: "Anish Sarkar", role: "Photographer", linkedin: "https://www.linkedin.com/in/sarkar-anish/", image: anishImg },
-  { name: "Hayden Logan", role: "PM • BB-8", linkedin: "https://linkedin.com/in/hayden-logan-2a539a261", image: haydenImg },
-  { name: "Sabastian Hamilton", role: "PM • Embedded Tetris", linkedin: "https://www.linkedin.com/in/sabastianhamilton", image: sabastianImg },
-  { name: "Aarushi Deshwal", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/aarushi-deshwal-42450b328/", image: aarushiImg },
-  { name: "Garima Thapliyal", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/garimat9606", image: garimaImg },
-  { name: "Katherine Ma", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/katheriinema/", image: katherineImg },
-  { name: "Shruthi Arunkumar", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/shruthi-arunkumar", image: shruthiImg },
-  { name: "Sam Morales", role: "PM • HarmoniCore", linkedin: "https://www.linkedin.com/in/samorales03/", image: samuelImg },
-  { name: "Neal Singh", role: "PM • Holo-Adapt", linkedin: "https://www.linkedin.com/in/neal-ssingh", image: nealImg },
-  { name: "Alex Forrest", role: "PM • MicroPiano", linkedin: "https://www.linkedin.com/in/alex-forrest-ee/", image: alexImg },
-  { name: "Alexander Rizzi", role: "PM • MicroPiano", linkedin: "https://www.linkedin.com/in/alexander-rizzi/", image: alexanderImg },
-  { name: "Nikhil Chaudhary", role: "PM • SlayterHIL", linkedin: "https://www.linkedin.com/in/nikhilmchaudhary/", image: nikhilImg },
+  { name: "Gillian Hanley", role: ["Web Director", "PM • VibeClone"], linkedin: "https://www.linkedin.com/in/gillian-hanley-a77024242/", image: gillianImg },
+  // Fall 2026 committees
+  { name: "Reid Cahalan", role: "Marketing Committee", photo: "/team/reid_cahalan_marketing.webp" },
+  { name: "Madhura Kawar", role: "Photography Committee", photo: "/team/madhura_kawar_photography.webp" },
+  { name: "Anay Patel", role: "Outreach Committee", photo: "/team/Anay_patel_outreach.webp" },
+  { name: "Sarvesh Iyer", role: "Outreach Committee", photo: "/team/sarvesh_iyer_outreach.webp" },
+  { name: "Vlad Bondar", role: "Events Committee", photo: "/team/vlad_bondar_events.webp" },
+  { name: "Srujhan Kandula", role: "Finance Committee", photo: "/team/srujhan_kandula_finance.webp" },
+  // Previous-cycle PMs — hidden until the full updated roster is provided. Re-enable
+  // an entry (and its import above) to bring the person back onto the page.
+  // { name: "Hayden Logan", role: "PM • BB-8", linkedin: "https://linkedin.com/in/hayden-logan-2a539a261", image: haydenImg },
+  // { name: "Sabastian Hamilton", role: "PM • Embedded Tetris", linkedin: "https://www.linkedin.com/in/sabastianhamilton", image: sabastianImg },
+  // { name: "Aarushi Deshwal", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/aarushi-deshwal-42450b328/", image: aarushiImg },
+  // { name: "Garima Thapliyal", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/garimat9606", image: garimaImg },
+  // { name: "Katherine Ma", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/katheriinema/", image: katherineImg },
+  // { name: "Shruthi Arunkumar", role: "PM • EyeCue", linkedin: "https://www.linkedin.com/in/shruthi-arunkumar", image: shruthiImg },
+  // { name: "Sam Morales", role: "PM • HarmoniCore", linkedin: "https://www.linkedin.com/in/samorales03/", image: samuelImg },
+  // { name: "Neal Singh", role: "PM • Holo-Adapt", linkedin: "https://www.linkedin.com/in/neal-ssingh", image: nealImg },
+  // { name: "Alex Forrest", role: "PM • MicroPiano", linkedin: "https://www.linkedin.com/in/alex-forrest-ee/", image: alexImg },
+  // { name: "Alexander Rizzi", role: "PM • MicroPiano", linkedin: "https://www.linkedin.com/in/alexander-rizzi/", image: alexanderImg },
+  // { name: "Nikhil Chaudhary", role: "PM • SlayterHIL", linkedin: "https://www.linkedin.com/in/nikhilmchaudhary/", image: nikhilImg },
+  // Fall 2026 project managers. Headshots follow the first_last_projectname.webp convention.
+  // Still awaiting photos: aarav_jain_paws, clayton_hughes_irltspice, micah_samuel_irltspice,
+  // bosco_lee_modularmidi (these render as placeholders until added).
+  { name: "Aarav Jain", role: "PM • PAWS", photo: "/team/aarav_jain_paws.webp" },
+  { name: "Elias Braun", role: "PM • Carbon Sink", photo: "/team/elias_braun_carbonsink.webp" },
+  { name: "Abhiraj Singh Jaswal", role: "PM • CAISSA", photo: "/team/abhiraj_jaswal_cassia.webp" },
+  { name: "Aadithya Vasudevan", role: "PM • CAISSA", photo: "/team/aadithya_vasudevan_cassia.webp" },
+  { name: "Ishika Pandurangam", role: ["PM • CAISSA", "Outreach Committee"], photo: "/team/ishika_pandurangam_cassia.webp" },
+  { name: "Thai Tran", role: "PM • WALL-E", photo: "/team/thai_tran_walle.webp" },
+  { name: "Evin Lodder", role: "PM • SlayterHiL", photo: "/team/evin_lodder_slayterhil.webp" },
+  { name: "Parker Hitchcock", role: "PM • IRLTSPICE", photo: "/team/parker_hitchcock_irltspice.webp" },
+  { name: "Zachary DeNeve", role: "PM • IRLTSPICE", photo: "/team/zachary_deNeve_irltspice.webp" },
+  { name: "Clayton Hughes", role: "PM • IRLTSPICE", photo: "/team/clayton_hughes_irltspice.webp" },
+  { name: "Craig Eagleburger", role: "PM • IRLTSPICE", photo: "/team/craig_eagleburger_irltspice.webp" },
+  { name: "Micah Samuel", role: "PM • IRLTSPICE", photo: "/team/micah_samuel_irltspice.webp" },
+  { name: "Yao Yang", role: "PM • IntelliThings", photo: "/team/yao_yang_intellithings.webp" },
+  { name: "Rakshita Gupta", role: "PM • IntelliThings", photo: "/team/rakshita_gupta_intellithings.webp" },
+  { name: "Matthew Shams", role: "PM • BoilerSLAM", photo: "/team/matthew_shams_boilerslam.webp" },
+  { name: "Bosco Lee", role: "PM • ModularMIDI", photo: "/team/bosco_lee_modularmidi.webp" },
+  { name: "Patton Lee", role: "PM • BB-8", photo: "/team/patton_lee_bb8.webp" },
+  { name: "William Ramsey", role: "PM • Field Vision", photo: "/team/william_ramsey_fieldvision.webp" },
+  { name: "Arvindh Krishna", role: "PM • Field Vision", photo: "/team/arvindh_krishna_fieldvision.webp" },
+  { name: "Preston Mo", role: "PM • TARS", photo: "/team/preston_mo_tars.webp" },
 ]
 
 const mission = [
@@ -141,7 +172,7 @@ const reasons = [
 
 function SignalLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#aaa398]">
+    <div className="flex items-center gap-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#c4bfb7]">
       <span className="h-1.5 w-1.5 rounded-full bg-[#f4c64d] shadow-[0_0_8px_rgba(244,198,77,0.38)]" />
       <span>{children}</span>
     </div>
@@ -150,27 +181,18 @@ function SignalLabel({ children }: { children: React.ReactNode }) {
 
 function MemberPortrait({ member, index, prefix = "E" }: { member: Member; index: number; prefix?: string }) {
   const socialLinkClass =
-    "grid h-10 w-10 shrink-0 place-items-center border border-white/[0.12] text-[#aaa398] transition-colors hover:border-[#daa000]/50 hover:text-[#f2c34f]"
+    "grid h-10 w-10 shrink-0 place-items-center border border-white/[0.12] text-[#c4bfb7] transition-colors hover:border-[#daa000]/50 hover:text-[#f2c34f]"
 
   return (
     <article className="min-w-0">
-      <div className="relative flex aspect-[2/3] items-center justify-center overflow-hidden bg-[#151513]">
-        {member.image && (
-          <Image
-            src={member.image}
-            alt={member.name}
-            width={member.image.width}
-            height={member.image.height}
-            sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 20vw"
-            className={`block h-auto max-h-full w-full object-contain ${member.image.width < 200 ? "max-w-[190px]" : ""}`}
-          />
-        )}
-      </div>
+      <TeamPortrait image={member.image} photo={member.photo} name={member.name} />
       <div className="border-t border-white/[0.1] pt-5">
-        <p className="font-mono text-[0.62rem] uppercase leading-5 tracking-[0.12em] text-[#c39b36]">{member.role}</p>
+        {(Array.isArray(member.role) ? member.role : [member.role]).map((r) => (
+          <p key={r} className="font-mono text-[0.62rem] uppercase leading-5 tracking-[0.12em] text-[#c39b36]">{r}</p>
+        ))}
         <h3 className="mt-2 text-[clamp(1.15rem,1.7vw,1.65rem)] font-medium leading-tight tracking-[-0.035em] text-[#eee8de]">{member.name}</h3>
         <div className="mt-4 flex min-h-10 items-center justify-between gap-2">
-          <span className="font-mono text-[0.56rem] tracking-[0.14em] text-[#716b62]">{prefix}-{String(index + 1).padStart(2, "0")}</span>
+          <span className="font-mono text-[0.56rem] tracking-[0.14em] text-[#9c9791]">{prefix}-{String(index + 1).padStart(2, "0")}</span>
           <div className="flex gap-2">
             {member.email && <a href={member.email} aria-label={`Email ${member.name}`} className={socialLinkClass}><Mail className="h-4 w-4" aria-hidden="true" /></a>}
             {member.linkedin && <a href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on LinkedIn`} className={socialLinkClass}><Linkedin className="h-4 w-4" aria-hidden="true" /></a>}
@@ -194,18 +216,18 @@ export default function AboutPage() {
               <div className="flex min-h-[430px] flex-col justify-between border-b border-white/[0.08] px-5 py-9 sm:px-8 sm:py-10 lg:col-span-7 lg:min-h-[520px] lg:border-b-0 lg:border-r lg:px-12 lg:py-11 xl:px-16">
                 <div className="flex items-center justify-between gap-4">
                   <SignalLabel>About ES@P</SignalLabel>
-                  <span className="font-mono text-[0.56rem] uppercase tracking-[0.17em] text-[#55524d]">
+                  <span className="font-mono text-[0.56rem] uppercase tracking-[0.17em] text-[#888682]">
                     West Lafayette · Indiana
                   </span>
                 </div>
 
                 <div className="max-w-4xl py-9 lg:py-10">
-                  <p className="font-mono text-[0.62rem] uppercase tracking-[0.19em] text-[#6f6a62]">Student organization / embedded systems</p>
+                  <p className="font-mono text-[0.62rem] uppercase tracking-[0.19em] text-[#9a9791]">Student organization / embedded systems</p>
                   <h1 className="mt-4 text-[clamp(3.6rem,7.4vw,7.6rem)] font-medium leading-[0.82] tracking-[-0.07em] text-[#f3efe6]">
                     Build the
                     <span className="block text-[#d8aa27]">whole system</span>
                   </h1>
-                  <p className="mt-6 max-w-2xl text-[clamp(1rem,1.25vw,1.2rem)] leading-8 text-[#989289]">
+                  <p className="mt-6 max-w-2xl text-[clamp(1rem,1.25vw,1.2rem)] leading-8 text-[#b7b3ac]">
                     Embedded Systems @ Purdue is a student organization built around learning by doing: hardware,
                     firmware, controls, and systems engineering coming together in projects that actually have to work.
                   </p>
@@ -223,7 +245,7 @@ export default function AboutPage() {
                   </Link>
                   <Link
                     href="/projects"
-                    className="group inline-flex h-11 items-center gap-3 border border-white/[0.12] px-5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#c7c0b5] transition-colors hover:border-[#daa000]/45 hover:text-[#f2c34f]"
+                    className="group inline-flex h-11 items-center gap-3 border border-white/[0.12] px-5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#d8d3cb] transition-colors hover:border-[#daa000]/45 hover:text-[#f2c34f]"
                   >
                     View projects
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
@@ -237,17 +259,17 @@ export default function AboutPage() {
                   alt="Embedded Systems @ Purdue members"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
-                  className="object-cover opacity-[0.76]"
+                  className="object-cover opacity-[0.88]"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/28" />
                 <div className="absolute inset-x-0 bottom-0 grid grid-cols-2 border-t border-white/[0.12] bg-black/90">
                   <div className="border-r border-white/[0.1] px-5 py-4 sm:px-7">
-                    <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#6f6a62]">Community</p>
+                    <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#9a9791]">Community</p>
                     <p className="mt-1.5 text-2xl font-medium tracking-[-0.04em] text-[#f0ece2]">100+ members</p>
                   </div>
                   <div className="px-5 py-4 sm:px-7">
-                    <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#6f6a62]">Focus</p>
+                    <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#9a9791]">Focus</p>
                     <p className="mt-1.5 text-2xl font-medium tracking-[-0.04em] text-[#f0ece2]">Build + learn</p>
                   </div>
                 </div>
@@ -265,7 +287,7 @@ export default function AboutPage() {
                   Learn by building
                 </h2>
               </div>
-              <p className="max-w-md text-sm leading-6 text-[#817c73]">
+              <p className="max-w-md text-sm leading-6 text-[#a7a39d]">
                 ES@P makes embedded engineering tangible: design it, wire it, flash it, debug it, and understand why it works.
               </p>
             </div>
@@ -280,11 +302,11 @@ export default function AboutPage() {
                     className="group min-h-[270px] bg-[#0c0c0b] px-5 py-8 transition-colors hover:bg-[#11110f] sm:px-8 lg:px-9 lg:py-9"
                   >
                     <div className="flex items-start justify-between">
-                      <span className="font-mono text-[0.57rem] uppercase tracking-[0.17em] text-[#68645d]">{item.index}</span>
+                      <span className="font-mono text-[0.57rem] uppercase tracking-[0.17em] text-[#95928e]">{item.index}</span>
                       <Icon className="h-5 w-5 text-[#9d7b1f] transition-colors group-hover:text-[#e0ad27]" aria-hidden="true" />
                     </div>
                     <h3 className="mt-12 text-2xl font-medium tracking-[-0.045em] text-[#ece7dc]">{item.title}</h3>
-                    <p className="mt-4 max-w-sm text-sm leading-6 text-[#827d74]">{item.detail}</p>
+                    <p className="mt-4 max-w-sm text-sm leading-6 text-[#a8a49e]">{item.detail}</p>
                   </article>
                 )
               })}
@@ -301,7 +323,7 @@ export default function AboutPage() {
                   Build it with a team
                 </h2>
               </div>
-              <p className="max-w-lg text-sm leading-6 text-[#817c73]">
+              <p className="max-w-lg text-sm leading-6 text-[#a7a39d]">
                 Learn a system, build a system, explain a system, then help someone else do the same. That's the whole club.
               </p>
             </div>
@@ -316,12 +338,12 @@ export default function AboutPage() {
                     className="group flex min-h-[250px] flex-col bg-black px-5 py-8 transition-colors hover:bg-[#0c0c0b] sm:px-7 sm:max-xl:last:col-span-2 sm:max-xl:last:min-h-0 lg:py-9"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-[0.54rem] uppercase tracking-[0.16em] text-[#5f5b55]">{item.index}</span>
+                      <span className="font-mono text-[0.54rem] uppercase tracking-[0.16em] text-[#8f8c88]">{item.index}</span>
                       <Icon className="h-4.5 w-4.5 text-[#766021] transition-colors group-hover:text-[#daa000]" aria-hidden="true" />
                     </div>
                     <div className="mt-auto pt-12 group-last:sm:max-xl:pt-7">
                       <h3 className="text-xl font-medium tracking-[-0.04em] text-[#e9e4da]">{item.title}</h3>
-                      <p className="mt-3 text-sm leading-6 text-[#777169]">{item.detail}</p>
+                      <p className="mt-3 text-sm leading-6 text-[#a09c96]">{item.detail}</p>
                     </div>
                   </article>
                 )
@@ -339,7 +361,7 @@ export default function AboutPage() {
                   alt="ES@P project hardware"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
-                  className="object-cover opacity-[0.74]"
+                  className="object-cover opacity-[0.86]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/10 to-black/24" />
                 <div className="absolute inset-x-0 bottom-0 px-5 py-6 sm:px-8 lg:px-10">
@@ -358,8 +380,8 @@ export default function AboutPage() {
                 </div>
                 {reasons.map((reason, index) => (
                   <div key={reason} className="grid min-h-[104px] grid-cols-[50px_1fr] border-b border-white/[0.08] px-5 py-6 last:border-b-0 sm:grid-cols-[76px_1fr] sm:px-8 lg:min-h-[116px] lg:items-center lg:px-10 lg:py-7">
-                    <span className="font-mono text-[0.55rem] tracking-[0.17em] text-[#5f5b55]">0{index + 1}</span>
-                    <p className="max-w-2xl text-lg leading-7 tracking-[-0.025em] text-[#c4beb4]">{reason}</p>
+                    <span className="font-mono text-[0.55rem] tracking-[0.17em] text-[#8f8c88]">0{index + 1}</span>
+                    <p className="max-w-2xl text-lg leading-7 tracking-[-0.025em] text-[#d6d2ca]">{reason}</p>
                   </div>
                 ))}
               </div>
@@ -376,7 +398,7 @@ export default function AboutPage() {
                   The people<br /><span className="text-[#d8aa27]">behind the systems</span>
                 </h2>
               </div>
-              <p className="max-w-md text-sm leading-6 text-[#817c73]">
+              <p className="max-w-md text-sm leading-6 text-[#a7a39d]">
                 Students keeping ES@P organized, technically ambitious, and actually shipping hardware.
               </p>
             </div>
@@ -384,7 +406,7 @@ export default function AboutPage() {
             <div className="px-5 pb-10 sm:px-8 sm:pb-12 lg:px-12 xl:px-16">
               <div className="flex flex-wrap items-center justify-between gap-4 py-7 sm:py-8">
                 <h3 className="text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc]">Executive Board</h3>
-                <span className="flex items-center gap-2 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[#81796b]"><Shield className="h-3.5 w-3.5" aria-hidden="true" />{executives.length} executives / 2026</span>
+                <span className="flex items-center gap-2 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[#a7a197]"><Shield className="h-3.5 w-3.5" aria-hidden="true" />{executives.length} executives / 2026</span>
               </div>
               <div className="grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-6 sm:gap-x-6 lg:grid-cols-5 lg:gap-x-5 xl:gap-x-7">
                 {executives.map((member, index) => (
@@ -397,8 +419,7 @@ export default function AboutPage() {
 
             <div className="border-t border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:px-12 xl:px-16">
               <div className="flex flex-wrap items-center justify-between gap-4 pb-7 sm:pb-8">
-                <h3 className="text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc]">Chairs &amp; Project Managers</h3>
-                <span className="flex items-center gap-2 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[#81796b]"><Users className="h-3.5 w-3.5" aria-hidden="true" />{chairsAndPMs.length} members / 2026</span>
+                <h3 className="text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc]">Committees &amp; Project Managers</h3>
               </div>
               <div className="grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-5 lg:gap-x-5 xl:gap-x-7">
                 {chairsAndPMs.map((member, index) => (
@@ -417,7 +438,7 @@ export default function AboutPage() {
                 <h2 className="mt-4 max-w-4xl text-[clamp(3rem,5.4vw,5.8rem)] font-medium leading-[0.86] tracking-[-0.065em]">
                   Come build something that has to work
                 </h2>
-                <p className="mt-7 max-w-2xl text-base leading-7 text-[#8d887f]">
+                <p className="mt-7 max-w-2xl text-base leading-7 text-[#afaca5]">
                   Project teams typically recruit at the start of each semester. Workshops and events are announced through Discord and the club mailing list.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
@@ -432,7 +453,7 @@ export default function AboutPage() {
                   </Link>
                   <Link
                     href="/projects"
-                    className="group inline-flex h-11 items-center gap-3 border border-white/[0.12] px-5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#c7c0b5] transition-colors hover:border-[#daa000]/45 hover:text-[#f2c34f]"
+                    className="group inline-flex h-11 items-center gap-3 border border-white/[0.12] px-5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#d8d3cb] transition-colors hover:border-[#daa000]/45 hover:text-[#f2c34f]"
                   >
                     Explore projects
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
@@ -442,10 +463,10 @@ export default function AboutPage() {
 
               <div className="flex flex-col justify-between px-5 py-10 sm:px-8 sm:py-12 lg:col-span-4 lg:px-10 lg:py-14">
                 <div>
-                  <p className="font-mono text-[0.57rem] uppercase tracking-[0.18em] text-[#5f5b55]">Contact channel</p>
+                  <p className="font-mono text-[0.57rem] uppercase tracking-[0.18em] text-[#8f8c88]">Contact channel</p>
                   <a
                     href="mailto:embedded@purdue.edu"
-                    className="group mt-4 flex items-center justify-between border-y border-white/[0.08] py-4 text-lg tracking-[-0.03em] text-[#c9c3b8] transition-colors hover:text-[#f2c34f]"
+                    className="group mt-4 flex items-center justify-between border-y border-white/[0.08] py-4 text-lg tracking-[-0.03em] text-[#d9d5cd] transition-colors hover:text-[#f2c34f]"
                   >
                     embedded@purdue.edu
                     <Mail className="h-4 w-4" aria-hidden="true" />
@@ -456,7 +477,7 @@ export default function AboutPage() {
                   href="https://www.linkedin.com/company/embedded-purdue"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group mt-10 flex items-center justify-between font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[#77726a] transition-colors hover:text-[#f2c34f]"
+                  className="group mt-10 flex items-center justify-between font-mono text-[0.6rem] uppercase tracking-[0.16em] text-[#a09c97] transition-colors hover:text-[#f2c34f]"
                 >
                   Follow on LinkedIn
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
