@@ -1,325 +1,39 @@
 [
   {
-    "slug": "paws",
-    "title": "PAWS (Quadruped Robot Dog)",
-    "description": "An 8-DOF quadruped robot dog that walks using a reinforcement-learning locomotion policy and onboard computer vision, all running on an ESP32-P4.",
+    "slug": "berryweather",
+    "title": "BerryWeather (IoT Weather Station)",
+    "description": "Sensor-equipped wireless weather station on Pi/MCU with power-conscious design",
     "technologies": [
-      "ESP32",
-      "Machine Learning",
-      "Computer Vision",
-      "MuJoCo",
-      "Embedded C/C++",
-      "ESP-IDF",
-      "CAD"
-    ],
-    "status": "Active",
-    "icon": "dog",
-    "image": "/projects/paws/paws-1.jpg",
-    "images": [
-      "/projects/paws/paws-1.jpg"
-    ],
-    "pm": "Aarav Jain",
-    "pms": [
-      "Aarav Jain"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/paws"
-  },
-  {
-    "slug": "carbon-sink",
-    "title": "Carbon Sink",
-    "description": "A near-vehicle-scale carbon capture system that uses calcium hydroxide to pull CO₂ from motor-vehicle exhaust and cut tailpipe emissions.",
-    "technologies": [
+      "Raspberry Pi OS",
       "Sensors",
-      "Filtration"
+      "Embedded C",
+      "Schematic/PCB",
+      "Power"
     ],
-    "status": "Active",
-    "icon": "leaf",
-    "image": "/projects/carbon-sink/carbon-sink-1.jpg",
+    "status": "Completed",
+    "icon": "wifi",
+    "image": "/projects/logo.png",
     "images": [
-      "/projects/carbon-sink/carbon-sink-1.jpg"
+      "/projects/logo.png"
     ],
-    "pm": "Elias Braun",
+    "pm": "Connor Powell",
     "pms": [
-      "Elias Braun"
+      "Connor Powell"
     ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/carbon-sink"
-  },
-  {
-    "slug": "caissa",
-    "title": "CAISSA (Robotic Chess Board)",
-    "description": "A robotic chess board that plays you without a CPU—a neural network wired directly into the board's circuitry reads your move with Hall-effect sensors and slides its reply across the board on a hidden gantry.",
-    "technologies": [
-      "SystemVerilog",
-      "FPGA",
-      "PyTorch",
-      "KiCad"
-    ],
-    "status": "Active",
-    "icon": "crown",
-    "image": "/projects/caissa/caissa-1.jpg",
-    "images": [
-      "/projects/caissa/caissa-1.jpg"
-    ],
-    "pm": "Abhiraj Singh Jaswal, Aadithya Vasudevan",
-    "pms": [
-      "Abhiraj Singh Jaswal",
-      "Aadithya Vasudevan"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/caissa"
-  },
-  {
-    "slug": "wall-e",
-    "title": "WALL-E",
-    "description": "A life-sized, autonomous WALL-E robot that navigates its surroundings, responds to voice commands, and uses computer vision to find, collect, and crush trash—built on an NVIDIA Jetson Orin Nano.",
-    "technologies": [
-      "NVIDIA Jetson",
-      "Computer Vision",
-      "Machine Learning",
-      "ROS",
-      "Embedded C/C++",
-      "CAD"
-    ],
-    "status": "Active",
-    "icon": "bot",
-    "image": "/projects/wall-e/wall-e.png",
-    "images": [
-      "/projects/wall-e/wall-e.png"
-    ],
-    "pm": "Thai Tran",
-    "pms": [
-      "Thai Tran"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/wall-e"
-  },
-  {
-    "slug": "slayterhil",
-    "title": "SlayterHiL (Hardware-in-the-Loop)",
-    "description": "A hardware-in-the-loop testbed for drone flight controllers that runs the full pipeline—test generation, sensor emulation, and the drone itself—so flight code is validated in software before it ever flies.",
-    "technologies": [
-      "RTOS",
-      "Embedded C/C++",
-      "Raspberry Pi",
-      "HIL Testing"
-    ],
-    "status": "Active",
-    "icon": "cpu",
-    "image": "/site-media/projects/slayterhil.webp",
-    "images": [
-      "/site-media/projects/slayterhil.webp"
-    ],
-    "pm": "Evin Lodder",
-    "pms": [
-      "Evin Lodder"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/slayterhil"
-  },
-  {
-    "slug": "hesitation",
-    "title": "Hesitation (NEP Testbed)",
-    "description": "A nuclear electric propulsion (NEP) testbed that recreates and studies the SR-1 missions through real propulsion hardware and control systems.",
-    "technologies": [
-      "FPGA",
-      "Microcontrollers",
-      "RTOS",
-      "Machine Learning"
-    ],
-    "status": "Active",
-    "icon": "rocket",
-    "image": "/projects/hesitation/hesitation-1.jpg",
-    "images": [
-      "/projects/hesitation/hesitation-1.jpg"
-    ],
-    "pm": "Arman Islam",
-    "pms": [
-      "Arman Islam"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/hesitation"
-  },
-  {
-    "slug": "irltspice",
-    "title": "IRLTSPICE",
-    "description": "A configurable analog circuit that brings digital ease to analog design—draw a circuit, compile it, flash the board, and your exact design is created in real life with no simulation or breadboarding. Think FPGA, but for analog.",
-    "technologies": [
-      "Analog",
-      "STM32",
-      "Embedded C/C++"
-    ],
-    "status": "Active",
-    "icon": "circuit-board",
-    "image": "/projects/irltspice/irltspice-1.jpg",
-    "images": [
-      "/projects/irltspice/irltspice-1.jpg"
-    ],
-    "pm": "Parker Hitchcock, Zach DeNeve, Clayton Hughes, Craig Eagleburger",
-    "pms": [
-      "Parker Hitchcock",
-      "Zach DeNeve",
-      "Clayton Hughes",
-      "Craig Eagleburger"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/irltspice"
-  },
-  {
-    "slug": "intellithings",
-    "title": "IntelliThings",
-    "description": "An AIoT smart home where ESP32-C6 sensor nodes track the environment and presence while an LLM agent reasons over the data and controls the home through Home Assistant and MCP—no hand-written automation rules.",
-    "technologies": [
-      "ESP32",
-      "Rust",
-      "ESP-IDF",
-      "LLM / AI",
-      "KiCad",
-      "Wireless"
-    ],
-    "status": "Active",
-    "icon": "house",
-    "image": "/projects/intellithings/intellithings-1.jpg",
-    "images": [
-      "/projects/intellithings/intellithings-1.jpg"
-    ],
-    "pm": "Yao Yang, Rakshita Gupta",
-    "pms": [
-      "Yao Yang",
-      "Rakshita Gupta"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/intellithings"
-  },
-  {
-    "slug": "boilerslam",
-    "title": "BoilerSLAM",
-    "description": "A handheld LiDAR SLAM sensor built on a Raspberry Pi 5 and Livox Mid-360 that generates real-time 3D maps of GPS-denied spaces like caves and tunnels by fusing point-cloud and inertial data.",
-    "technologies": [
-      "Raspberry Pi",
-      "ROS",
-      "LiDAR",
-      "Embedded C/C++",
-      "PCB Design"
-    ],
-    "status": "Active",
-    "icon": "radar",
-    "image": "/projects/boilerslam/boilerslam-1.jpg",
-    "images": [
-      "/projects/boilerslam/boilerslam-1.jpg"
-    ],
-    "pm": "Patrick Jordan, Matthew Shams",
-    "pms": [
-      "Patrick Jordan",
-      "Matthew Shams"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/boilerslam"
-  },
-  {
-    "slug": "modularmidi",
-    "title": "ModularMIDI",
-    "description": "A MIDI controller made of customizable, magnetically interlocking segments that snap together for a flexible, scalable, and accessible instrument.",
-    "technologies": [
-      "Microcontrollers",
-      "Sensors",
-      "MIDI"
-    ],
-    "status": "Active",
-    "icon": "music",
-    "image": "/projects/modularmidi/modularmidi-1.jpg",
-    "images": [
-      "/projects/modularmidi/modularmidi-1.jpg"
-    ],
-    "pm": "Bosco Lee",
-    "pms": [
-      "Bosco Lee"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/modularmidi"
-  },
-  {
-    "slug": "bb8",
-    "title": "BB-8 (Spherical Robot)",
-    "description": "A self-balancing spherical robot inspired by Star Wars' BB-8, driven by an ESP32, IMU, and custom drive hardware with 3D-printed and machined parts.",
-    "technologies": [
-      "ESP32",
-      "IMU",
-      "3D Printing"
-    ],
-    "status": "Active",
-    "icon": "orbit",
-    "image": "/projects/bb8/bb8-1.jpg",
-    "images": [
-      "/projects/bb8/bb8-1.jpg"
-    ],
-    "pm": "Patton Lee",
-    "pms": [
-      "Patton Lee"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/bb8"
-  },
-  {
-    "slug": "field-vision",
-    "title": "Field Vision",
-    "description": "An athletic concussion-detection system that pairs a sideline binocular camera with an in-helmet sensor to catch head impacts as they happen.",
-    "technologies": [
-      "ESP-IDF",
-      "OpenCV",
-      "Computer Vision",
-      "KiCad",
-      "Embedded C/C++",
-      "Python"
-    ],
-    "status": "Active",
-    "icon": "camera",
-    "image": "/projects/field-vision/field-vision-1.jpg",
-    "images": [
-      "/projects/field-vision/field-vision-1.jpg"
-    ],
-    "pm": "William Ramsey, Arvindh Krishna",
-    "pms": [
-      "William Ramsey",
-      "Arvindh Krishna"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/field-vision"
-  },
-  {
-    "slug": "vibeclone",
-    "title": "VibeClone",
-    "description": "An open-source software project that clones existing applications using AI throughout both the build process and the app's own features.",
-    "technologies": [
-      "LLM / AI",
-      "Full-Stack",
-      "Automation"
-    ],
-    "status": "Active",
-    "icon": "sparkles",
-    "image": "/projects/vibeclone/vibeclone-1.jpg",
-    "images": [
-      "/projects/vibeclone/vibeclone-1.jpg"
-    ],
-    "pm": "Gillian Hanley",
-    "pms": [
-      "Gillian Hanley"
-    ],
-    "semester": "Fall 2026",
-    "readmeUrl": "/projects/vibeclone"
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/berryweather"
   },
   {
     "slug": "harmonicore",
     "title": "HarmoniCore (FPGA DSP Autotune)",
     "description": "FPGA-based DSP core that autotunes your voice in real time.",
     "technologies": [
-      "FPGA",
-      "Python",
-      "PCB Design",
+      "FPGA/HDL",
+      "DSP (Python)",
+      "PCB/Bringup",
       "Audio"
     ],
-    "status": "Completed",
+    "status": "Active",
     "icon": "zap",
     "image": "/site-media/projects/harmonicore.webp",
     "images": [
@@ -333,16 +47,86 @@
     "readmeUrl": "/projects/harmonicore"
   },
   {
+    "slug": "slayterhil",
+    "title": "slayterHiL (Hardware-in-the-Loop)",
+    "description": "Make the drone think it’s flying—break it in software before it breaks itself.",
+    "technologies": [
+      "RTOS (C)",
+      "C++ Systems",
+      "Board Bringup",
+      "Wi-Fi/BLE"
+    ],
+    "status": "Active",
+    "icon": "cpu",
+    "image": "/site-media/projects/slayterhil.webp",
+    "images": [
+      "/site-media/projects/slayterhil.webp"
+    ],
+    "pm": "Alex Aylward",
+    "pms": [
+      "Alex Aylward"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/slayterhil"
+  },
+  {
+    "slug": "bb8",
+    "title": "BB-8 (Mobile Robot)",
+    "description": "“Circle guy” from Star Wars—vision + wireless + motor/PID control.",
+    "technologies": [
+      "Computer Vision",
+      "Wireless",
+      "Motor Control",
+      "PID"
+    ],
+    "status": "Active",
+    "icon": "car",
+    "image": "/site-media/projects/bb8.webp",
+    "images": [
+      "/site-media/projects/bb8.webp"
+    ],
+    "pm": "Tom Concannon",
+    "pms": [
+      "Tom Concannon"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/bb8"
+  },
+  {
+    "slug": "micropiano",
+    "title": "MicroPiano",
+    "description": "Mini piano using hall sensors and an STM32; analog front-end + KiCad.",
+    "technologies": [
+      "STM32 (C)",
+      "Peripherals",
+      "Analog",
+      "KiCad",
+      "CAD"
+    ],
+    "status": "Active",
+    "icon": "zap",
+    "image": "/projects/logo.png",
+    "images": [
+      "/projects/logo.png"
+    ],
+    "pm": "Felix Liu",
+    "pms": [
+      "Felix Liu"
+    ],
+    "semester": "Fall 2025",
+    "readmeUrl": "/projects/micropiano"
+  },
+  {
     "slug": "eyecue",
     "title": "EyeCue (Hands-Free Pointer)",
     "description": "Blink/eyebrow/gaze-driven cursor using CV on Pi; accessibility oriented.",
     "technologies": [
       "Computer Vision",
-      "Raspberry Pi",
-      "Python",
-      "CAD"
+      "Raspberry Pi OS",
+      "Python/C",
+      "Mech/CAD"
     ],
-    "status": "Completed",
+    "status": "Active",
     "icon": "camera",
     "image": "/site-media/projects/eyecue.webp",
     "images": [
@@ -359,59 +143,14 @@
     "readmeUrl": "/projects/eyecue"
   },
   {
-    "slug": "micropiano",
-    "title": "MicroPiano",
-    "description": "Mini piano using hall sensors and an STM32; analog front-end + KiCad.",
-    "technologies": [
-      "STM32",
-      "Analog",
-      "KiCad",
-      "CAD"
-    ],
-    "status": "Completed",
-    "icon": "zap",
-    "image": "/projects/logo.png",
-    "images": [
-      "/projects/logo.png"
-    ],
-    "pm": "Alex Forrest, Alexander Rizzi",
-    "pms": [
-      "Alex Forrest",
-      "Alexander Rizzi"
-    ],
-    "semester": "Fall 2025",
-    "readmeUrl": "/projects/micropiano"
-  },
-  {
-    "slug": "berryweather",
-    "title": "BerryWeather (IoT Weather Station)",
-    "description": "Sensor-equipped wireless weather station on Pi/MCU with power-conscious design.",
-    "technologies": [
-      "Raspberry Pi",
-      "Sensors",
-      "Embedded C/C++",
-      "PCB Design"
-    ],
-    "status": "Completed",
-    "icon": "wifi",
-    "image": "/projects/logo.png",
-    "images": [
-      "/projects/logo.png"
-    ],
-    "pm": "Connor Powell",
-    "pms": [
-      "Connor Powell"
-    ],
-    "semester": "Fall 2025",
-    "readmeUrl": "/projects/berryweather"
-  },
-  {
     "slug": "digital-ops",
     "title": "Digital Operations",
     "description": "Club website + workflow automation for media intake and requests.",
     "technologies": [
       "TypeScript",
-      "Full-Stack",
+      "Astro/Next",
+      "Tailwind",
+      "APIs",
       "Automation"
     ],
     "status": "Completed",
@@ -434,9 +173,11 @@
     "technologies": [
       "ESP32",
       "PCB Design",
+      "Data Storage",
       "Sensors",
       "Wireless",
-      "App Design"
+      "App Design",
+      "Watch Mechanics"
     ],
     "status": "Completed",
     "icon": "watch",
@@ -457,7 +198,7 @@
     "description": "Gest senses your movements and your device responds instantly. That's what it means to #GestUp!",
     "technologies": [
       "Wireless",
-      "Microcontrollers",
+      "Microcontroller",
       "Sensors",
       "IMU",
       "App Design"
@@ -481,7 +222,7 @@
     "description": "A modern embedded take on a classic mechanical drawing toy—accurate, fully functioning drawing robot.",
     "technologies": [
       "Wireless",
-      "Microcontrollers",
+      "Microcontroller",
       "Sensors",
       "IMU",
       "App Design"
@@ -505,10 +246,13 @@
     "description": "Mechanical Seven Segment Display that flips mechanical segments using a notched, servo-driven shaft.",
     "technologies": [
       "Wireless",
-      "Microcontrollers",
+      "Microcontroller",
       "Sensors",
       "IMU",
-      "App Design"
+      "App Design",
+      "Stopwatch",
+      "Timer",
+      "Counter"
     ],
     "status": "Completed",
     "icon": "wifi",
@@ -522,5 +266,40 @@
     ],
     "semester": "Spring 2025",
     "readmeUrl": "/projects/mssd"
+  },
+  {
+    "slug": "paws",
+    "title": "Paws",
+    "description": "Working on an 8-DOF quadruped robot dog using an esp-32 and a reinforcement locomotion RL policy.",
+    "technologies": [
+      "ESP32"
+    ],
+    "status": "Active",
+    "icon": "cpu",
+    "image": "/projects/paws/paws.png",
+    "images": [
+      "/projects/paws/paws.png"
+    ],
+    "pm": "Aarav Jain",
+    "pms": [
+      "Aarav Jain"
+    ],
+    "semester": "Fall 26",
+    "readmeUrl": "/projects/paws"
+  },
+  {
+    "slug": "hesitation",
+    "title": "Hesitation",
+    "description": "Hesitation",
+    "technologies": [],
+    "status": "Active",
+    "icon": "bot",
+    "image": "",
+    "images": [],
+    "pm": "Arman Islam",
+    "pms": [
+      "Arman Islam"
+    ],
+    "readmeUrl": "/projects/hesitation"
   }
 ]
