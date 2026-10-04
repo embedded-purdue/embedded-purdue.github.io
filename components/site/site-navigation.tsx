@@ -14,8 +14,8 @@ const navigation = [
   { name: "Projects", href: "/projects" },
   { name: "Workshops", href: "/workshops" },
   { name: "Calendar", href: "/calendar" },
-  { name: "Team", href: "/team" },
   { name: "Sponsors", href: "/sponsors" },
+  { name: "Contact", href: "/contact" },
 ]
 
 function isActivePath(pathname: string, href: string) {
@@ -44,7 +44,7 @@ export function SiteNavigation() {
               className="h-auto w-[72px] object-contain"
               priority
             />
-            <span className="hidden whitespace-nowrap border-l border-white/[0.09] pl-4 font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#9b968d] sm:block">
+            <span className="hidden whitespace-nowrap border-l border-white/[0.09] pl-4 font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#b9b6af] sm:block">
               Embedded Systems @ Purdue
             </span>
           </Link>
@@ -58,7 +58,7 @@ export function SiteNavigation() {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={`relative py-2 font-mono text-[0.62rem] uppercase tracking-[0.15em] transition-colors ${
-                    active ? "text-[#f0ece2]" : "text-[#89857d] hover:text-[#f0ece2]"
+                    active ? "text-[#f0ece2]" : "text-[#acaaa4] hover:text-[#f0ece2]"
                   }`}
                 >
                   {item.name}
@@ -98,7 +98,7 @@ export function SiteNavigation() {
                 side="right"
                 className="w-[88vw] max-w-[360px] gap-0 overflow-y-auto border-l border-white/[0.08] bg-[#0d0d0b] p-0 text-[#f3efe6] [&>button]:grid [&>button]:h-10 [&>button]:w-10 [&>button]:place-items-center"
               >
-                <SheetTitle className="border-b border-white/[0.08] px-6 py-7 pr-16 font-mono text-[0.62rem] font-normal uppercase tracking-[0.16em] text-[#a8a197]">
+                <SheetTitle className="border-b border-white/[0.08] px-6 py-7 pr-16 font-mono text-[0.62rem] font-normal uppercase tracking-[0.16em] text-[#c2bdb6]">
                   Explore ES@P
                 </SheetTitle>
                 <SheetDescription className="sr-only">Explore Embedded Systems @ Purdue and join the community.</SheetDescription>

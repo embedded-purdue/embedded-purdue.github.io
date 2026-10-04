@@ -19,7 +19,7 @@ export default function Markdown({
   className?: string
   imageBase?: string
 }) {
-  const schema: any = {
+  const schema = {
     ...defaultSchema,
     tagNames: [...(defaultSchema.tagNames || []), "section", "iframe"],
     attributes: {
@@ -75,20 +75,21 @@ export default function Markdown({
 
           pre({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) {
             const codeChild = React.Children.toArray(children).find(
-              (child: any) => child?.type === "code"
-            ) as any
-            const lang = codeChild?.props?.className
+              (child): child is React.ReactElement<{ className?: string }> =>
+                React.isValidElement<{ className?: string }>(child) && child.type === "code"
+            )
+            const lang = codeChild?.props.className
               ? /language-(\w+)/.exec(codeChild.props.className)?.[1]
               : null
 
             return (
               <div className="not-prose group relative my-8 border-y border-white/[0.09] bg-[#090908]">
                 {lang && (
-                  <div className="border-b border-white/[0.07] px-4 py-2 font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#756f67]">
+                  <div className="border-b border-white/[0.07] px-4 py-2 font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[#9e9a95]">
                     {lang}
                   </div>
                 )}
-                <pre className="overflow-x-auto bg-transparent p-4 font-mono text-sm leading-6 text-[#b9b3a9] sm:p-5" {...props}>
+                <pre className="overflow-x-auto bg-transparent p-4 font-mono text-sm leading-6 text-[#cecac3] sm:p-5" {...props}>
                   {children}
                 </pre>
               </div>
@@ -109,7 +110,7 @@ export default function Markdown({
 
             return (
               <code
-                className={`font-mono text-sm leading-relaxed text-[#b9b3a9] ${codeClassName || ""}`}
+                className={`font-mono text-sm leading-relaxed text-[#cecac3] ${codeClassName || ""}`}
                 {...props}
               >
                 {children}
@@ -120,7 +121,7 @@ export default function Markdown({
           blockquote({ children, ...props }) {
             return (
               <blockquote
-                className="my-8 border-l border-[#daa000]/70 bg-transparent py-1 pl-5 text-[#aaa49a] not-italic sm:pl-6"
+                className="my-8 border-l border-[#daa000]/70 bg-transparent py-1 pl-5 text-[#c4bfb8] not-italic sm:pl-6"
                 {...props}
               >
                 {children}
@@ -131,7 +132,7 @@ export default function Markdown({
           table({ children, ...props }) {
             return (
               <div className="not-prose my-8 overflow-x-auto border-y border-white/[0.09]">
-                <table className="w-full border-collapse text-sm text-[#9a958c]" {...props}>
+                <table className="w-full border-collapse text-sm text-[#b8b5ae]" {...props}>
                   {children}
                 </table>
               </div>
@@ -158,7 +159,7 @@ export default function Markdown({
           td(props) {
             return (
               <td
-                className="border-r border-white/[0.07] px-4 py-3 align-top leading-6 text-[#918b82] last:border-r-0"
+                className="border-r border-white/[0.07] px-4 py-3 align-top leading-6 text-[#b2aea8] last:border-r-0"
                 {...props}
               />
             )
@@ -217,17 +218,18 @@ export default function Markdown({
             const childArray = React.Children.toArray(children)
 
             if (childArray.length === 1) {
-              const child = childArray[0] as any
+              const child = childArray[0]
               if (
-                child?.props?.className?.includes("not-prose") ||
-                child?.props?.className?.includes("relative my-8") ||
-                child?.type === "pre"
+                React.isValidElement<{ className?: string }>(child) &&
+                (child.props.className?.includes("not-prose") ||
+                  child.props.className?.includes("relative my-8") ||
+                  child.type === "pre")
               ) {
                 return <>{children}</>
               }
             }
 
-            return <p className="my-4 break-words leading-7 text-[#9a958c]" {...props} />
+            return <p className="my-4 break-words leading-7 text-[#b8b5ae]" {...props} />
           },
         }}
       >

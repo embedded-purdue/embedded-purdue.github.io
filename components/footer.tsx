@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Mail, Github, Linkedin } from "lucide-react"
-import { DiscordIcon } from "@/components/icons/discord-icon"
 import Image from "next/image"
 export function Footer() {
   return (

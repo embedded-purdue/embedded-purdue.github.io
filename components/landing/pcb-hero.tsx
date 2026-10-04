@@ -176,10 +176,6 @@ function inverseSmoothstep(value: number) {
   return (low + high) / 2
 }
 
-function easeOutCubic(value: number) {
-  const x = clamp01(value)
-  return 1 - Math.pow(1 - x, 3)
-}
 
 function prepareRoute(points: Route): PreparedRoute {
   const segments: number[] = []
@@ -721,6 +717,7 @@ export function PcbHero() {
     let cssHeight = 1
     let scaleX = 1
     let scaleY = 1
+    let renderOffsetX = 0
     let renderOffsetY = 0
     let logoImage: HTMLImageElement | null = null
     let groups: GroupRuntime[] = []
@@ -867,10 +864,21 @@ export function PcbHero() {
       // Match the canvas's stable viewport height, including mobile browser chrome.
       cssHeight = Math.max(1, canvas.getBoundingClientRect().height)
 
-      const heroHeight = Math.max(600, Math.min(cssHeight * .78, 760))
-      scaleX = cssWidth / VW
-      scaleY = heroHeight / VH
-      renderOffsetY = (cssHeight - heroHeight) / 2
+      // Size the scene so the logo fits the browser width with a little
+      // horizontal breathing room, keeping its aspect ratio. Reserving margin
+      // (like the vertical scale below) keeps the leading/trailing dots from
+      // being clipped at the edges. When the viewport is too short to fit the
+      // logo at that width, fall back to a height-driven scale so it is never
+      // clipped top or bottom.
+      const widthScale = (cssWidth * .88) / LOGO.width
+      const heightScale = (cssHeight * .82) / LOGO.height
+      const scale = Math.min(widthScale, heightScale)
+      scaleX = scale
+      scaleY = scale
+      // The logo sits at the center of the VW×VH scene, so centering the scene
+      // in the canvas centers the logo both horizontally and vertically.
+      renderOffsetX = (cssWidth - VW * scale) / 2
+      renderOffsetY = (cssHeight - VH * scale) / 2
 
       const nativeDpr = window.devicePixelRatio || 1
       const pixelBudgetDpr = Math.sqrt(2_600_000 / (cssWidth * cssHeight))
@@ -1210,7 +1218,7 @@ export function PcbHero() {
       context.clearRect(0, 0, cssWidth, cssHeight)
 
       context.save()
-      context.translate(0, renderOffsetY)
+      context.translate(renderOffsetX, renderOffsetY)
       context.scale(scaleX, scaleY)
 
       const focusIn = smoothstep((time - .78) / .52)
@@ -1377,11 +1385,11 @@ export function PcbHero() {
                   <span className="absolute h-6 w-6 rounded-full bg-[#daa000]/10 blur-sm" />
                   <span className="relative h-1.5 w-1.5 rounded-full bg-[#f4c64d] shadow-[0_0_10px_rgba(244,198,77,0.55)]" />
                 </span>
-                <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#c7c0b3]">
+                <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#d8d3ca]">
                   Embedded Systems @ Purdue
                 </span>
               </div>
-              <p className="mt-3 font-mono text-[0.57rem] uppercase tracking-[0.16em] text-[#67635c]">
+              <p className="mt-3 font-mono text-[0.57rem] uppercase tracking-[0.16em] text-[#95928d]">
                 Hardware · Firmware · Systems
               </p>
             </div>
@@ -1389,13 +1397,13 @@ export function PcbHero() {
 
           <div className="flex items-center border-b border-white/[0.08] px-5 py-7 sm:px-8 lg:border-b-0 lg:border-r lg:px-10 xl:px-12">
             <h1 className="max-w-3xl text-balance text-[clamp(2rem,4.4vh,3.45rem)] font-medium leading-[0.94] tracking-[-0.05em] text-[#f3efe6]">
-              Build embedded systems that work in the real world.
+              Build embedded systems that push hardware forward
             </h1>
           </div>
 
           <div className="flex items-center px-5 py-7 sm:px-8 lg:px-10 xl:px-12">
             <div>
-              <p className="max-w-md text-sm leading-6 text-[#9a958b]">
+              <p className="max-w-md text-sm leading-6 text-[#b8b5ae]">
                 Boards, firmware, FPGAs, robotics, and the engineering required to make them work together.
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-4">
@@ -1406,7 +1414,7 @@ export function PcbHero() {
                 </Button>
                 <Link
                   href="/projects"
-                  className="group inline-flex items-center gap-2 font-mono text-[0.64rem] uppercase tracking-[0.16em] text-[#bdb7ab] transition-colors hover:text-[#f2c34f]"
+                  className="group inline-flex items-center gap-2 font-mono text-[0.64rem] uppercase tracking-[0.16em] text-[#d1cdc4] transition-colors hover:text-[#f2c34f]"
                 >
                   Projects
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />

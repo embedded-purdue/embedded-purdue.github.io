@@ -58,7 +58,7 @@
 
   /* Muted neutrals */
   --muted: oklch(0.22 0.008 85);
-  --muted-foreground: oklch(0.70 0.005 85);
+  --muted-foreground: oklch(0.77 0.005 85);
 
   /* Secondary */
   --secondary: oklch(0.28 0.010 85);
@@ -145,3 +145,30 @@
     @apply bg-secondary text-secondary-foreground;
   }
 }
+
+  .cms-directory-scroll {
+    scrollbar-color: rgba(218, 160, 0, 0.82) rgba(255, 255, 255, 0.06);
+    scrollbar-width: thin;
+  }
+
+  .cms-directory-scroll::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .cms-directory-scroll::-webkit-scrollbar-track {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(218, 160, 0, 0.07)),
+      #11110f;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .cms-directory-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(218, 160, 0, 0.95), rgba(143, 103, 0, 0.8));
+    border: 2px solid #11110f;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  }
+
+  .cms-directory-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #f0b323, #daa000);
+  }

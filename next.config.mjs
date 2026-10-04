@@ -5,9 +5,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
 
-const isProd = process.env.NODE_ENV === "production";
-// If deploying to a project path (e.g. username.github.io/repo), set this in repo vars.
-const repo = process.env.NEXT_PUBLIC_REPO_NAME || "";
+const shouldStaticExport = process.env.STATIC_EXPORT === "1" || process.env.GITHUB_PAGES === "1";
 
 const withMDX = createMDX({
   options: {
@@ -24,17 +22,19 @@ const withMDX = createMDX({
 const baseConfig = {
   trailingSlash: true,
 
-  // Uncomment if deploying under a subpath (project pages). Also set NEXT_PUBLIC_REPO_NAME.
-  // basePath: isProd && repo ? `/${repo}` : undefined,
-  // assetPrefix: isProd && repo ? `/${repo}/` : undefined,
+  // Uncomment if deploying under a subpath (project pages).
+  // basePath / assetPrefix can be reintroduced for repo-scoped static hosts.
 
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   experimental: { mdxRs: true },
+  outputFileTracingExcludes: {
+    "/api/cms/*": [".next/cache/**/*", "public/**/*", ".git/**/*"],
+  },
 };
 
-if (isProd) {
-  baseConfig.output = "export";             // ← replaces `next export`
-  baseConfig.images = { unoptimized: true }; // no Image Optimization on GH Pages
+if (shouldStaticExport) {
+  baseConfig.output = "export";              // GitHub Pages/static artifact builds only.
+  baseConfig.images = { unoptimized: true }; // no Image Optimization on static hosts
 } else {
   baseConfig.images = { unoptimized: false };
 }

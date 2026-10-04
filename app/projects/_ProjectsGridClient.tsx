@@ -27,10 +27,10 @@ type Project = Omit<DataProject, "description" | "image" | "icon"> & {
 const STATUS_ORDER: Record<string, number> = { Active: 0, Planned: 1, Completed: 2 }
 
 const TRIGGER_CLS =
-  "group flex h-11 w-full items-center gap-2 border-0 border-b border-white/[0.16] bg-transparent px-0 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-[#b5afa4] outline-none transition-colors hover:border-[#daa000]/45 hover:text-[#e6e0d5] focus-visible:border-[#daa000]/70 data-[state=open]:border-[#daa000] data-[state=open]:text-[#f2c34f] xl:w-44"
+  "group flex h-11 w-full items-center gap-2 border-0 border-b border-white/[0.16] bg-transparent px-0 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-[#cbc7bf] outline-none transition-colors hover:border-[#daa000]/45 hover:text-[#e6e0d5] focus-visible:border-[#daa000]/70 data-[state=open]:border-[#daa000] data-[state=open]:text-[#f2c34f] xl:w-44"
 const TRIGGER_LABEL_CLS = "min-w-0 flex-1 truncate text-left"
 const MENU_CLS =
-  "min-w-[var(--radix-dropdown-menu-trigger-width)] rounded-none border-white/[0.16] bg-[#10100e] p-1 text-[#c7c1b7] shadow-[0_16px_40px_rgba(0,0,0,.4)] motion-reduce:animate-none"
+  "min-w-[var(--radix-dropdown-menu-trigger-width)] rounded-none border-white/[0.16] bg-[#10100e] p-1 text-[#d8d4cd] shadow-[0_16px_40px_rgba(0,0,0,.4)] motion-reduce:animate-none"
 const MENU_ITEM_CLS =
   "min-h-11 cursor-pointer rounded-none py-2.5 text-sm focus:bg-[#daa000]/[0.1] focus:text-[#f2c34f] data-[state=checked]:text-[#f2c34f]"
 
@@ -53,7 +53,7 @@ function decodeTechs(raw: string) {
 function statusClass(status: string) {
   if (status === "Active") return "border-[#daa000]/50 bg-[#171409]/95 text-[#edc458]"
   if (status === "Planned") return "border-[#7b87a3]/45 bg-[#0c0c0b]/95 text-[#bbc4d8]"
-  return "border-white/[0.2] bg-[#0c0c0b]/90 text-[#b2aca2]"
+  return "border-white/[0.2] bg-[#0c0c0b]/90 text-[#c9c5be]"
 }
 
 function ProjectCover({ source, title }: { source: string; title: string }) {
@@ -68,7 +68,7 @@ function ProjectCover({ source, title }: { source: string; title: string }) {
     <img
       src={source}
       alt={`${title} project`}
-      className="absolute inset-0 h-full w-full object-cover opacity-[0.86] transition-opacity duration-300 ease-out group-hover:opacity-100"
+      className="absolute inset-0 h-full w-full object-cover opacity-[0.95] transition-opacity duration-300 ease-out group-hover:opacity-100"
       loading="lazy"
       decoding="async"
       onError={() => setFailedSource(source)}
@@ -269,7 +269,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
       <div className="border-b border-white/[0.08] px-5 py-8 sm:px-8 sm:py-9 lg:px-12 lg:py-10 xl:px-16">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-end">
           <div className="relative min-w-0 flex-1">
-            <Search className="pointer-events-none absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6e6961]" aria-hidden="true" />
+            <Search className="pointer-events-none absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9a9690]" aria-hidden="true" />
             <input
               value={query}
               onChange={handleSearchChange}
@@ -277,7 +277,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
               autoComplete="off"
               spellCheck={false}
               placeholder="Search projects, systems, technologies…"
-              className="h-11 w-full border-0 border-b border-white/[0.16] bg-transparent py-2 pl-7 pr-4 text-sm text-[#e5dfd4] outline-none transition-colors placeholder:text-[#948d82] focus:border-[#daa000]/70"
+              className="h-11 w-full border-0 border-b border-white/[0.16] bg-transparent py-2 pl-7 pr-4 text-sm text-[#e5dfd4] outline-none transition-colors placeholder:text-[#b4afa8] focus:border-[#daa000]/70"
             />
           </div>
 
@@ -303,11 +303,11 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
         </div>
 
         <div className="mt-5 flex min-h-5 flex-wrap items-center justify-between gap-3 font-mono text-[0.625rem] uppercase tracking-[0.13em]">
-          <span role="status" className="text-[#969087]">
+          <span role="status" className="text-[#b6b1ab]">
             {filtered.length} project{filtered.length === 1 ? "" : "s"}{hasFilters ? " matching filters" : " in archive"}
           </span>
           {hasFilters && (
-            <button type="button" onClick={clearFilters} className="inline-flex min-h-8 items-center gap-2 uppercase tracking-[0.13em] text-[#b6afa3] transition-colors hover:text-[#f2c34f]">
+            <button type="button" onClick={clearFilters} className="inline-flex min-h-8 items-center gap-2 uppercase tracking-[0.13em] text-[#ccc7bf] transition-colors hover:text-[#f2c34f]">
               <X className="h-3 w-3" aria-hidden="true" />
               Clear all
             </button>
@@ -317,8 +317,8 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
 
       {!filtered.length ? (
         <div className="px-5 py-20 text-center sm:px-8 lg:px-12 lg:py-24">
-          <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#666159]">No matching systems</p>
-          <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing fits those filters.</h2>
+          <p className="font-mono text-[0.58rem] uppercase tracking-[0.17em] text-[#94908b]">No matching systems</p>
+          <h2 className="mt-3 text-3xl font-medium tracking-[-0.05em] text-[#ded8cd]">Nothing fits those filters</h2>
           <button type="button" onClick={clearFilters} className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm text-[#d8aa27] transition-colors hover:text-[#f2c34f]">
             Reset project archive
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -327,7 +327,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
       ) : (
         <div className="grid gap-px bg-white/[0.08] md:grid-cols-2 xl:grid-cols-12">
           {filtered.map((project, index) => {
-            const image = resolveProjectImagePath(project.slug, project.image)
+            const image = resolveProjectImagePath(project.slug, project.images?.[0] || project.image)
             const { href, external } = resolveProjectHref(project)
             const solo = filtered.length === 1
             const featured = index === 0 && filtered.length > 1
@@ -364,16 +364,16 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                       {project.status}
                     </span>
                     {project.semester && (
-                      <span className="bg-black/85 px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#b6afa3]">
+                      <span className="bg-black/85 px-2.5 py-1 font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#ccc7bf]">
                         {project.semester}
                       </span>
                     )}
                   </div>
-                  <ArrowUpRight className="absolute bottom-4 right-4 h-5 w-5 text-[#c4bfb5] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#f2c34f]" aria-hidden="true" />
+                  <ArrowUpRight className="absolute bottom-4 right-4 h-5 w-5 text-[#d6d2cb] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#f2c34f]" aria-hidden="true" />
                 </div>
 
                 <div className={`flex flex-1 flex-col px-5 py-6 sm:px-7 sm:py-7 ${emphasized ? "xl:px-9 xl:py-9" : ""}`}>
-                  <p className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-[#969087]">Project / {project.slug}</p>
+                  <p className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-[#b6b1ab]">Project / {project.slug}</p>
                   <h2
                     className={`mt-2.5 font-medium leading-[1.02] tracking-[-0.05em] text-[#e9e4da] ${
                       emphasized ? "text-[clamp(1.9rem,3vw,2.7rem)]" : "text-[1.65rem]"
@@ -382,7 +382,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                     {project.title}
                   </h2>
                   {project.description && (
-                    <p className={`mt-4 text-sm leading-6 text-[#a29b90] ${emphasized ? "line-clamp-5" : "line-clamp-3"}`}>
+                    <p className={`mt-4 text-sm leading-6 text-[#beb9b1] ${emphasized ? "line-clamp-5" : "line-clamp-3"}`}>
                       {project.description}
                     </p>
                   )}
@@ -391,12 +391,12 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                     <div className="mt-auto pt-6">
                       <div className="flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.1] pt-4">
                         {project.technologies.slice(0, emphasized ? 7 : 5).map((technology) => (
-                          <span key={`${project.slug}-${technology}`} className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#969087]">
+                          <span key={`${project.slug}-${technology}`} className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#b6b1ab]">
                             {technology}
                           </span>
                         ))}
                         {project.technologies.length > (emphasized ? 7 : 5) && (
-                          <span className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#969087]">
+                          <span className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#b6b1ab]">
                             +{project.technologies.length - (emphasized ? 7 : 5)}
                           </span>
                         )}

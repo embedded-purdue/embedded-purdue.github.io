@@ -8,8 +8,8 @@ const explore = [
   ["About", "/about"],
   ["Projects", "/projects"],
   ["Workshops", "/workshops"],
-  ["Team", "/team"],
   ["Sponsors", "/sponsors"],
+  ["Contact", "/contact"],
 ] as const
 
 const resources = [
@@ -33,7 +33,7 @@ function FooterLinks({
 }) {
   return (
     <div>
-      <p className="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[#5f5c56]">{title}</p>
+      <p className="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-[#8f8d89]">{title}</p>
       <div className="mt-4 flex flex-col gap-2.5">
         {links.map(([label, href]) => {
           const external = href.startsWith("http")
@@ -43,7 +43,7 @@ function FooterLinks({
               href={href}
               target={external ? "_blank" : undefined}
               rel={external ? "noopener noreferrer" : undefined}
-              className="group flex w-fit items-center gap-2 text-sm text-[#aaa59c] transition-colors hover:text-[#f2c34f]"
+              className="group flex w-fit items-center gap-2 text-sm text-[#c4c0ba] transition-colors hover:text-[#f2c34f]"
             >
               {label}
               {external && (
@@ -71,10 +71,10 @@ export function SiteFooter() {
               <Link href="/" className="inline-flex items-center gap-4" aria-label="Embedded Systems @ Purdue home">
                 <Image src="/logo.svg" alt="Embedded Systems @ Purdue" width={96} height={31} className="h-auto w-24" />
               </Link>
-              <p className="mt-4 max-w-md text-sm leading-6 text-[#817d75]">
+              <p className="mt-4 max-w-md text-sm leading-6 text-[#a7a49e]">
                 Hardware, firmware, and systems built by students.
               </p>
-              <div className="mt-5 flex items-center gap-3 font-mono text-[0.54rem] uppercase tracking-[0.15em] text-[#5f5a53]">
+              <div className="mt-5 flex items-center gap-3 font-mono text-[0.54rem] uppercase tracking-[0.15em] text-[#8f8c87]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#8f7325] shadow-[0_0_7px_rgba(218,160,0,.22)]" />
                 Purdue University · West Lafayette
               </div>
@@ -87,7 +87,7 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <div className="mt-12 flex flex-col gap-3 border-t border-white/[0.07] pt-6 font-mono text-[0.56rem] uppercase tracking-[0.15em] text-[#55524d] sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-12 flex flex-col gap-3 border-t border-white/[0.07] pt-6 font-mono text-[0.56rem] uppercase tracking-[0.15em] text-[#888682] sm:flex-row sm:items-center sm:justify-between">
             <span>Embedded Systems @ Purdue · {new Date().getFullYear()}</span>
             <a href="#site-top" className="group inline-flex w-fit items-center gap-2 transition-colors hover:text-[#c6a13e]">
               Back to top

@@ -1,5 +1,37 @@
 // app/projects/_data.ts
-import { Cpu, Zap, Wifi, Camera, Car, Watch } from "lucide-react";
+import {
+  Antenna,
+  Binary,
+  Bot,
+  BrainCircuit,
+  Cable,
+  Camera,
+  Car,
+  CircuitBoard,
+  Cpu,
+  Gauge,
+  Crown,
+  Dog,
+  House,
+  Leaf,
+  Music,
+  Orbit,
+  Gamepad2,
+  Radar,
+  Radio,
+  Settings,
+  Smartphone,
+  Watch,
+  Waves,
+  Wifi,
+  Rocket,
+  Sparkles,
+  Wrench,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
+import projectEntries from "@/content/projects.json";
+import { type ProjectIconKey } from "@/lib/project-icon-keys";
 
 export type Project = {
   slug: string;
@@ -7,179 +39,73 @@ export type Project = {
   description?: string;
   technologies: string[];
   status: "Active" | "Planned" | "Completed";
-  icon?: any;
+  iconKey?: ProjectIconKey;
+  icon?: LucideIcon;
   image?: string;
+  images?: string[];
   pm?: string;
+  pms?: string[];
   semester?: string;
-  /** Where “Read more” should go (README.md or long-form doc) */
-  readmeUrl?: string; // can be external OR /projects/[slug]
+  readmeUrl?: string;
 };
 
-export const projects: Project[] = [
-  // {
-  //   slug: "agrovolo",
-  //   title: "Agrovolo (Aerial Farm Imaging)",
-  //   description:
-  //     "Drone that captures field images for farmers; focus on control, wireless links, and UI.",
-  //   technologies: ["Control Systems", "Wireless", "PCB", "High-Speed", "UI"],
-  //   status: "Active",
-  //   icon: Camera,
-  //   image: "/projects/agrovolo-1.jpg",
-  //   pm: "PM: Tim Ausec",
-  //   semester: "Fall 2025",
-  //   readmeUrl: "/projects/agrovolo", // local details page
-  // },
-  {
-    slug: "berryweather",
-    title: "BerryWeather (IoT Weather Station)",
-    description:
-      "Sensor-equipped wireless weather station on Pi/MCU with power-conscious design.",
-    technologies: ["Raspberry Pi OS", "Sensors", "Embedded C", "Schematic/PCB", "Power"],
-    status: "Completed",
-    icon: Wifi,
-    image: "/projects/logo.png",
-    pm: "PM: Connor Powell",
-    semester: "Fall 2025",
-    readmeUrl: "/projects/berryweather",
-  },
-  {
-    slug: "harmonicore",
-    title: "HarmoniCore (FPGA DSP Autotune)",
-    description: "FPGA-based DSP core that autotunes your voice in real time.",
-    technologies: ["FPGA/HDL", "DSP (Python)", "PCB/Bringup", "Audio"],
-    status: "Active",
-    icon: Zap,
-    image: "/site-media/projects/harmonicore.webp",
-    pm: "PM: Varun Vaidyanathan",
-    semester: "Fall 2025",
-    readmeUrl: "/projects/harmonicore",
-  },
-  {
-    slug: "slayterhil",
-    title: "slayterHiL (Hardware-in-the-Loop)",
-    description:
-      "Make the drone think it’s flying—break it in software before it breaks itself.",
-    technologies: ["RTOS (C)", "C++ Systems", "Board Bringup", "Wi-Fi/BLE"],
-    status: "Active",
-    icon: Cpu,
-    image: "/site-media/projects/slayterhil.webp",
-    pm: "PM: Alex Aylward",
-    semester: "Fall 2025",
-    readmeUrl: "/projects/slayterhil",
-  },
-  {
-    slug: "bb8",
-    title: "BB-8 (Mobile Robot)",
-    description:
-      "“Circle guy” from Star Wars—vision + wireless + motor/PID control.",
-    technologies: ["Computer Vision", "Wireless", "Motor Control", "PID"],
-    status: "Active",
-    icon: Car,
-    image: "/site-media/projects/bb8.webp",
-    pm: "PM: Tom Concannon",
-    semester: "Fall 2025",
-    readmeUrl: "/projects/bb8",
-  },
-  {
-    slug: "micropiano",
-    title: "MicroPiano",
-    description:
-      "Mini piano using hall sensors and an STM32; analog front-end + KiCad.",
-    technologies: ["STM32 (C)", "Peripherals", "Analog", "KiCad", "CAD"],
-    status: "Active",
-    icon: Zap,
-    image: "/projects/logo.png",
-    pm: "PM: Felix Liu",
-    semester: "Fall 2025",
-    readmeUrl: "/projects/micropiano",
-  },
-  {
-    slug: "eyecue",
-    title: "EyeCue (Hands-Free Pointer)",
-    description:
-      "Blink/eyebrow/gaze-driven cursor using CV on Pi; accessibility oriented.",
-    technologies: ["Computer Vision", "Raspberry Pi OS", "Python/C", "Mech/CAD"],
-    status: "Active",
-    icon: Camera,
-    image: "/site-media/projects/eyecue.webp",
-    pm: "PMs: Katherine M, Garima T, Aarushi D, Shruthi A",
-    semester: "Fall 2025",
-    readmeUrl: "/projects/eyecue",
-  },
-  {
-    slug: "digital-ops",
-    title: "Digital Operations",
-    description:
-      "Club website + workflow automation for media intake and requests.",
-    technologies: ["TypeScript", "Astro/Next", "Tailwind", "APIs", "Automation"],
-    status: "Completed",
-    icon: Cpu,
-    image: "/site-media/projects/digital-ops.webp",
-    pm: "PM: Trevor Antle",
-    semester: "Fall 2025",
-    readmeUrl: "/projects/digital-ops",
-  },
-  {
-    slug: "smart-watch",
-    title: "Smart Watch",
-    description:
-      "A smart watch for the people! Build your own wearable with ESP32, sensors, and custom firmware.",
-    technologies: ["ESP32", "PCB Design", "Data Storage", "Sensors", "Wireless", "App Design", "Watch Mechanics"],
-    status: "Completed",
-    icon: Watch,
-    image: "/projects/logo.png",
-    pm: "PM: Patrick Shea",
-    semester: "Fall 2025",
-    readmeUrl: "/projects/smart-watch",
-  },
-  {
-    slug: "gest",
-    title: "Gest",
-    description:
-      "Gest senses your movements and your device responds instantly. That's what it means to #GestUp!",
-    technologies: ["Wireless", "Microcontroller", "Sensors", "IMU", "App Design"],
-    status: "Completed",
-    icon: Wifi,
-    image: "/site-media/projects/gest.webp",
-    pm: "PM: Jain Iftesam",
-    semester: "Spring 2025",
-    readmeUrl: "/projects/gest",
-  },
-  {
-    slug: "purdudraw",
-    title: "PurduDraw",
-    description:
-      "A modern embedded take on a classic mechanical drawing toy—accurate, fully functioning drawing robot.",
-    technologies: ["Wireless", "Microcontroller", "Sensors", "IMU", "App Design"],
-    status: "Completed",
-    icon: Wifi,
-    image: "/site-media/projects/purdudraw.webp",
-    pm: "PM: Connor Powell",
-    semester: "Spring 2025",
-    readmeUrl: "/projects/purdudraw",
-  },
-  {
-    slug: "mssd",
-    title: "MSSD",
-    description:
-      "Mechanical Seven Segment Display that flips mechanical segments using a notched, servo-driven shaft.",
-    technologies: ["Wireless", "Microcontroller", "Sensors", "IMU", "App Design", "Stopwatch", "Timer", "Counter"],
-    status: "Completed",
-    icon: Wifi,
-    image: "/site-media/projects/mssd.webp",
-    pm: "PM: Tom Concannon",
-    semester: "Spring 2025",
-    readmeUrl: "/projects/mssd",
-  },
-];
+const projectIcons: Record<ProjectIconKey, LucideIcon> = {
+  cpu: Cpu,
+  zap: Zap,
+  wifi: Wifi,
+  camera: Camera,
+  car: Car,
+  watch: Watch,
+  "circuit-board": CircuitBoard,
+  bot: Bot,
+  radio: Radio,
+  antenna: Antenna,
+  gauge: Gauge,
+  gamepad: Gamepad2,
+  "brain-circuit": BrainCircuit,
+  cable: Cable,
+  wrench: Wrench,
+  binary: Binary,
+  smartphone: Smartphone,
+  waves: Waves,
+  settings: Settings,
+  crown: Crown,
+  dog: Dog,
+  house: House,
+  leaf: Leaf,
+  music: Music,
+  orbit: Orbit,
+  radar: Radar,
+  rocket: Rocket,
+  sparkles: Sparkles,
+};
+
+type ProjectEntry = Omit<Project, "icon" | "iconKey"> & { icon?: ProjectIconKey };
+
+function splitProjectManagers(value: string | undefined) {
+  return (value || "").replace(/^PMs?:\s*/i, "").split(/[,\n]+/).map((entry) => entry.trim()).filter(Boolean);
+}
+
+export const projects: Project[] = (projectEntries as ProjectEntry[]).map((project) => {
+  const pms = project.pms?.length ? project.pms : splitProjectManagers(project.pm);
+  const images = Array.from(new Set([...(project.images || []), project.image || ""].map((image) => image.trim()).filter(Boolean)));
+  return {
+    ...project,
+    images,
+    image: project.image || images[0],
+    pms,
+    pm: project.pm || pms.join(", "),
+    iconKey: project.icon,
+    icon: project.icon ? projectIcons[project.icon] : undefined,
+  };
+});
 
 export const allStatuses: Array<Project["status"]> = ["Active", "Planned", "Completed"];
 
 export function collectTechs(list: Project[]) {
   return Array.from(new Set(list.flatMap((p) => p.technologies))).sort((a, b) => a.localeCompare(b));
 }
+
 export function collectSemesters(list: Project[]) {
-  return Array.from(new Set(list.map((p) => p.semester).filter(Boolean) as string[])).sort((a, b) =>
-    a.localeCompare(b)
-  );
+  return Array.from(new Set(list.map((p) => p.semester).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b));
 }
