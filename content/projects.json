@@ -1,7 +1,7 @@
 [
   {
     "slug": "paws",
-    "title": "you suck",
+    "title": "PAWS",
     "description": "An 8-DOF quadruped robot dog that walks using a reinforcement-learning locomotion policy and onboard computer vision, all running on an ESP32-P4.",
     "technologies": [
       "ESP32",
