@@ -4,12 +4,14 @@ import Link from "next/link"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 
 import { Esp32Visual } from "@/components/landing/esp32-visual"
+import LandingCalendar from "@/components/landing/landing-calendar"
 import { LandingFooter } from "@/components/landing/landing-footer"
 import { LandingInteractionGate } from "@/components/landing/landing-interaction-gate"
 import { LandingNavigation } from "@/components/landing/landing-navigation"
 import { LandingStyles } from "@/components/landing/landing-styles"
 import { PcbHero } from "@/components/landing/pcb-hero"
 import { projects } from "@/app/projects/_data"
+import { getCalendarEvents } from "@/lib/calendar-feed"
 import { getAllWorkshops } from "@/lib/workshops"
 
 const featuredSlugs = new Set(["harmonicore", "slayterhil", "bb8"])
@@ -74,7 +76,9 @@ function projectDisplayTitle(title: string) {
   return title.split(" (")[0]
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const calendarEvents = await getCalendarEvents()
+
   return (
     <div
       data-landing-shell
@@ -245,7 +249,7 @@ export default function HomePage() {
 
         <section className="relative border-b border-white/[0.08] bg-[#0a0a09]">
           <Link
-            href="/about#team"
+            href="/team"
             data-landing-lift="card"
             className="group relative block min-h-[370px] w-full overflow-hidden"
             aria-label="Meet the Embedded Systems @ Purdue team"
@@ -272,27 +276,16 @@ export default function HomePage() {
           </Link>
         </section>
 
+        <LandingCalendar events={calendarEvents} builtAt={new Date().toISOString()} />
+
         <section className="border-b border-white/[0.08] bg-[#0c0c0b]">
           <div className={`${WIDE_RAIL} grid lg:grid-cols-[0.92fr_1.08fr]`}>
             <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:border-b-0 lg:border-r lg:px-12 xl:px-16 2xl:px-20">
               <div className="max-w-2xl">
-                <SignalLabel>Schedule</SignalLabel>
-                <h2 className="mt-4 text-4xl font-medium tracking-[-0.05em] sm:text-5xl">Events</h2>
+                <SignalLabel>Contact</SignalLabel>
+                <h2 className="mt-4 text-4xl font-medium tracking-[-0.05em] sm:text-5xl">Get in touch</h2>
 
                 <div className="mt-6 border-t border-white/[0.08]">
-                  <a
-                    href="https://calendar.google.com/calendar/render?cid=embedded%40purdue.edu"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center justify-between gap-6 border-b border-white/[0.08] py-4"
-                  >
-                    <div>
-                      <p className="text-base font-medium">Calendar</p>
-                      <p className="mt-1 text-sm text-[#a09c97]">Stay current with meetings, workshops, and club activity.</p>
-                    </div>
-                    <ArrowUpRight className="h-4 w-4 text-[#a09c96] transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#f2c34f]" aria-hidden="true" />
-                  </a>
-
                   <a
                     href="mailto:embedded@purdue.edu"
                     className="group flex items-center justify-between gap-6 py-4"

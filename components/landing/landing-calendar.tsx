@@ -20,9 +20,9 @@ import {
   timeRange,
 } from "@/lib/calendar"
 import type { CalendarEvent, Term } from "@/lib/calendar"
-import MonthGridClient from "./_MonthGridClient"
+import MonthGridClient from "./landing-calendar-month-grid"
 
-const WIDE_RAIL = "site-rail mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
+const WIDE_RAIL = "mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
 
 type Standing = {
   id: string
@@ -120,7 +120,7 @@ function standingSessions(events: CalendarEvent[]): Standing[] {
 
 function NextUpPanel({ next, following, now }: { next?: CalendarEvent; following?: CalendarEvent; now: number }) {
   return (
-    <div className="flex min-h-[360px] flex-col bg-[#080807] lg:col-span-5 lg:min-h-[480px]">
+    <div className="flex min-h-[360px] flex-col bg-[#080807] lg:col-span-5 lg:min-h-[420px]">
       <div className="flex items-center justify-between gap-4 border-b border-white/[0.08] px-5 py-3.5 sm:px-7">
         <p className="font-mono text-[0.55rem] uppercase tracking-[0.16em] text-[#8d887f]">Next up</p>
         <p className="font-mono text-[0.55rem] uppercase tracking-[0.16em] text-[#d6b65d]">
@@ -143,7 +143,7 @@ function NextUpPanel({ next, following, now }: { next?: CalendarEvent; following
               </p>
             </div>
             <div className="min-w-0">
-              <h2 className="text-[clamp(1.75rem,2.6vw,2.5rem)] font-medium leading-[0.95] tracking-[-0.05em]">{next.title}</h2>
+              <h3 className="text-[clamp(1.75rem,2.6vw,2.5rem)] font-medium leading-[0.95] tracking-[-0.05em]">{next.title}</h3>
               <p className="mt-3 font-mono text-[0.58rem] uppercase tracking-[0.12em] text-[#aaa398]">
                 {timeRange(next)}
                 {next.location ? ` · ${next.location}` : ""}
@@ -177,9 +177,9 @@ function NextUpPanel({ next, following, now }: { next?: CalendarEvent; following
         </div>
       ) : (
         <div className="flex flex-1 flex-col justify-end px-5 py-8 sm:px-7">
-          <h2 className="max-w-sm text-[clamp(1.75rem,2.6vw,2.4rem)] font-medium leading-[0.95] tracking-[-0.05em]">
+          <h3 className="max-w-sm text-[clamp(1.75rem,2.6vw,2.4rem)] font-medium leading-[0.95] tracking-[-0.05em]">
             Nothing on the calendar yet.
-          </h2>
+          </h3>
         </div>
       )}
 
@@ -318,7 +318,7 @@ function WeekList({ events, now }: { events: CalendarEvent[]; now: number }) {
   )
 }
 
-export default function CalendarClient({ events, builtAt }: { events: CalendarEvent[]; builtAt: string }) {
+export default function LandingCalendar({ events, builtAt }: { events: CalendarEvent[]; builtAt: string }) {
   const [now, setNow] = useState(() => Date.parse(builtAt))
   const [chosenMonth, setChosenMonth] = useState<number | null>(null)
 
@@ -346,26 +346,27 @@ export default function CalendarClient({ events, builtAt }: { events: CalendarEv
 
   return (
     <>
-      <section className="border-b border-white/[0.08] bg-black">
+      <section id="schedule" className="scroll-mt-[68px] border-b border-white/[0.08] bg-black">
         <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
           <div className="grid lg:grid-cols-12">
-            <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:col-span-7 lg:border-b-0 lg:border-r lg:px-12 lg:py-14 xl:px-16">
-              <div className="flex h-full flex-col justify-between gap-12">
+            <div className="border-b border-white/[0.08] px-5 py-9 sm:px-8 sm:py-10 lg:col-span-7 lg:border-b-0 lg:border-r lg:px-12 lg:py-12 xl:px-16">
+              <div className="flex h-full flex-col justify-between gap-10">
                 <div className="flex items-center justify-between gap-5">
-                  <SignalLabel>Club calendar</SignalLabel>
+                  <SignalLabel>Schedule</SignalLabel>
                   <span className="hidden font-mono text-[0.52rem] uppercase tracking-[0.16em] text-[#4f4b45] sm:block">
                     Synced from Google Calendar
                   </span>
                 </div>
 
                 <div>
-                  <h1 className="text-[clamp(3.3rem,6.3vw,6.6rem)] font-medium leading-[0.84] tracking-[-0.07em]">
-                    When and where
-                    <span className="block text-[#d8aa27]">to show up.</span>
-                  </h1>
-                  <p className="mt-7 max-w-xl text-base leading-7 text-[#8d887f]">Workshops, workdays, and club events.</p>
+                  <h2 className="text-[clamp(2.7rem,4.8vw,5rem)] font-medium leading-[0.92] tracking-[-0.055em]">
+                    When and where to show up
+                  </h2>
+                  <p className="mt-4 max-w-xl text-sm leading-6 text-[#b6b2ac] sm:text-base sm:leading-7">
+                    Workshops, workdays, and club events — kept current with our Google Calendar.
+                  </p>
 
-                  <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <div className="mt-7 flex flex-wrap items-center gap-3">
                     <span className="w-full font-mono text-[0.58rem] uppercase tracking-[0.16em] text-[#625e57]">Subscribe</span>
                     <a
                       href={GOOGLE_SUBSCRIBE_URL}
@@ -399,7 +400,7 @@ export default function CalendarClient({ events, builtAt }: { events: CalendarEv
         </div>
       </section>
 
-      <section className="bg-[#0c0c0b]">
+      <section className="border-b border-white/[0.08] bg-[#0c0c0b]">
         <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
           <MonthGridClient
             events={events}
@@ -414,7 +415,7 @@ export default function CalendarClient({ events, builtAt }: { events: CalendarEv
       </section>
 
       {termEvents.length > 0 && (
-        <section className="bg-[#0c0c0b]">
+        <section className="border-b border-white/[0.08] bg-[#0c0c0b]">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
             <div className="grid lg:grid-cols-12">
               <aside className="border-b border-white/[0.08] px-5 py-9 sm:px-8 lg:col-span-4 lg:border-b-0 lg:border-r lg:px-10 lg:py-12 xl:px-12">

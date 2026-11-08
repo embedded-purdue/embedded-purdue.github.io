@@ -23,6 +23,9 @@ function resolveBridge(pathname: string): Bridge | null {
     return { eyebrow: "Return / Workshop archive", title: "Back to all sessions.", href: "/workshops", direction: "back" }
   }
   if (route === "/about") {
+    return { eyebrow: "Next / Team", title: "Meet the people behind the systems.", href: "/team" }
+  }
+  if (route === "/team") {
     return { eyebrow: "Next / Projects", title: "See the systems being built.", href: "/projects" }
   }
   if (route === "/projects") {

@@ -5,12 +5,9 @@ import {
   ArrowUpRight,
   CircuitBoard,
   Cpu,
-  Github,
-  Linkedin,
   Mail,
   Network,
   Radio,
-  Shield,
   Trophy,
   Users,
   Wrench,
@@ -18,13 +15,8 @@ import {
 
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteNavigation } from "@/components/site/site-navigation"
-import { TeamPortrait } from "@/components/site/team-portrait"
-import { readTeamContent } from "@/lib/cms/content"
-import type { TeamMemberContent } from "@/lib/cms/schema"
 
 const WIDE_RAIL = "site-rail mx-auto w-full lg:w-[calc(100%_-_48px)] 2xl:w-[calc(100%_-_80px)]"
-
-type Member = TeamMemberContent
 
 const mission = [
   {
@@ -96,35 +88,7 @@ function SignalLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-function MemberPortrait({ member, index, prefix = "E" }: { member: Member; index: number; prefix?: string }) {
-  const socialLinkClass =
-    "grid h-10 w-10 shrink-0 place-items-center border border-white/[0.12] text-[#c4bfb7] transition-colors hover:border-[#daa000]/50 hover:text-[#f2c34f]"
-
-  return (
-    <article className="min-w-0">
-      <TeamPortrait photo={member.image} name={member.name} />
-      <div className="border-t border-white/[0.1] pt-5">
-        {member.roles.map((role) => (
-          <p key={role} className="font-mono text-[0.62rem] uppercase leading-5 tracking-[0.12em] text-[#c39b36]">{role}</p>
-        ))}
-        <h3 className="mt-2 text-[clamp(1.15rem,1.7vw,1.65rem)] font-medium leading-tight tracking-[-0.035em] text-[#eee8de]">{member.name}</h3>
-        <div className="mt-4 flex min-h-10 items-center justify-between gap-2">
-          <span className="font-mono text-[0.56rem] tracking-[0.14em] text-[#9c9791]">{prefix}-{String(index + 1).padStart(2, "0")}</span>
-          <div className="flex gap-2">
-            {member.email && <a href={member.email} aria-label={`Email ${member.name}`} className={socialLinkClass}><Mail className="h-4 w-4" aria-hidden="true" /></a>}
-            {member.linkedin && <a href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on LinkedIn`} className={socialLinkClass}><Linkedin className="h-4 w-4" aria-hidden="true" /></a>}
-            {member.github && <a href={member.github} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on GitHub`} className={socialLinkClass}><Github className="h-4 w-4" aria-hidden="true" /></a>}
-          </div>
-        </div>
-      </div>
-    </article>
-  )
-}
-
-export default async function AboutPage() {
-  const team = (await readTeamContent()).filter((member) => member.active);
-  const executives = team.filter((member) => member.section === "exec");
-  const chairsAndPMs = team.filter((member) => member.section !== "exec");
+export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#0c0c0b] text-[#f3efe6]">
       <SiteNavigation />
@@ -309,52 +273,11 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        <section id="team" className="border-b border-white/[0.08] bg-[#0c0c0b] scroll-mt-20">
-          <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
-            <div className="flex flex-col gap-6 border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:flex-row lg:items-end lg:justify-between lg:px-12 lg:py-14 xl:px-16">
-              <div>
-                <SignalLabel>04 / Team</SignalLabel>
-                <h2 className="mt-3 text-[clamp(2.6rem,4.6vw,4.9rem)] font-medium leading-[0.9] tracking-[-0.06em]">
-                  The people<br /><span className="text-[#d8aa27]">behind the systems</span>
-                </h2>
-              </div>
-              <p className="max-w-md text-sm leading-6 text-[#a7a39d]">
-                Students keeping ES@P organized, technically ambitious, and actually shipping hardware.
-              </p>
-            </div>
-
-            <div className="px-5 pb-10 sm:px-8 sm:pb-12 lg:px-12 xl:px-16">
-              <div className="flex flex-wrap items-center justify-between gap-4 py-7 sm:py-8">
-                <h3 className="text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc]">Executive Board</h3>
-                <span className="flex items-center gap-2 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[#a7a197]"><Shield className="h-3.5 w-3.5" aria-hidden="true" />{executives.length} executives / 2026</span>
-              </div>
-              <div className="grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-6 sm:gap-x-6 lg:grid-cols-5 lg:gap-x-5 xl:gap-x-7">
-                {executives.map((member, index) => (
-                  <div key={member.name} className={`${index === executives.length - 1 ? "col-span-2 mx-auto w-[calc(50%_-_10px)] sm:col-span-3 sm:mx-0 sm:w-auto" : "sm:col-span-2"} ${index === 3 ? "sm:col-span-3" : ""} lg:col-span-1 lg:mx-0 lg:w-auto`}>
-                    <MemberPortrait member={member} index={index} />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="border-t border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:px-12 xl:px-16">
-              <div className="flex flex-wrap items-center justify-between gap-4 pb-7 sm:pb-8">
-                <h3 className="text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc]">Committees &amp; Project Managers</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-5 lg:gap-x-5 xl:gap-x-7">
-                {chairsAndPMs.map((member, index) => (
-                  <MemberPortrait key={member.name} member={member} index={index} prefix="T" />
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section className="bg-black">
           <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
             <div className="grid lg:grid-cols-12">
               <div className="border-b border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:col-span-8 lg:border-b-0 lg:border-r lg:px-12 lg:py-14 xl:px-16">
-                <SignalLabel>05 / Get involved</SignalLabel>
+                <SignalLabel>04 / Get involved</SignalLabel>
                 <h2 className="mt-4 max-w-4xl text-[clamp(3rem,5.4vw,5.8rem)] font-medium leading-[0.86] tracking-[-0.065em]">
                   Come build something that has to work
                 </h2>
@@ -379,7 +302,7 @@ export default async function AboutPage() {
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                   </Link>
                   <Link
-                    href="/calendar"
+                    href="/#schedule"
                     className="group inline-flex h-11 items-center gap-3 border border-white/[0.12] px-5 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-[#c7c0b5] transition-colors hover:border-[#daa000]/45 hover:text-[#f2c34f]"
                   >
                     View calendar

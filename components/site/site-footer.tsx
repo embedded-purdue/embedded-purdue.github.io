@@ -6,6 +6,7 @@ import { SiteRouteBridge } from "@/components/site/site-route-bridge"
 
 const explore = [
   ["About", "/about"],
+  ["Team", "/team"],
   ["Projects", "/projects"],
   ["Workshops", "/workshops"],
   ["Sponsors", "/sponsors"],
