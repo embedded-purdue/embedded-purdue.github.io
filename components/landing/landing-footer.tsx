@@ -4,6 +4,7 @@ import { ArrowUpRight } from "lucide-react"
 
 const explore = [
   ["About", "/about"],
+  ["Team", "/team"],
   ["Projects", "/projects"],
   ["Workshops", "/workshops"],
   ["Sponsors", "/sponsors"],
