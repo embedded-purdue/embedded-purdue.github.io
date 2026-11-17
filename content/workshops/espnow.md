@@ -1,12 +1,15 @@
 ---
 title: "ESP NOW"
 slug: "espnow"
-date: "0006-11-16"
+date: "2026-11-16"
 location: "STEW 320"
-summary: "ESP Now"
+summary: "ESP NOW"
 tags:
-  - "esp;espnow"
+  - "esp"
+  - "espnow"
 ---
+
+Github Starter: [https://github.com/embedded-purdue/espnow_workshop](https://github.com/embedded-purdue/espnow_workshop)
 
 # ESP-NOW Wireless Chatroom Workshop (1602 I2C LCD)
 
