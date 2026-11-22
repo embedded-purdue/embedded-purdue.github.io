@@ -54,8 +54,12 @@ function MemberPortrait({ member, index, prefix = "E" }: { member: Member; index
 export default async function TeamPage() {
   const team = (await readTeamContent()).filter((member) => member.active)
   const executives = team.filter((member) => member.section === "exec")
-  const projectManagers = team.filter((member) => member.section === "pm")
-  const adminCommittee = team.filter((member) => member.section === "committee")
+  const projectManagers = team.filter((member) =>
+    member.section === "pm" || member.roles.some((role) => /^(?:PM|Project Manager)(?:\s*[•:–—-]|$)/i.test(role))
+  )
+  const adminCommittee = team.filter((member) =>
+    member.section === "committee" || member.roles.some((role) => /\bcommittee$/i.test(role))
+  )
   const members = team.filter((member) => member.section === "member")
   const rosterSections = [
     { title: "Project Management", members: projectManagers, prefix: "PM" },
