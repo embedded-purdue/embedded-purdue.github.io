@@ -54,7 +54,14 @@ function MemberPortrait({ member, index, prefix = "E" }: { member: Member; index
 export default async function TeamPage() {
   const team = (await readTeamContent()).filter((member) => member.active)
   const executives = team.filter((member) => member.section === "exec")
-  const chairsAndPMs = team.filter((member) => member.section !== "exec")
+  const projectManagers = team.filter((member) => member.section === "pm")
+  const adminCommittee = team.filter((member) => member.section === "committee")
+  const members = team.filter((member) => member.section === "member")
+  const rosterSections = [
+    { title: "Project Management", members: projectManagers, prefix: "PM" },
+    { title: "Admin Committee", members: adminCommittee, prefix: "A" },
+    ...(members.length ? [{ title: "Members", members, prefix: "M" }] : []),
+  ]
 
   return (
     <div className="min-h-screen bg-[#0c0c0b] text-[#f3efe6]">
@@ -92,19 +99,23 @@ export default async function TeamPage() {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-2 lg:col-span-4">
-                <div className="flex flex-col justify-center border-b border-white/[0.08] px-5 py-8 sm:px-8 lg:border-r lg:border-b-0">
+              <div className="grid grid-cols-3 lg:col-span-4">
+                <div className="flex flex-col justify-center border-r border-white/[0.08] px-3 py-8 sm:px-5">
                   <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#9a9791]">Executives</p>
                   <p className="mt-2 flex items-center gap-2 text-3xl font-medium tracking-[-0.04em] text-[#f0ece2]">
                     <Shield className="h-5 w-5 text-[#d8aa27]" aria-hidden="true" />
                     {executives.length}
                   </p>
                 </div>
-                <div className="flex flex-col justify-center border-b border-white/[0.08] px-5 py-8 sm:px-8 lg:border-b-0">
-                  <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#9a9791]">Chairs &amp; PMs</p>
-                  <p className="mt-2 text-3xl font-medium tracking-[-0.04em] text-[#f0ece2]">{chairsAndPMs.length}</p>
+                <div className="flex flex-col justify-center border-r border-white/[0.08] px-3 py-8 sm:px-5">
+                  <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#9a9791]">Project Managers</p>
+                  <p className="mt-2 text-3xl font-medium tracking-[-0.04em] text-[#f0ece2]">{projectManagers.length}</p>
                 </div>
-                <div className="col-span-2 flex flex-col justify-center border-t border-white/[0.08] px-5 py-8 sm:px-8">
+                <div className="flex flex-col justify-center px-3 py-8 sm:px-5">
+                  <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#9a9791]">Admin Committee</p>
+                  <p className="mt-2 text-3xl font-medium tracking-[-0.04em] text-[#f0ece2]">{adminCommittee.length}</p>
+                </div>
+                <div className="col-span-3 flex flex-col justify-center border-t border-white/[0.08] px-5 py-8 sm:px-8">
                   <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#9a9791]">Roster / 2026</p>
                   <p className="mt-2 text-lg leading-6 text-[#d6d2ca]">
                     {team.length} students keeping ES@P organized across committees, projects, and events.
@@ -131,16 +142,16 @@ export default async function TeamPage() {
               </div>
             </div>
 
-            <div className="border-t border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:px-12 xl:px-16">
-              <div className="flex flex-wrap items-center justify-between gap-4 pb-7 sm:pb-8">
-                <h2 className="text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc]">Committees &amp; Project Managers</h2>
-              </div>
-              <div className="grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-5 lg:gap-x-5 xl:gap-x-7">
-                {chairsAndPMs.map((member, index) => (
-                  <MemberPortrait key={member.name} member={member} index={index} prefix="T" />
-                ))}
-              </div>
-            </div>
+            {rosterSections.map(({ title, members, prefix }) => (
+              <section key={title} className="border-t border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:px-12 xl:px-16">
+                <h2 className="pb-7 text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc] sm:pb-8">{title}</h2>
+                <div className="grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-5 lg:gap-x-5 xl:gap-x-7">
+                  {members.map((member, index) => (
+                    <MemberPortrait key={member.name} member={member} index={index} prefix={prefix} />
+                  ))}
+                </div>
+              </section>
+            ))}
           </div>
         </section>
       </main>
