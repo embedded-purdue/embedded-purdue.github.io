@@ -92,18 +92,6 @@
     "active": true
   },
   {
-    "name": "Madhura Kawar",
-    "role": "Photography Committee",
-    "roles": [
-      "Photography Committee"
-    ],
-    "level": "member",
-    "section": "committee",
-    "image": "/team/madhura_kawar_photography.webp",
-    "order": 120,
-    "active": true
-  },
-  {
     "name": "Anay Patel",
     "role": "Outreach Committee",
     "roles": [
@@ -200,19 +188,6 @@
     "active": true
   },
   {
-    "name": "Ishika Pandurangam",
-    "role": "PM • CAISSA",
-    "roles": [
-      "PM • CAISSA",
-      "Outreach Committee"
-    ],
-    "level": "pm",
-    "section": "pm",
-    "image": "/team/ishika_pandurangam_cassia.webp",
-    "order": 240,
-    "active": true
-  },
-  {
     "name": "Thai Tran",
     "role": "PM • WALL-E",
     "roles": [
@@ -285,18 +260,6 @@
     "active": true
   },
   {
-    "name": "Micah Samuel",
-    "role": "PM • IRLTSPICE",
-    "roles": [
-      "PM • IRLTSPICE"
-    ],
-    "level": "pm",
-    "section": "pm",
-    "image": "/team/micah_samuel_irltspice.webp",
-    "order": 310,
-    "active": true
-  },
-  {
     "name": "Yao Yang",
     "role": "PM • IntelliThings",
     "roles": [
@@ -366,31 +329,6 @@
     "section": "pm",
     "image": "/team/william_ramsey_fieldvision.webp",
     "order": 370,
-    "active": true
-  },
-  {
-    "name": "Arvindh Krishna",
-    "role": "PM • Field Vision",
-    "roles": [
-      "PM • Field Vision",
-      "Outreach Committee"
-    ],
-    "level": "pm",
-    "section": "pm",
-    "image": "/team/arvindh_krishna_fieldvision.webp",
-    "order": 380,
-    "active": true
-  },
-  {
-    "name": "Preston Mo",
-    "role": "PM • TARS",
-    "roles": [
-      "PM • TARS"
-    ],
-    "level": "pm",
-    "section": "pm",
-    "image": "/team/preston_mo_tars.webp",
-    "order": 390,
     "active": true
   },
   {
