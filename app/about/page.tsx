@@ -13,6 +13,7 @@ import {
   Wrench,
 } from "lucide-react"
 
+import { AboutPhotoRotation } from "@/components/site/about-photo-rotation"
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteNavigation } from "@/components/site/site-navigation"
 
@@ -159,6 +160,12 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="border-b border-white/[0.08] bg-black">
+          <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
+            <AboutPhotoRotation />
           </div>
         </section>
 
