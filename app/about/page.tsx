@@ -151,11 +151,11 @@ export default function AboutPage() {
                 <div className="absolute inset-x-0 bottom-0 grid grid-cols-2 border-t border-white/[0.12] bg-black/90">
                   <div className="border-r border-white/[0.1] px-5 py-4 sm:px-7">
                     <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#9a9791]">Community</p>
-                    <p className="mt-1.5 text-2xl font-medium tracking-[-0.04em] text-[#f0ece2]">100+ members</p>
+                    <p className="mt-1.5 text-2xl font-medium tracking-[-0.04em] text-[#f0ece2]">300+ members</p>
                   </div>
                   <div className="px-5 py-4 sm:px-7">
                     <p className="font-mono text-[0.54rem] uppercase tracking-[0.17em] text-[#9a9791]">Focus</p>
-                    <p className="mt-1.5 text-2xl font-medium tracking-[-0.04em] text-[#f0ece2]">Build + learn</p>
+                    <p className="mt-1.5 text-2xl font-medium tracking-[-0.04em] text-[#f0ece2]">Build + Learn</p>
                   </div>
                 </div>
               </div>
