@@ -104,18 +104,6 @@
     "active": true
   },
   {
-    "name": "Sarvesh Iyer",
-    "role": "Outreach Committee",
-    "roles": [
-      "Outreach Committee"
-    ],
-    "level": "member",
-    "section": "committee",
-    "image": "/team/sarvesh_iyer_outreach.webp",
-    "order": 140,
-    "active": true
-  },
-  {
     "name": "Vlad Bondar",
     "role": "Events Committee",
     "roles": [
@@ -147,7 +135,7 @@
     ],
     "level": "pm",
     "section": "pm",
-    "image": "/team/aarav_jain_paws.webp",
+    "image": "/team/aarav-jain.png",
     "order": 200,
     "active": true
   },
