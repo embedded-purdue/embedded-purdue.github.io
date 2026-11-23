@@ -164,7 +164,7 @@ export default function AboutPage() {
         </section>
 
         <section className="border-b border-white/[0.08] bg-black">
-          <div className={`${WIDE_RAIL} lg:border-x lg:border-white/[0.06]`}>
+          <div className={`${WIDE_RAIL} px-5 py-8 sm:px-8 lg:border-x lg:border-white/[0.06]`}>
             <AboutPhotoRotation />
           </div>
         </section>

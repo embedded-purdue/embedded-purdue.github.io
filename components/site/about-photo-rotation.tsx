@@ -1,12 +1,13 @@
 "use client"
 
 import Image from "next/image"
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react"
+import { Pause, Play } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 import photos from "./about-community-photos.json"
 
 const controlClass = "grid size-11 place-items-center text-[#f3efe6] transition-colors hover:text-[#f4c64d] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#f4c64d]"
+const photoControlClass = "w-1/2 cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#f4c64d]"
 
 function wrap(index: number) {
   return (index + photos.length) % photos.length
@@ -55,14 +56,14 @@ export function AboutPhotoRotation() {
     <figure
       ref={gallery}
       aria-label="Life at Embedded Systems at Purdue"
-      className="overflow-hidden bg-[#17130f]"
+      className="mx-auto w-full max-w-[720px] overflow-hidden bg-[#17130f]"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={(event) => {
         if (event.target.matches(":focus-visible") && !event.currentTarget.contains(event.relatedTarget)) setPlaying(false)
       }}
     >
-      <div className="relative aspect-[3/2] max-h-[760px]">
+      <div className="relative aspect-[3/2]">
         {nearby.map((photoIndex) => {
           const photo = photos[photoIndex]
           const current = photoIndex === index
@@ -73,31 +74,24 @@ export function AboutPhotoRotation() {
               alt={photo.alt ?? photo.caption}
               aria-hidden={!current}
               fill
-              sizes="(max-width: 1023px) 100vw, calc(100vw - 48px)"
-              className={`object-contain transition-opacity duration-700 motion-reduce:transition-none ${current ? "opacity-100" : "opacity-0"}`}
+              sizes="(max-width: 639px) calc(100vw - 40px), (max-width: 783px) calc(100vw - 64px), 720px"
+              className={`object-cover object-center transition-opacity duration-700 motion-reduce:transition-none ${current ? "opacity-100" : "opacity-0"}`}
             />
           )
         })}
-      </div>
-      <div className="flex items-center justify-between gap-2 border-t border-[#e1b575]/25 bg-[#211910] py-2 pl-5 pr-2 sm:pl-7">
-        <figcaption aria-live={playing ? "off" : "polite"} className="text-sm leading-5 text-[#f3e4ce]">
-          {photos[index].caption}
-          <span className="ml-2 whitespace-nowrap text-xs tabular-nums text-[#c5af94]">
-            {index + 1} / {photos.length}
-          </span>
-        </figcaption>
-        <div className="flex shrink-0 items-center">
-          <button type="button" className={controlClass} aria-label="Previous photo" onClick={() => move(-1)}>
-            <ChevronLeft className="size-4" aria-hidden="true" />
-          </button>
-          <button type="button" className={controlClass} aria-label={playing ? "Pause photo rotation" : "Play photo rotation"} onClick={() => setPlaying(!playing)}>
-            {playing ? <Pause className="size-4" aria-hidden="true" /> : <Play className="size-4" aria-hidden="true" />}
-          </button>
-          <button type="button" className={controlClass} aria-label="Next photo" onClick={() => move(1)}>
-            <ChevronRight className="size-4" aria-hidden="true" />
-          </button>
+        <div className="absolute inset-0 flex">
+          <button type="button" className={photoControlClass} aria-label="Previous photo" onClick={() => move(-1)} />
+          <button type="button" className={photoControlClass} aria-label="Next photo" onClick={() => move(1)} />
         </div>
       </div>
+      <div className="flex justify-end border-t border-[#e1b575]/25 bg-[#211910] py-2 pr-2">
+        <button type="button" className={`${controlClass} shrink-0`} aria-label={playing ? "Pause photo rotation" : "Play photo rotation"} onClick={() => setPlaying(!playing)}>
+          {playing ? <Pause className="size-4" aria-hidden="true" /> : <Play className="size-4" aria-hidden="true" />}
+        </button>
+      </div>
+      <figcaption aria-live={playing ? "off" : "polite"} className="sr-only">
+        Photo {index + 1} of {photos.length}
+      </figcaption>
     </figure>
   )
 }
