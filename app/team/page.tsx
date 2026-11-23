@@ -26,6 +26,15 @@ function SignalLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
+function RosterCount({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="flex items-center gap-2 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[#a7a197]">
+      <Shield className="h-3.5 w-3.5" aria-hidden="true" />
+      <span>{children} / 2026</span>
+    </span>
+  )
+}
+
 function MemberPortrait({ member, index, prefix = "E" }: { member: Member; index: number; prefix?: string }) {
   const socialLinkClass =
     "grid h-10 w-10 shrink-0 place-items-center border border-white/[0.12] text-[#c4bfb7] transition-colors hover:border-[#daa000]/50 hover:text-[#f2c34f]"
@@ -62,9 +71,9 @@ export default async function TeamPage() {
   )
   const members = team.filter((member) => member.section === "member")
   const rosterSections = [
-    { title: "Project Management", members: projectManagers, prefix: "PM" },
-    { title: "Admin Committee", members: adminCommittee, prefix: "A" },
-    ...(members.length ? [{ title: "Members", members, prefix: "M" }] : []),
+    { title: "Project Management", members: projectManagers, prefix: "PM", countLabel: "project managers" },
+    { title: "Admin Committee", members: adminCommittee, prefix: "A", countLabel: "admin committee members" },
+    ...(members.length ? [{ title: "Members", members, prefix: "M", countLabel: null }] : []),
   ]
 
   return (
@@ -135,7 +144,7 @@ export default async function TeamPage() {
             <div className="px-5 pb-10 pt-10 sm:px-8 sm:pb-12 sm:pt-12 lg:px-12 lg:pt-14 xl:px-16">
               <div className="flex flex-wrap items-center justify-between gap-4 pb-7 sm:pb-8">
                 <h2 className="text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc]">Executive Board</h2>
-                <span className="flex items-center gap-2 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[#a7a197]"><Shield className="h-3.5 w-3.5" aria-hidden="true" />{executives.length} executives / 2026</span>
+                <RosterCount>{executives.length} executives</RosterCount>
               </div>
               <div className="grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-6 sm:gap-x-6 lg:grid-cols-5 lg:gap-x-5 xl:gap-x-7">
                 {executives.map((member, index) => (
@@ -146,9 +155,12 @@ export default async function TeamPage() {
               </div>
             </div>
 
-            {rosterSections.map(({ title, members, prefix }) => (
+            {rosterSections.map(({ title, members, prefix, countLabel }) => (
               <section key={title} className="border-t border-white/[0.08] px-5 py-10 sm:px-8 sm:py-12 lg:px-12 xl:px-16">
-                <h2 className="pb-7 text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc] sm:pb-8">{title}</h2>
+                <div className="flex flex-wrap items-center justify-between gap-4 pb-7 sm:pb-8">
+                  <h2 className="text-2xl font-medium tracking-[-0.04em] text-[#ebe6dc]">{title}</h2>
+                  {countLabel && <RosterCount>{members.length} {countLabel}</RosterCount>}
+                </div>
                 <div className="grid grid-cols-2 gap-x-5 gap-y-9 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-5 lg:gap-x-5 xl:gap-x-7">
                   {members.map((member, index) => (
                     <MemberPortrait key={member.name} member={member} index={index} prefix={prefix} />
