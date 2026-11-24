@@ -35,7 +35,7 @@ function RosterCount({ children }: { children: React.ReactNode }) {
   )
 }
 
-function MemberPortrait({ member, index, prefix = "E" }: { member: Member; index: number; prefix?: string }) {
+function MemberPortrait({ member, index, prefix = "E" }: { member: Member; index: number; prefix?: string | null }) {
   const socialLinkClass =
     "grid h-10 w-10 shrink-0 place-items-center border border-white/[0.12] text-[#c4bfb7] transition-colors hover:border-[#daa000]/50 hover:text-[#f2c34f]"
 
@@ -48,8 +48,10 @@ function MemberPortrait({ member, index, prefix = "E" }: { member: Member; index
         ))}
         <h3 className="mt-2 text-[clamp(1.15rem,1.7vw,1.65rem)] font-medium leading-tight tracking-[-0.035em] text-[#eee8de]">{member.name}</h3>
         <div className="mt-4 flex min-h-10 items-center justify-between gap-2">
-          <span className="font-mono text-[0.56rem] tracking-[0.14em] text-[#9c9791]">{prefix}-{String(index + 1).padStart(2, "0")}</span>
-          <div className="flex gap-2">
+          {prefix && (
+            <span className="font-mono text-[0.56rem] tracking-[0.14em] text-[#9c9791]">{prefix}-{String(index + 1).padStart(2, "0")}</span>
+          )}
+          <div className="ml-auto flex gap-2">
             {member.email && <a href={member.email} aria-label={`Email ${member.name}`} className={socialLinkClass}><Mail className="h-4 w-4" aria-hidden="true" /></a>}
             {member.linkedin && <a href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on LinkedIn`} className={socialLinkClass}><Linkedin className="h-4 w-4" aria-hidden="true" /></a>}
             {member.github && <a href={member.github} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on GitHub`} className={socialLinkClass}><Github className="h-4 w-4" aria-hidden="true" /></a>}
@@ -71,7 +73,7 @@ export default async function TeamPage() {
   )
   const members = team.filter((member) => member.section === "member")
   const rosterSections = [
-    { title: "Project Management", members: projectManagers, prefix: "PM", countLabel: "project managers" },
+    { title: "Project Management", members: projectManagers, prefix: null, countLabel: "project managers" },
     { title: "Admin Committee", members: adminCommittee, prefix: "A", countLabel: "admin committee members" },
     ...(members.length ? [{ title: "Members", members, prefix: "M", countLabel: null }] : []),
   ]

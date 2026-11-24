@@ -370,9 +370,10 @@
     ],
     "status": "Completed",
     "icon": "zap",
-    "image": "/projects/logo.png",
+    "image": "/projects/micropiano/cover.webp",
     "images": [
-      "/projects/logo.png"
+      "/projects/micropiano/cover.webp",
+      "/projects/micropiano/prototype.webp"
     ],
     "pm": "Alex Forrest, Alexander Rizzi",
     "pms": [
