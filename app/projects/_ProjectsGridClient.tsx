@@ -325,38 +325,14 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
           </button>
         </div>
       ) : (
-        <div className="grid gap-px bg-white/[0.08] md:grid-cols-2 xl:grid-cols-12">
-          {filtered.map((project, index) => {
+        <div className="grid auto-rows-fr gap-px bg-white/[0.08] md:grid-cols-2 xl:grid-cols-3">
+          {filtered.map((project) => {
             const image = resolveProjectImagePath(project.slug, project.images?.[0] || project.image)
             const { href, external } = resolveProjectHref(project)
-            const solo = filtered.length === 1
-            const featured = index === 0 && filtered.length > 1
-            const emphasized = solo || featured
-            const last = index === filtered.length - 1
-            const remainder = filtered.length > 2 ? (filtered.length - 2) % 3 : 0
-            const inLastRow = remainder > 0 && index >= filtered.length - remainder
-            const wideAtDesktop = emphasized || (inLastRow && remainder === 1)
-            const tabletSpan = emphasized || (last && filtered.length % 2 === 0) ? "md:col-span-2" : ""
-            const desktopSpan = solo || (inLastRow && remainder === 1)
-              ? "xl:col-span-12"
-              : featured
-                ? "xl:col-span-8"
-                : inLastRow ? "xl:col-span-6" : "xl:col-span-4"
-            const spanClass = `${tabletSpan} ${desktopSpan}`
 
             const inner = (
-              <article
-                className={`group h-full min-h-[440px] bg-[#0c0c0b] transition-colors hover:bg-[#11110f] ${
-                  wideAtDesktop ? "flex flex-col xl:grid xl:grid-cols-[1.14fr_.86fr]" : "flex flex-col"
-                }`}
-              >
-                <div
-                  className={`relative shrink-0 overflow-hidden bg-black ${
-                    wideAtDesktop
-                      ? "h-[250px] border-b border-white/[0.08] sm:h-[320px] xl:h-auto xl:min-h-[440px] xl:border-b-0 xl:border-r"
-                      : "h-[210px] border-b border-white/[0.08]"
-                  }`}
-                >
+              <article className="group flex h-full min-h-[440px] flex-col bg-[#0c0c0b] transition-colors hover:bg-[#11110f]">
+                <div className="relative h-[210px] shrink-0 overflow-hidden border-b border-white/[0.08] bg-black">
                   <ProjectCover source={image} title={project.title} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
                   <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-3 p-4">
@@ -372,17 +348,13 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                   <ArrowUpRight className="absolute bottom-4 right-4 h-5 w-5 text-[#d6d2cb] transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#f2c34f]" aria-hidden="true" />
                 </div>
 
-                <div className={`flex flex-1 flex-col px-5 py-6 sm:px-7 sm:py-7 ${emphasized ? "xl:px-9 xl:py-9" : ""}`}>
+                <div className="flex flex-1 flex-col px-5 py-6 sm:px-7 sm:py-7">
                   <p className="font-mono text-[0.625rem] uppercase tracking-[0.14em] text-[#b6b1ab]">Project / {project.slug}</p>
-                  <h2
-                    className={`mt-2.5 font-medium leading-[1.02] tracking-[-0.05em] text-[#e9e4da] ${
-                      emphasized ? "text-[clamp(1.9rem,3vw,2.7rem)]" : "text-[1.65rem]"
-                    }`}
-                  >
+                  <h2 className="mt-2.5 text-[1.65rem] font-medium leading-[1.02] tracking-[-0.05em] text-[#e9e4da]">
                     {project.title}
                   </h2>
                   {project.description && (
-                    <p className={`mt-4 text-sm leading-6 text-[#beb9b1] ${emphasized ? "line-clamp-5" : "line-clamp-3"}`}>
+                    <p className="mt-4 line-clamp-3 text-sm leading-6 text-[#beb9b1]">
                       {project.description}
                     </p>
                   )}
@@ -390,14 +362,14 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                   {!!project.technologies.length && (
                     <div className="mt-auto pt-6">
                       <div className="flex flex-wrap gap-x-3 gap-y-2 border-t border-white/[0.1] pt-4">
-                        {project.technologies.slice(0, emphasized ? 7 : 5).map((technology) => (
+                        {project.technologies.slice(0, 5).map((technology) => (
                           <span key={`${project.slug}-${technology}`} className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#b6b1ab]">
                             {technology}
                           </span>
                         ))}
-                        {project.technologies.length > (emphasized ? 7 : 5) && (
+                        {project.technologies.length > 5 && (
                           <span className="font-mono text-[0.625rem] uppercase tracking-[0.1em] text-[#b6b1ab]">
-                            +{project.technologies.length - (emphasized ? 7 : 5)}
+                            +{project.technologies.length - 5}
                           </span>
                         )}
                       </div>
@@ -415,7 +387,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                 target="_blank"
                 rel="noopener noreferrer"
                 data-site-lift="card"
-                className={`${spanClass} block h-full no-underline`}
+                className="block h-full no-underline"
               >
                 {inner}
               </a>
@@ -426,7 +398,7 @@ export default function ProjectsGridClient({ projects }: { projects: Project[] }
                 aria-label={`View ${project.title}`}
                 prefetch={false}
                 data-site-lift="card"
-                className={`${spanClass} block h-full no-underline`}
+                className="block h-full no-underline"
               >
                 {inner}
               </Link>
